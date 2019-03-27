@@ -1,0 +1,19 @@
+server:
+  tomcat:
+    uri-encoding: UTF-8
+  port: 8080
+  servlet:
+    context-path: /timeable
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/timetable?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useSSL=false
+    username: root
+    password: 123456
+mybatis-plus:
+  mapper-locations: classpath:mapper/*Mapper.xml
+  type-aliases-package: com.app.timetable.entity
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
