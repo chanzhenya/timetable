@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.stereotype.Controller;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 /**
@@ -38,13 +39,19 @@ public class TeacherController {
     private ITeacherService teacherService;
 
     @PostMapping("/add")
-    public ResultVo add(@RequestBody Map<String,Object> params) {
+    public ResultVo add(@RequestBody Map<String,Object> params,HttpServletResponse response) throws Exception {
         String userId = ClassObjectUtils.getUUID(); //用户信息ID
         String teacherId = ClassObjectUtils.getUUID(); // 教师信息ID
         SysUser sysUser = initUser(params);
         sysUser.setId(userId);
+        sysUserService.register(sysUser,response);
 
         Teacher teacher = new Teacher();
+        teacher.setId(teacherId);
+        teacher.setUserId(userId);
+        teacher.setName(sysUser.getName());
+        teacher.setDescription((String) params.get("description"));
+        teacherService.save(teacher);
         return ResultVoUtil.success(null);
     }
 
