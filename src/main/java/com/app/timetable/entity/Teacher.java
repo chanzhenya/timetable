@@ -55,6 +55,11 @@ public class Teacher implements Serializable {
      */
     private LocalDateTime createTime;
 
+    /**
+     * 用户信息
+     */
+    private SysUser sysUser;
+
 
     public String getId() {
         return id;
@@ -118,6 +123,14 @@ public class Teacher implements Serializable {
 
     public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
+    }
+
+    public SysUser getSysUser() {
+        return sysUser;
+    }
+
+    public void setSysUser(SysUser sysUser) {
+        this.sysUser = sysUser;
     }
 
     @Override
