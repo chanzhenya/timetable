@@ -11,7 +11,7 @@ import org.springframework.stereotype.Controller;
  * </p>
  *
  * @author judithchen
- * @since 2019-03-27
+ * @since 2019-04-01
  */
 @Controller
 @RequestMapping("/timetable/studentTimtable")

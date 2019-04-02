@@ -9,7 +9,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author judithchen
- * @since 2019-03-27
+ * @since 2019-04-01
  */
 public class SysUser implements Serializable {
 
@@ -26,6 +26,16 @@ public class SysUser implements Serializable {
     private String usename;
 
     /**
+     * 用户真实姓名
+     */
+    private String name;
+
+    /**
+     * 微信号
+     */
+    private String account;
+
+    /**
      * 用户的微信open ID
      */
     private String openId;
@@ -39,6 +49,11 @@ public class SysUser implements Serializable {
      * 微信头像
      */
     private String imgUrl;
+
+    /**
+     * 个人头像
+     */
+    private String photoUrl;
 
     /**
      * 性别，0-女；1-男
@@ -77,6 +92,22 @@ public class SysUser implements Serializable {
         this.usename = usename;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
     public String getOpenId() {
         return openId;
     }
@@ -99,6 +130,14 @@ public class SysUser implements Serializable {
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 
     public Integer getGender() {
@@ -138,6 +177,8 @@ public class SysUser implements Serializable {
         return "SysUser{" +
         "id=" + id +
         ", usename=" + usename +
+        ", name=" + name +
+        ", account=" + account +
         ", openId=" + openId +
         ", phone=" + phone +
         ", imgUrl=" + imgUrl +
