@@ -12,5 +12,5 @@ public class CommonContent {
     // token 有效时间
     public static final long LOGIN_EXPIRE_TIME = 60*60;
 
-    public static final String FILE_PATH = "/opt/timetable/images/";
+    public static final String FILE_PATH = "/opt/images";
 }

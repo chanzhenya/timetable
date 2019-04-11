@@ -30,7 +30,7 @@ CREATE TABLE `course` (
   `teacher_id` varchar(32) DEFAULT NULL COMMENT '教师id',
   `status` int(11) DEFAULT NULL COMMENT '课程状态：0-待发布，1-已发布，2-下架',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
 -- Table structure for student
@@ -44,7 +44,7 @@ CREATE TABLE `student` (
   `leave_num` int(11) DEFAULT NULL COMMENT '请假次数',
   `score` int(11) DEFAULT NULL COMMENT '积分',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
 -- Table structure for student_purchased_course
@@ -58,7 +58,7 @@ CREATE TABLE `student_purchased_course` (
   `due_time` datetime DEFAULT NULL COMMENT '课程到期时间',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
 -- Table structure for student_timtable
@@ -73,7 +73,7 @@ CREATE TABLE `student_timtable` (
   `homework` text COMMENT '课后作业',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -81,9 +81,9 @@ CREATE TABLE `student_timtable` (
 DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user` (
   `id` varchar(32) NOT NULL COMMENT '用户ID',
-  `usename` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '用户昵称',
+  `usename` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '用户昵称',
   `name` varchar(64) DEFAULT NULL COMMENT '用户真实姓名',
-  `account` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '微信号',
+  `account` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '微信号',
   `open_id` varchar(50) NOT NULL COMMENT '用户的微信open ID',
   `phone` varchar(20) DEFAULT NULL COMMENT '联系电话',
   `img_url` varchar(50) DEFAULT NULL COMMENT '微信头像',
@@ -93,7 +93,7 @@ CREATE TABLE `sys_user` (
   `user_type` int(11) DEFAULT NULL COMMENT '用户类型：0-管理员；1-教师；2-学生',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
 -- Table structure for tag
@@ -103,7 +103,7 @@ CREATE TABLE `tag` (
   `id` varchar(32) NOT NULL COMMENT '标签ID',
   `name` varchar(20) DEFAULT NULL COMMENT '标签名',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
 -- Table structure for teacher
@@ -113,13 +113,13 @@ CREATE TABLE `teacher` (
   `id` varchar(32) NOT NULL COMMENT '教师ID',
   `name` varchar(64) DEFAULT NULL COMMENT '教师名称',
   `user_id` varchar(32) DEFAULT NULL COMMENT '用户ID',
-  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT '教师简介，500字以内',
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT '教师简介，500字以内',
   `tag` varchar(20) DEFAULT NULL COMMENT '教师标签，主要传授什么课程',
   `score` int(11) DEFAULT NULL COMMENT '教师综合评分',
   `photo` varchar(255) DEFAULT NULL COMMENT '照片',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
 -- Table structure for teacher_evaluation
@@ -133,7 +133,7 @@ CREATE TABLE `teacher_evaluation` (
   `content` text COMMENT '评价内容',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
 -- Table structure for teacher_timetable
@@ -149,6 +149,6 @@ CREATE TABLE `teacher_timetable` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 SET FOREIGN_KEY_CHECKS = 1;

@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 /**
  * <p>
  *  前端控制器
@@ -34,9 +32,7 @@ public class TagController {
     @PostMapping("/add")
     public ResultVo add(@RequestParam("tagName") String tagName) {
         try {
-            Tag tag = new Tag();
-            tag.setId(ClassObjectUtils.getUUID());
-            tag.setName(tagName);
+            Tag tag = new Tag(ClassObjectUtils.getUUID(),tagName);
             tagService.save(tag);
             return ResultVoUtil.success("新增成功");
         } catch (Exception e) {
@@ -48,9 +44,7 @@ public class TagController {
     @PostMapping("/edit")
     public ResultVo edit(@RequestParam("tagId") String tagId, @RequestParam("tagName") String tagName) {
         try {
-            Tag tag = new Tag();
-            tag.setId(tagId);
-            tag.setName(tagName);
+            Tag tag = new Tag(tagId,tagName);
             tagService.updateById(tag);
             return ResultVoUtil.success("修改成功");
         } catch (Exception e) {

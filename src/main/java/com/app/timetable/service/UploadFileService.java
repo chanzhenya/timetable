@@ -9,5 +9,5 @@ import org.springframework.web.multipart.MultipartFile;
  **/
 public interface UploadFileService {
 
-    public String uploadFile(MultipartFile multipartFile) throws Exception;
+    String uploadFile(MultipartFile multipartFile) throws Exception;
 }

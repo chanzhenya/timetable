@@ -9,10 +9,10 @@ import java.io.File;
 import java.util.UUID;
 
 /**
- * judithchen
- * 2019/4/6
- * Description：
- **/
+ * @author Judith
+ * @date 2019/4/2 19:38
+ * @description
+ */
 @Service
 public class UploadFileServiceImpl implements UploadFileService {
 
