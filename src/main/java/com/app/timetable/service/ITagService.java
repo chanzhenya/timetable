@@ -1,6 +1,7 @@
 package com.app.timetable.service;
 
 import com.app.timetable.entity.Tag;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -13,4 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ITagService extends IService<Tag> {
 
+    IPage<Tag> selectPage(int pageNum, int pageSize) throws Exception;
 }

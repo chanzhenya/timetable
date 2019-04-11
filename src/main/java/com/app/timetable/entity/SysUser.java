@@ -71,6 +71,11 @@ public class SysUser implements Serializable {
     private Integer userType;
 
     /**
+     * 简介
+     */
+    private String description;
+
+    /**
      * 创建时间
      */
     private LocalDateTime createTime;
@@ -164,28 +169,19 @@ public class SysUser implements Serializable {
         this.userType = userType;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public LocalDateTime getCreateTime() {
         return createTime;
     }
 
     public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
-    }
-
-    @Override
-    public String toString() {
-        return "SysUser{" +
-        "id=" + id +
-        ", usename=" + usename +
-        ", name=" + name +
-        ", account=" + account +
-        ", openId=" + openId +
-        ", phone=" + phone +
-        ", imgUrl=" + imgUrl +
-        ", gender=" + gender +
-        ", accessToken=" + accessToken +
-        ", userType=" + userType +
-        ", createTime=" + createTime +
-        "}";
     }
 }

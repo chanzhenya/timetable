@@ -1,6 +1,7 @@
 package com.app.timetable.entity;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -18,11 +19,6 @@ public class Student implements Serializable {
      * id
      */
     private String id;
-
-    /**
-     * 学生名称
-     */
-    private String name;
 
     /**
      * 用户id
@@ -44,6 +40,10 @@ public class Student implements Serializable {
      */
     private Integer score;
 
+    /**
+     * 创建时间
+     */
+    private LocalDateTime createTime;
 
     public String getId() {
         return id;
@@ -51,14 +51,6 @@ public class Student implements Serializable {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getUserId() {
@@ -93,15 +85,11 @@ public class Student implements Serializable {
         this.score = score;
     }
 
-    @Override
-    public String toString() {
-        return "Student{" +
-        "id=" + id +
-        ", name=" + name +
-        ", userId=" + userId +
-        ", truancyNum=" + truancyNum +
-        ", leaveNum=" + leaveNum +
-        ", score=" + score +
-        "}";
+    public LocalDateTime getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
     }
 }

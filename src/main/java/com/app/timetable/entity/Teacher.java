@@ -21,24 +21,9 @@ public class Teacher implements Serializable {
     private String id;
 
     /**
-     * 教师名称
-     */
-    private String name;
-
-    /**
      * 用户ID
      */
     private String userId;
-
-    /**
-     * 教师简介，500字以内
-     */
-    private String description;
-
-    /**
-     * 教师标签，主要传授什么课程
-     */
-    private String tag;
 
     /**
      * 教师综合评分
@@ -46,15 +31,9 @@ public class Teacher implements Serializable {
     private Integer score;
 
     /**
-     * 照片
-     */
-    private String photo;
-
-    /**
      * 创建时间
      */
     private LocalDateTime createTime;
-
 
     public String getId() {
         return id;
@@ -62,14 +41,6 @@ public class Teacher implements Serializable {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getUserId() {
@@ -80,22 +51,6 @@ public class Teacher implements Serializable {
         this.userId = userId;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getTag() {
-        return tag;
-    }
-
-    public void setTag(String tag) {
-        this.tag = tag;
-    }
-
     public Integer getScore() {
         return score;
     }
@@ -104,33 +59,11 @@ public class Teacher implements Serializable {
         this.score = score;
     }
 
-    public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
-
     public LocalDateTime getCreateTime() {
         return createTime;
     }
 
     public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
-    }
-
-    @Override
-    public String toString() {
-        return "Teacher{" +
-        "id=" + id +
-        ", name=" + name +
-        ", userId=" + userId +
-        ", description=" + description +
-        ", tag=" + tag +
-        ", score=" + score +
-        ", photo=" + photo +
-        ", createTime=" + createTime +
-        "}";
     }
 }

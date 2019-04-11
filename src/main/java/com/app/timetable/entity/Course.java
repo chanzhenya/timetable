@@ -50,6 +50,11 @@ public class Course implements Serializable {
      */
     private Integer status;
 
+    /**
+     * 课程分类ID
+     */
+    private String tagId;
+
 
     public String getId() {
         return id;
@@ -107,16 +112,12 @@ public class Course implements Serializable {
         this.status = status;
     }
 
-    @Override
-    public String toString() {
-        return "Course{" +
-        "id=" + id +
-        ", name=" + name +
-        ", descreption=" + descreption +
-        ", price=" + price +
-        ", period=" + period +
-        ", teacherId=" + teacherId +
-        ", status=" + status +
-        "}";
+    public String getTagId() {
+        return tagId;
     }
+
+    public void setTagId(String tagId) {
+        this.tagId = tagId;
+    }
+
 }

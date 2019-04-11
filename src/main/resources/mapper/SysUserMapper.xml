@@ -11,11 +11,21 @@
         <result column="open_id" property="openId" />
         <result column="phone" property="phone" />
         <result column="img_url" property="imgUrl" />
-        <result column="photo_url" property="photosUrl" />
+        <result column="photo_url" property="photoUrl" />
         <result column="gender" property="gender" />
         <result column="access_token" property="accessToken" />
         <result column="user_type" property="userType" />
         <result column="create_time" property="createTime" />
+        <result column="description" property="description" />
     </resultMap>
 
+    <select id="selectPage" resultMap="BaseResultMap" parameterType="com.app.timetable.entity.SysUser">
+        SELECT * FROM sys_user
+        <where>
+            1=1
+            <if test="user.userType != null">
+                AND user_type = #{user.userType, jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
 </mapper>
