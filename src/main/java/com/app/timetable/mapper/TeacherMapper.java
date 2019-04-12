@@ -1,5 +1,6 @@
 package com.app.timetable.mapper;
 
+import com.app.timetable.dto.TeacherDTO;
 import com.app.timetable.entity.Teacher;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
@@ -13,4 +14,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface TeacherMapper extends BaseMapper<Teacher> {
 
+    TeacherDTO selectByUserId(String userId);
 }

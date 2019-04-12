@@ -19,7 +19,31 @@
         <result column="description" property="description" />
     </resultMap>
 
-    <select id="selectPage" resultMap="BaseResultMap" parameterType="com.app.timetable.entity.SysUser">
+    <resultMap id="ListResultMap" type="com.app.timetable.dto.SysUserDTO">
+        <id column="id" property="id" />
+        <result column="account" property="account" />
+        <result column="phone" property="phone" />
+        <result column="img_url" property="imgUrl" />
+        <result column="photo_url" property="photoUrl" />
+        <result column="user_type" property="userType" />
+    </resultMap>
+
+    <resultMap id="DetailResutlMap" type="com.app.timetable.dto.SysUserDetailDTO">
+        <id column="id" property="id" />
+        <result column="usename" property="usename" />
+        <result column="name" property="name" />
+        <result column="account" property="account" />
+        <result column="phone" property="phone" />
+        <result column="img_url" property="imgUrl" />
+        <result column="photo_url" property="photoUrl" />
+        <result column="gender" property="gender" />
+        <result column="user_type" property="userType" />
+        <result column="description" property="description" />
+        <association property="teacher" column="id" select="com.app.timetable.mapper.TeacherMapper.selectByUserId"/>
+        <association property="student" column="id" select="com.app.timetable.mapper.StudentMapper.selectByUserId"/>
+    </resultMap>
+
+    <select id="selectPage" resultMap="ListResultMap" parameterType="com.app.timetable.entity.SysUser">
         SELECT * FROM sys_user
         <where>
             1=1
@@ -27,5 +51,9 @@
                 AND user_type = #{user.userType, jdbcType=INTEGER}
             </if>
         </where>
+    </select>
+    
+    <select id="selectDetailById" parameterType="java.lang.String" resultMap="DetailResutlMap">
+        SELECT * FROM sys_user WHERE id = #{id}
     </select>
 </mapper>

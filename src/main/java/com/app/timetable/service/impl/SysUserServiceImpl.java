@@ -1,5 +1,7 @@
 package com.app.timetable.service.impl;
 
+import com.app.timetable.dto.SysUserDTO;
+import com.app.timetable.dto.SysUserDetailDTO;
 import com.app.timetable.entity.Student;
 import com.app.timetable.entity.SysUser;
 import com.app.timetable.entity.Teacher;
@@ -53,14 +55,14 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public IPage<SysUser> selectPage(int pageNum, int pageSize, SysUser user) throws Exception {
-        Page<SysUser> page = new Page<>(pageNum,pageSize);
+    public IPage<SysUserDTO> selectPage(int pageNum, int pageSize, SysUser user) throws Exception {
+        Page<SysUserDTO> page = new Page<>(pageNum,pageSize);
         return userMapper.selectPage(page,user);
     }
 
     @Override
-    public SysUser getUserDetail(String userId) throws Exception {
-        SysUser sysUser = userMapper.selectById(userId);
+    public SysUserDetailDTO getUserDetail(String userId) throws Exception {
+        SysUserDetailDTO sysUser = userMapper.selectDetailById(userId);
         return sysUser;
     }
 

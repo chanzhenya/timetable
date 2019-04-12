@@ -12,4 +12,7 @@
         <result column="score" property="score" />
     </resultMap>
 
+    <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT * FROM student WHERE user_id = #{userId}
+    </select>
 </mapper>

@@ -1,8 +1,12 @@
 package com.app.timetable.controller;
 
 
+import com.app.timetable.dto.SysUserDTO;
+import com.app.timetable.dto.SysUserDetailDTO;
 import com.app.timetable.entity.SysUser;
+import com.app.timetable.enums.UserType;
 import com.app.timetable.service.ISysUserService;
+import com.app.timetable.service.ITeacherService;
 import com.app.timetable.service.UploadFileService;
 import com.app.timetable.utils.ClassObjectUtils;
 import com.app.timetable.utils.ResultVoUtil;
@@ -35,6 +39,9 @@ public class SysUserController {
 
     @Autowired
     private UploadFileService uploadFileService;
+
+    @Autowired
+    private ITeacherService teacherService;
 
     @PostMapping("/register")
     public ResultVo register(@RequestParam(value = "photo", required = false)MultipartFile multipartFile,
@@ -73,7 +80,7 @@ public class SysUserController {
         try {
             SysUser sysUser = new SysUser();
             sysUser.setUserType(userType);
-            IPage<SysUser> page = userService.selectPage(pageNum,pageSize,sysUser);
+            IPage<SysUserDTO> page = userService.selectPage(pageNum,pageSize,sysUser);
             return ResultVoUtil.success(page);
         } catch (Exception e) {
             e.printStackTrace();
@@ -84,7 +91,7 @@ public class SysUserController {
     @PostMapping("/detail")
     public ResultVo detail(@RequestParam("userId") String userId) {
         try {
-            SysUser sysUser = userService.getUserDetail(userId);
+            SysUserDetailDTO sysUser = userService.getUserDetail(userId);
             return ResultVoUtil.success(sysUser);
         } catch (Exception e) {
             e.printStackTrace();

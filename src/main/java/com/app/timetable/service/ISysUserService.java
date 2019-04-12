@@ -1,5 +1,7 @@
 package com.app.timetable.service;
 
+import com.app.timetable.dto.SysUserDTO;
+import com.app.timetable.dto.SysUserDetailDTO;
 import com.app.timetable.entity.SysUser;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -19,7 +21,7 @@ public interface ISysUserService extends IService<SysUser> {
 
     void register(SysUser sysUser, HttpServletResponse response) throws Exception;
 
-    IPage<SysUser> selectPage(int pageNum, int pageSize, SysUser user) throws Exception;
+    IPage<SysUserDTO> selectPage(int pageNum, int pageSize, SysUser user) throws Exception;
 
-    SysUser getUserDetail(String userId) throws Exception;
+    SysUserDetailDTO getUserDetail(String userId) throws Exception;
 }

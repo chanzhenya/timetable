@@ -1,5 +1,7 @@
 package com.app.timetable.mapper;
 
+import com.app.timetable.dto.SysUserDTO;
+import com.app.timetable.dto.SysUserDetailDTO;
 import com.app.timetable.entity.SysUser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -16,5 +18,7 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface SysUserMapper extends BaseMapper<SysUser> {
 
-    public IPage<SysUser> selectPage(Page<SysUser> page, @Param("user") SysUser user);
+    IPage<SysUserDTO> selectPage(Page<SysUserDTO> page, @Param("user") SysUser user);
+
+    SysUserDetailDTO selectDetailById(String id);
 }
