@@ -8,9 +8,29 @@
         <result column="student_id" property="studentId" />
         <result column="course_id" property="courseId" />
         <result column="course_time" property="courseTime" />
+        <result column="course_type" property="courseType" />
         <result column="status" property="status" />
         <result column="homework" property="homework" />
         <result column="create_time" property="createTime" />
     </resultMap>
 
+    <resultMap id="DetailResultMap" type="com.app.timetable.dto.StudentTimetableDTO">
+        <id column="id" property="id" />
+        <result column="student_id" property="studentId" />
+        <result column="student_name" property="studentName"/>
+        <result column="img_url" property="imgUrl"/>
+        <result column="course_id" property="courseId" />
+        <result column="course_name" property="courseName"/>
+        <result column="course_time" property="courseTime" />
+        <result column="course_type" property="courseType" />
+        <result column="status" property="status" />
+        <result column="homework" property="homework" />
+    </resultMap>
+
+    <select id="selectDetailByCourse" resultMap="DetailResultMap" parameterType="java.lang.String">
+        SELECT t.*, u.name student_name, u.img_url, c.name course_name FROM `student_timtable` t
+        LEFT JOIN `sys_user` u ON u.id = t.student_id
+        LEFT JOIN `course` c ON c.id = t.course_id
+        WHERE t.course_id = #{courseId}
+    </select>
 </mapper>

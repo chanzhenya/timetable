@@ -7,11 +7,49 @@
         <id column="id" property="id" />
         <result column="teacher_id" property="teacherId" />
         <result column="course_id" property="courseId" />
-        <result column="course_type" property="courseType" />
         <result column="number" property="number" />
         <result column="homework" property="homework" />
+        <result column="course_time" property="courseTime"/>
+        <result column="status" property="status"/>
         <result column="update_time" property="updateTime" />
         <result column="create_time" property="createTime" />
     </resultMap>
 
+    <resultMap id="DetailResultMap" type="com.app.timetable.dto.TeacherTimetableDTO">
+        <id column="id" property="id" />
+        <result column="teacher_id" property="teacherId" />
+        <result column="teacher_name" property="teacherName"/>
+        <result column="course_id" property="courseId" />
+        <result column="course_name" property="courseName"/>
+        <result column="number" property="number" />
+        <result column="homework" property="homework" />
+        <result column="course_time" property="courseTime"/>
+        <result column="status" property="status"/>
+    </resultMap>
+
+    <resultMap id="ExtendDetailResultMap" type="com.app.timetable.dto.TeacherTimetableDTO">
+        <collection property="students" column="course_id" select="com.app.timetable.mapper.StudentTimtableMapper.selectDetailByCourse"/>
+    </resultMap>
+
+    <select id="selectByPage" resultMap="DetailResultMap" parameterType="com.app.timetable.entity.TeacherTimetable">
+        SELECT t.*, u.name teacher_name, c.name course_name FROM `teacher_timetable` t
+        LEFT JOIN `sys_user` u ON u.id = t.teacher_id
+        LEFT JOIN `course` c ON c.id = t.course_id
+        <where>
+            1=1
+            <if test="timetable.teacherId != null and timetable.teacherId != ''">
+                AND teacher_id = #{timetable.teacherId, jdbcType=VARCHAR}
+            </if>
+            <if test="timetable.courseId != null and timetable.courseId != ''">
+                AND course_id = #{timetable.courseId, jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+    
+    <select id="selectDetailById" resultMap="ExtendDetailResultMap" parameterType="java.lang.String">
+        SELECT t.*, u.name teacher_name, c.name course_name FROM `teacher_timetable` t
+        LEFT JOIN `sys_user` u ON u.id = t.teacher_id
+        LEFT JOIN `course` c ON c.id = t.course_id
+        WHERE id = #{id}
+    </select>
 </mapper>

@@ -8,7 +8,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author judithchen
- * @since 2019-04-01
+ * @since 2019-04-15
  */
 public class Tag implements Serializable {
 
@@ -24,10 +24,6 @@ public class Tag implements Serializable {
      */
     private String name;
 
-    public Tag(String id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 
     public String getId() {
         return id;

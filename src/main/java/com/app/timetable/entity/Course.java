@@ -9,7 +9,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author judithchen
- * @since 2019-04-01
+ * @since 2019-04-15
  */
 public class Course implements Serializable {
 
@@ -131,5 +131,20 @@ public class Course implements Serializable {
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+        "id=" + id +
+        ", name=" + name +
+        ", descreption=" + descreption +
+        ", price=" + price +
+        ", period=" + period +
+        ", teacherId=" + teacherId +
+        ", status=" + status +
+        ", tagId=" + tagId +
+        ", imgUrl=" + imgUrl +
+        "}";
     }
 }

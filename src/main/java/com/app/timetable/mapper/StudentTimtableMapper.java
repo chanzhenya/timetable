@@ -1,7 +1,11 @@
 package com.app.timetable.mapper;
 
+import com.app.timetable.dto.StudentTimetableDTO;
 import com.app.timetable.entity.StudentTimtable;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +17,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface StudentTimtableMapper extends BaseMapper<StudentTimtable> {
 
+    List<StudentTimetableDTO> selectDetailByCourse(@Param("courseId") String courseId);
 }

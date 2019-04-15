@@ -9,7 +9,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author judithchen
- * @since 2019-04-01
+ * @since 2019-04-15
  */
 public class TeacherTimetable implements Serializable {
 
@@ -31,16 +31,24 @@ public class TeacherTimetable implements Serializable {
     private String courseId;
 
     /**
-     * 课程类型：1-正式课程；2-试听课程
+     * 学生人数
      */
-    private Integer courseType;
-
     private Integer number;
 
     /**
      * 课后作业
      */
     private String homework;
+
+    /**
+     * 上课时间
+     */
+    private LocalDateTime courseTime;
+
+    /**
+     * 状态，1-未上课，0-已上课
+     */
+    private Integer status;
 
     /**
      * 更新时间
@@ -77,14 +85,6 @@ public class TeacherTimetable implements Serializable {
         this.courseId = courseId;
     }
 
-    public Integer getCourseType() {
-        return courseType;
-    }
-
-    public void setCourseType(Integer courseType) {
-        this.courseType = courseType;
-    }
-
     public Integer getNumber() {
         return number;
     }
@@ -99,6 +99,22 @@ public class TeacherTimetable implements Serializable {
 
     public void setHomework(String homework) {
         this.homework = homework;
+    }
+
+    public LocalDateTime getCourseTime() {
+        return courseTime;
+    }
+
+    public void setCourseTime(LocalDateTime courseTime) {
+        this.courseTime = courseTime;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public LocalDateTime getUpdateTime() {
@@ -123,9 +139,10 @@ public class TeacherTimetable implements Serializable {
         "id=" + id +
         ", teacherId=" + teacherId +
         ", courseId=" + courseId +
-        ", courseType=" + courseType +
         ", number=" + number +
         ", homework=" + homework +
+        ", courseTime=" + courseTime +
+        ", status=" + status +
         ", updateTime=" + updateTime +
         ", createTime=" + createTime +
         "}";

@@ -9,7 +9,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author judithchen
- * @since 2019-04-01
+ * @since 2019-04-15
  */
 public class Teacher implements Serializable {
 
@@ -34,6 +34,7 @@ public class Teacher implements Serializable {
      * 创建时间
      */
     private LocalDateTime createTime;
+
 
     public String getId() {
         return id;
@@ -65,5 +66,15 @@ public class Teacher implements Serializable {
 
     public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Teacher{" +
+        "id=" + id +
+        ", userId=" + userId +
+        ", score=" + score +
+        ", createTime=" + createTime +
+        "}";
     }
 }

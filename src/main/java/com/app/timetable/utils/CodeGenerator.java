@@ -22,7 +22,7 @@ public class CodeGenerator {
 
         //全局配置
         GlobalConfig globalConfig = new GlobalConfig();
-        globalConfig.setOutputDir("/Users/judithchen/Documents/program/document");
+        globalConfig.setOutputDir("D:\\documents");
         globalConfig.setFileOverride(true);
         globalConfig.setActiveRecord(false); //ActiveRecode特性
         globalConfig.setEnableCache(false); //XML 二级缓存
@@ -43,8 +43,8 @@ public class CodeGenerator {
         });
         dataSourceConfig.setDriverName("com.mysql.jdbc.Driver");
         dataSourceConfig.setUsername("root");
-        dataSourceConfig.setPassword("123456");
-        dataSourceConfig.setUrl("jdbc:mysql://localhost:3306/timetable?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useSSL=false");
+        dataSourceConfig.setPassword("Aliyun963");
+        dataSourceConfig.setUrl("jdbc:mysql://47.107.239.122:3306/timetable?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useSSL=false");
         generator.setDataSource(dataSourceConfig);
 
         //策略配置

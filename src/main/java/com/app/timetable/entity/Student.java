@@ -1,7 +1,7 @@
 package com.app.timetable.entity;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.io.Serializable;
 
 /**
  * <p>
@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
  * </p>
  *
  * @author judithchen
- * @since 2019-04-01
+ * @since 2019-04-15
  */
 public class Student implements Serializable {
 
@@ -44,6 +44,7 @@ public class Student implements Serializable {
      * 创建时间
      */
     private LocalDateTime createTime;
+
 
     public String getId() {
         return id;
@@ -91,5 +92,17 @@ public class Student implements Serializable {
 
     public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+        "id=" + id +
+        ", userId=" + userId +
+        ", truancyNum=" + truancyNum +
+        ", leaveNum=" + leaveNum +
+        ", score=" + score +
+        ", createTime=" + createTime +
+        "}";
     }
 }

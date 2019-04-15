@@ -9,7 +9,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author judithchen
- * @since 2019-04-01
+ * @since 2019-04-15
  */
 public class StudentPurchasedCourse implements Serializable {
 
@@ -51,9 +51,7 @@ public class StudentPurchasedCourse implements Serializable {
     private LocalDateTime createTime;
 
     /**
-     * 已购买课程状态
-     * 0-失效
-     * 1-有效
+     * 状态，0-失效，1-有效
      */
     private Integer status;
 
@@ -120,5 +118,19 @@ public class StudentPurchasedCourse implements Serializable {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "StudentPurchasedCourse{" +
+        "id=" + id +
+        ", studentId=" + studentId +
+        ", courseId=" + courseId +
+        ", teacherId=" + teacherId +
+        ", remain=" + remain +
+        ", dueTime=" + dueTime +
+        ", createTime=" + createTime +
+        ", status=" + status +
+        "}";
     }
 }

@@ -9,7 +9,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author judithchen
- * @since 2019-04-01
+ * @since 2019-04-15
  */
 public class SysUser implements Serializable {
 
@@ -71,14 +71,14 @@ public class SysUser implements Serializable {
     private Integer userType;
 
     /**
-     * 简介
-     */
-    private String description;
-
-    /**
      * 创建时间
      */
     private LocalDateTime createTime;
+
+    /**
+     * 个人简介
+     */
+    private String description;
 
 
     public String getId() {
@@ -169,6 +169,14 @@ public class SysUser implements Serializable {
         this.userType = userType;
     }
 
+    public LocalDateTime getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -177,11 +185,22 @@ public class SysUser implements Serializable {
         this.description = description;
     }
 
-    public LocalDateTime getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(LocalDateTime createTime) {
-        this.createTime = createTime;
+    @Override
+    public String toString() {
+        return "SysUser{" +
+        "id=" + id +
+        ", usename=" + usename +
+        ", name=" + name +
+        ", account=" + account +
+        ", openId=" + openId +
+        ", phone=" + phone +
+        ", imgUrl=" + imgUrl +
+        ", photoUrl=" + photoUrl +
+        ", gender=" + gender +
+        ", accessToken=" + accessToken +
+        ", userType=" + userType +
+        ", createTime=" + createTime +
+        ", description=" + description +
+        "}";
     }
 }

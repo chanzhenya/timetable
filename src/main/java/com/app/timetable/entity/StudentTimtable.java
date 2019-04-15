@@ -9,7 +9,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author judithchen
- * @since 2019-04-01
+ * @since 2019-04-15
  */
 public class StudentTimtable implements Serializable {
 
@@ -36,7 +36,14 @@ public class StudentTimtable implements Serializable {
     private LocalDateTime courseTime;
 
     /**
-     * 状态，0-请假，1-旷课，2-已参与上课
+     * 课程类型
+     * 0-正式课程
+     * 1-试听课程
+     */
+    private Integer courseType;
+
+    /**
+     * 状态，0-请假，1-旷课，2-上课
      */
     private Integer status;
 
@@ -81,6 +88,14 @@ public class StudentTimtable implements Serializable {
 
     public void setCourseTime(LocalDateTime courseTime) {
         this.courseTime = courseTime;
+    }
+
+    public Integer getCourseType() {
+        return courseType;
+    }
+
+    public void setCourseType(Integer courseType) {
+        this.courseType = courseType;
     }
 
     public Integer getStatus() {
