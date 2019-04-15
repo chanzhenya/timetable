@@ -55,6 +55,11 @@ public class Course implements Serializable {
      */
     private String tagId;
 
+    /**
+     * 图片url
+     */
+    private String imgUrl;
+
 
     public String getId() {
         return id;
@@ -120,4 +125,11 @@ public class Course implements Serializable {
         this.tagId = tagId;
     }
 
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
 }

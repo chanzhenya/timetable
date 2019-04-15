@@ -11,6 +11,6 @@
         <result column="period" property="period" />
         <result column="teacher_id" property="teacherId" />
         <result column="status" property="status" />
+        <result column="img_url" property="imgUrl" />
     </resultMap>
-
 </mapper>

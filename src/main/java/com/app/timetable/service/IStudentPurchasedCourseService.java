@@ -1,6 +1,8 @@
 package com.app.timetable.service;
 
+import com.app.timetable.dto.PurchasedCourseDTO;
 import com.app.timetable.entity.StudentPurchasedCourse;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -13,4 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IStudentPurchasedCourseService extends IService<StudentPurchasedCourse> {
 
+    IPage<PurchasedCourseDTO> selectByPage(int pageNum, int pageSize, String studentId) throws Exception;
 }

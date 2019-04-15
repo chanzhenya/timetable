@@ -1,6 +1,7 @@
 package com.app.timetable.service;
 
 import com.app.timetable.entity.Course;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -13,4 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ICourseService extends IService<Course> {
 
+    IPage<Course> selectPage(int pageNum, int pageSize, String teacherId) throws Exception;
 }

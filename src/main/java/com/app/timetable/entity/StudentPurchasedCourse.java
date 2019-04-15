@@ -31,6 +31,11 @@ public class StudentPurchasedCourse implements Serializable {
     private String courseId;
 
     /**
+     * 教师ID
+     */
+    private String teacherId;
+
+    /**
      * 课时余量
      */
     private Integer remain;
@@ -44,6 +49,13 @@ public class StudentPurchasedCourse implements Serializable {
      * 创建时间
      */
     private LocalDateTime createTime;
+
+    /**
+     * 已购买课程状态
+     * 0-失效
+     * 1-有效
+     */
+    private Integer status;
 
 
     public String getId() {
@@ -70,6 +82,14 @@ public class StudentPurchasedCourse implements Serializable {
         this.courseId = courseId;
     }
 
+    public String getTeacherId() {
+        return teacherId;
+    }
+
+    public void setTeacherId(String teacherId) {
+        this.teacherId = teacherId;
+    }
+
     public Integer getRemain() {
         return remain;
     }
@@ -94,15 +114,11 @@ public class StudentPurchasedCourse implements Serializable {
         this.createTime = createTime;
     }
 
-    @Override
-    public String toString() {
-        return "StudentPurchasedCourse{" +
-        "id=" + id +
-        ", studentId=" + studentId +
-        ", courseId=" + courseId +
-        ", remain=" + remain +
-        ", dueTime=" + dueTime +
-        ", createTime=" + createTime +
-        "}";
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }
