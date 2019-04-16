@@ -28,7 +28,7 @@
     </resultMap>
 
     <resultMap id="ExtendDetailResultMap" type="com.app.timetable.dto.TeacherTimetableDTO">
-        <collection property="students" column="course_id" select="com.app.timetable.mapper.StudentTimtableMapper.selectDetailByCourse"/>
+        <collection property="students" column="course_id" select="com.app.timetable.mapper.StudentTimtableMapper.selectByCourse"/>
     </resultMap>
 
     <select id="selectByPage" resultMap="DetailResultMap" parameterType="com.app.timetable.entity.TeacherTimetable">

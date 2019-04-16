@@ -33,6 +33,11 @@ public class StudentTimetableDTO {
     private String imgUrl;
 
     /**
+     * 教师id
+     */
+    private String teacherId;
+
+    /**
      * 课程id
      */
     private String courseId;
@@ -60,7 +65,12 @@ public class StudentTimetableDTO {
     private Integer status;
 
     /**
-     * 课后作业
+     * 个人作业
      */
     private String homework;
+
+    /**
+     * 课后作业
+     */
+    private String cousreHomework;
 }

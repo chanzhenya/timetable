@@ -26,6 +26,11 @@ public class StudentTimtable implements Serializable {
     private String studentId;
 
     /**
+     * 教师id
+     */
+    private String teacherId;
+
+    /**
      * 课程id
      */
     private String courseId;
@@ -72,6 +77,14 @@ public class StudentTimtable implements Serializable {
 
     public void setStudentId(String studentId) {
         this.studentId = studentId;
+    }
+
+    public String getTeacherId() {
+        return teacherId;
+    }
+
+    public void setTeacherId(String teacherId) {
+        this.teacherId = teacherId;
     }
 
     public String getCourseId() {

@@ -3,6 +3,8 @@ package com.app.timetable.mapper;
 import com.app.timetable.dto.StudentTimetableDTO;
 import com.app.timetable.entity.StudentTimtable;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -17,5 +19,9 @@ import java.util.List;
  */
 public interface StudentTimtableMapper extends BaseMapper<StudentTimtable> {
 
-    List<StudentTimetableDTO> selectDetailByCourse(@Param("courseId") String courseId);
+    IPage<StudentTimetableDTO> selectDetailList(Page<StudentTimetableDTO> page, @Param("timetable") StudentTimtable timtable);
+
+    List<StudentTimetableDTO> selectByCourse(@Param("courseId") String courseId);
+
+    void insertByBatch(List<StudentTimtable> timtableList);
 }

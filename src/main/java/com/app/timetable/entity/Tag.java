@@ -24,6 +24,10 @@ public class Tag implements Serializable {
      */
     private String name;
 
+    public Tag(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     public String getId() {
         return id;

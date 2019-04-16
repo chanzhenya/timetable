@@ -1,7 +1,11 @@
 package com.app.timetable.service;
 
+import com.app.timetable.dto.StudentTimetableDTO;
 import com.app.timetable.entity.StudentTimtable;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +17,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IStudentTimtableService extends IService<StudentTimtable> {
 
+    void add(List<StudentTimtable> timtableList) throws Exception;
+
+    IPage<StudentTimetableDTO> selectBuPage(int pageNum, int pageSize, StudentTimtable timtable);
 }

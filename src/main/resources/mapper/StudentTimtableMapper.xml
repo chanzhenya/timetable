@@ -6,6 +6,7 @@
     <resultMap id="BaseResultMap" type="com.app.timetable.entity.StudentTimtable">
         <id column="id" property="id" />
         <result column="student_id" property="studentId" />
+        <result column="teacher_id" property="teacherId" />
         <result column="course_id" property="courseId" />
         <result column="course_time" property="courseTime" />
         <result column="course_type" property="courseType" />
@@ -19,18 +20,47 @@
         <result column="student_id" property="studentId" />
         <result column="student_name" property="studentName"/>
         <result column="img_url" property="imgUrl"/>
+        <result column="teacher_id" property="teacherId" />
         <result column="course_id" property="courseId" />
         <result column="course_name" property="courseName"/>
         <result column="course_time" property="courseTime" />
         <result column="course_type" property="courseType" />
         <result column="status" property="status" />
         <result column="homework" property="homework" />
+        <result column="course_homework" property="cousreHomework" />
     </resultMap>
 
-    <select id="selectDetailByCourse" resultMap="DetailResultMap" parameterType="java.lang.String">
-        SELECT t.*, u.name student_name, u.img_url, c.name course_name FROM `student_timtable` t
+    <select id="selectDetailList" resultMap="DetailResultMap" parameterType="com.app.timetable.entity.StudentTimtable">
+        SELECT t.*, u.name student_name, u.img_url, c.name course_name, tt.homework course_homework FROM `student_timtable` t
         LEFT JOIN `sys_user` u ON u.id = t.student_id
         LEFT JOIN `course` c ON c.id = t.course_id
+        LEFT JOIN `teacher_timetable` tt ON tt.teacher_id = t.teacher_id
+        <where>
+            1=1
+            <if test="timtable.courseId != null and timtable.courseId != ''">
+                AND t.course_id = #{timetable.courseId}
+            </if>
+            <if test="timetable.studentId != null and timetabke.studentId != ''">
+                AND t.studentId = #{timetable.studentId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectByCourse" resultMap="DetailResultMap" parameterType="java.lang.String">
+        SELECT t.*, u.name student_name, u.img_url, c.name course_name, tt.homework course_homework FROM `student_timtable` t
+        LEFT JOIN `sys_user` u ON u.id = t.student_id
+        LEFT JOIN `course` c ON c.id = t.course_id
+        LEFT JOIN `teacher_timetable` tt ON tt.teacher_id = t.teacher_id
         WHERE t.course_id = #{courseId}
     </select>
+
+
+    <insert id="insertByBatch" parameterType="java.util.List">
+      INSERT INTO `student_timtable`(id, student_id, teacher_id, course_id, course_time, course_type, status, homework, create_time)
+      VALUES
+      <foreach collection="list" item="item" index="index" separator=",">
+          (#{item.id}, #{item.studentId}, #{item.teacherId}, #{courseId}, #{item.courseTime}, #{item.courseType}, #{item.status},
+          #{item.homework}, #{item.createTime})
+      </foreach>
+    </insert>
 </mapper>

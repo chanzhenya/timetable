@@ -43,6 +43,21 @@ public class SysUserController {
     @Autowired
     private ITeacherService teacherService;
 
+    /**
+     * 用户注册
+     * @param multipartFile
+     * @param account
+     * @param imgUrl
+     * @param openId
+     * @param username
+     * @param name
+     * @param phone
+     * @param gender
+     * @param description
+     * @param userType
+     * @param response
+     * @return
+     */
     @PostMapping("/register")
     public ResultVo register(@RequestParam(value = "photo", required = false)MultipartFile multipartFile,
                              @RequestParam("account") String account, @RequestParam(value = "imgUrl", required = false) String imgUrl,
@@ -73,6 +88,13 @@ public class SysUserController {
         }
     }
 
+    /**
+     * 用户列表
+     * @param pageNum
+     * @param pageSize
+     * @param userType
+     * @return
+     */
     @PostMapping("/list")
     public ResultVo list(@RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
                          @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
@@ -88,6 +110,11 @@ public class SysUserController {
         }
     }
 
+    /**
+     * 用户详情
+     * @param userId
+     * @return
+     */
     @PostMapping("/detail")
     public ResultVo detail(@RequestParam("userId") String userId) {
         try {
