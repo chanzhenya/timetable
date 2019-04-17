@@ -30,7 +30,13 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         QueryWrapper<Course> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("teacher_id",teacherId);
         queryWrapper.ne("status",CourseStatus.UNPUBLISHED.getCode());
+        queryWrapper.orderByDesc("create_time");
         Page<Course> page = new Page<>(pageNum,pageSize);
         return courseMapper.selectPage(page,queryWrapper);
+    }
+
+    @Override
+    public Course selectDetailById(String courseId) throws Exception {
+        return courseMapper.selectById(courseId);
     }
 }

@@ -2,6 +2,7 @@ package com.app.timetable.entity;
 
 import java.math.BigDecimal;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -59,6 +60,8 @@ public class Course implements Serializable {
      * 图片url
      */
     private String imgUrl;
+
+    private LocalDateTime createTime;
 
 
     public String getId() {
@@ -131,6 +134,14 @@ public class Course implements Serializable {
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    public LocalDateTime getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
     }
 
     @Override

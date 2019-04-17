@@ -110,5 +110,21 @@ public class CourseController {
             return ResultVoUtil.error(e.getMessage());
         }
     }
+
+    /**
+     * 课程详情
+     * @param courseId
+     * @return
+     */
+    @PostMapping("/detail")
+    public ResultVo detail(@RequestParam("courseId") String courseId) {
+        try {
+            Course course = courseService.selectDetailById(courseId);
+            return ResultVoUtil.success(courseId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultVoUtil.error(e.getMessage());
+        }
+    }
 }
 

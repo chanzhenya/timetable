@@ -1,5 +1,6 @@
 package com.app.timetable.mapper;
 
+import com.app.timetable.dto.CourseDTO;
 import com.app.timetable.entity.Course;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -16,4 +17,5 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface CourseMapper extends BaseMapper<Course> {
 
+    CourseDTO selectDetailById(@Param("courseId") String courseId);
 }

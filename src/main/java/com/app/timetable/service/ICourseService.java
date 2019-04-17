@@ -15,4 +15,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface ICourseService extends IService<Course> {
 
     IPage<Course> selectPage(int pageNum, int pageSize, String teacherId) throws Exception;
+
+    Course selectDetailById(String courseId) throws Exception;
+
+
 }

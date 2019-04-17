@@ -21,19 +21,19 @@ public class TeacherEvaluation implements Serializable {
     private String id;
 
     /**
+     * 学生ID
+     */
+    private String studentId;
+
+    /**
      * 教师id
      */
     private String teacherId;
 
     /**
-     * 教师名称
-     */
-    private String teacherName;
-
-    /**
      * 评分
      */
-    private Integer score;
+    private double score;
 
     /**
      * 评价内容
@@ -54,6 +54,14 @@ public class TeacherEvaluation implements Serializable {
         this.id = id;
     }
 
+    public String getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
+    }
+
     public String getTeacherId() {
         return teacherId;
     }
@@ -62,19 +70,11 @@ public class TeacherEvaluation implements Serializable {
         this.teacherId = teacherId;
     }
 
-    public String getTeacherName() {
-        return teacherName;
-    }
-
-    public void setTeacherName(String teacherName) {
-        this.teacherName = teacherName;
-    }
-
-    public Integer getScore() {
+    public double getScore() {
         return score;
     }
 
-    public void setScore(Integer score) {
+    public void setScore(double score) {
         this.score = score;
     }
 
@@ -99,7 +99,6 @@ public class TeacherEvaluation implements Serializable {
         return "TeacherEvaluation{" +
         "id=" + id +
         ", teacherId=" + teacherId +
-        ", teacherName=" + teacherName +
         ", score=" + score +
         ", content=" + content +
         ", createTime=" + createTime +

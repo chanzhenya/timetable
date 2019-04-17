@@ -1,12 +1,17 @@
 package com.app.timetable.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.app.timetable.dto.SysUserDTO;
 import com.app.timetable.dto.SysUserDetailDTO;
+import com.app.timetable.dto.TeacherEvaluationDTO;
+import com.app.timetable.entity.Course;
 import com.app.timetable.entity.SysUser;
+import com.app.timetable.entity.TeacherEvaluation;
 import com.app.timetable.enums.UserType;
+import com.app.timetable.service.ICourseService;
 import com.app.timetable.service.ISysUserService;
-import com.app.timetable.service.ITeacherService;
+import com.app.timetable.service.ITeacherEvaluationService;
 import com.app.timetable.service.UploadFileService;
 import com.app.timetable.utils.ClassObjectUtils;
 import com.app.timetable.utils.ResultVoUtil;
@@ -21,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -41,7 +47,10 @@ public class SysUserController {
     private UploadFileService uploadFileService;
 
     @Autowired
-    private ITeacherService teacherService;
+    private ICourseService courseService;
+
+    @Autowired
+    private ITeacherEvaluationService evaluationService;
 
     /**
      * 用户注册
@@ -118,8 +127,21 @@ public class SysUserController {
     @PostMapping("/detail")
     public ResultVo detail(@RequestParam("userId") String userId) {
         try {
+            JSONObject result = new JSONObject();
             SysUserDetailDTO sysUser = userService.getUserDetail(userId);
-            return ResultVoUtil.success(sysUser);
+            if(UserType.TEACHER.getCode().equals(sysUser.getUserType())) {
+                IPage<Course> courseIPage = courseService.selectPage(1,20,sysUser.getId());
+                List<Course> courseList = courseIPage.getRecords();
+
+                TeacherEvaluation evaluation = new TeacherEvaluation();
+                evaluation.setTeacherId(sysUser.getId());
+                IPage<TeacherEvaluationDTO> evaluationDTOIPage = evaluationService.selectByPage(1,10,evaluation);
+                List<TeacherEvaluationDTO> evaluationDTOS = evaluationDTOIPage.getRecords();
+                result.put("courses",courseList);
+                result.put("evaluationS",evaluationDTOS);
+            }
+            result.put("user", sysUser);
+            return ResultVoUtil.success(result);
         } catch (Exception e) {
             e.printStackTrace();
             return ResultVoUtil.error(e.getMessage());

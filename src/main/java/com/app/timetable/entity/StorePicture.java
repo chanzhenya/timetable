@@ -1,6 +1,7 @@
 package com.app.timetable.entity;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -24,6 +25,11 @@ public class StorePicture implements Serializable {
      */
     private String imgUrl;
 
+    /**
+     * 创建时间
+     */
+    private LocalDateTime createTime;
+
 
     public String getId() {
         return id;
@@ -39,6 +45,14 @@ public class StorePicture implements Serializable {
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    public LocalDateTime getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
     }
 
     @Override

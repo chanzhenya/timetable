@@ -3,7 +3,7 @@ package com.app.timetable.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
@@ -13,8 +13,8 @@ import org.springframework.stereotype.Controller;
  * @author judithchen
  * @since 2019-04-01
  */
-@Controller
-@RequestMapping("/timetable/student")
+@RestController
+@RequestMapping("/student")
 public class StudentController {
 
 }

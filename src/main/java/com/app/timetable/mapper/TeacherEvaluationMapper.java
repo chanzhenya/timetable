@@ -1,7 +1,11 @@
 package com.app.timetable.mapper;
 
+import com.app.timetable.dto.TeacherEvaluationDTO;
 import com.app.timetable.entity.TeacherEvaluation;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -13,4 +17,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface TeacherEvaluationMapper extends BaseMapper<TeacherEvaluation> {
 
+    IPage<TeacherEvaluationDTO> selectByPage(Page<TeacherEvaluationDTO> page, @Param("evaluation") TeacherEvaluation evaluation);
 }

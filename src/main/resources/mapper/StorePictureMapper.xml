@@ -6,6 +6,7 @@
     <resultMap id="BaseResultMap" type="com.app.timetable.entity.StorePicture">
         <id column="id" property="id" />
         <result column="img_url" property="imgUrl" />
+        <result column="create_time" property="createTime"/>
     </resultMap>
 
 </mapper>

@@ -18,7 +18,7 @@ public class UploadFileServiceImpl implements UploadFileService {
 
     @Override
     public String uploadFile(MultipartFile multipartFile) throws Exception {
-        if(multipartFile != null) {
+        if(multipartFile == null) {
             throw new NullPointerException("文件为空");
         }
 
@@ -39,6 +39,6 @@ public class UploadFileServiceImpl implements UploadFileService {
 
         //将文件写到服务器上指定的文件中
         multipartFile.transferTo(dest);
-        return CommonContent.FILE_PATH+filename;
+        return CommonContent.IMAGE_URL+filename;
     }
 }

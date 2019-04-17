@@ -7,6 +7,7 @@ import com.app.timetable.service.UploadFileService;
 import com.app.timetable.utils.ClassObjectUtils;
 import com.app.timetable.utils.ResultVoUtil;
 import com.app.timetable.vo.ResultVo;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +54,7 @@ public class StorePictureController {
                 StorePicture picture = new StorePicture();
                 picture.setId(ClassObjectUtils.getUUID());
                 picture.setImgUrl(path);
+                picture.setCreateTime(LocalDateTime.now());
                 pictureList.add(picture);
             }
             pictureService.saveBatch(pictureList);
@@ -72,8 +75,7 @@ public class StorePictureController {
     public ResultVo list(@RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
                          @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
         try {
-            Page<StorePicture> page = new Page<>(pageNum,pageSize);
-            IPage<StorePicture> storePictureIPage = pictureService.page(page);
+            IPage<StorePicture> storePictureIPage = pictureService.selectByPage(pageNum,pageSize);
             return ResultVoUtil.success(storePictureIPage);
         } catch (Exception e) {
             e.printStackTrace();
