@@ -1,7 +1,7 @@
 package com.app.timetable.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.app.timetable.dto.SysUserDTO;
-import com.app.timetable.dto.SysUserDetailDTO;
 import com.app.timetable.entity.SysUser;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -23,5 +23,5 @@ public interface ISysUserService extends IService<SysUser> {
 
     IPage<SysUserDTO> selectPage(int pageNum, int pageSize, SysUser user) throws Exception;
 
-    SysUserDetailDTO getUserDetail(String userId) throws Exception;
+    JSONObject studetnDetail(String userId) throws Exception;
 }

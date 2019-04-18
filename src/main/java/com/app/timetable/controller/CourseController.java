@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -39,18 +40,30 @@ public class CourseController {
 
     /**
      * 新增课程
-     * @param courseName
      * @param tagId
+     * @param price
+     * @param period
+     * @param descreption
+     * @param teacherId
+     * @param multipartFile
      * @return
      */
     @PostMapping("/add")
-    public ResultVo add(@RequestParam("courseName") String courseName, @RequestParam("tagId") String tagId) {
+    public ResultVo add(@RequestParam("tagId") String tagId,@RequestParam("price")BigDecimal price, @RequestParam("period") Integer period,
+                        @RequestParam("descreption") String descreption, @RequestParam("teacherId") String teacherId,
+                        @RequestParam("image") MultipartFile multipartFile) {
         try {
+            String imgUrl = uploadFileService.uploadFile(multipartFile);
             Course course = new Course();
             course.setId(ClassObjectUtils.getUUID());
-            course.setName(courseName);
             course.setTagId(tagId);
-            course.setStatus(CourseStatus.UNPUBLISHED.getCode());
+            course.setPeriod(period);
+            course.setPrice(price);
+            course.setDescreption(descreption);
+            course.setTeacherId(teacherId);
+            course.setImgUrl(imgUrl);
+            course.setStatus(CourseStatus.PUBLISHED.getCode());
+            course.setCreateTime(LocalDateTime.now());
             courseService.save(course);
             return ResultVoUtil.success("新增成功");
         } catch (Exception e) {
@@ -65,18 +78,18 @@ public class CourseController {
      * @param period
      * @param descreption
      * @param teacherId
-     * @param id
+     * @param courseId
      * @param multipartFile
      * @return
      */
     @PostMapping("/edit")
     public ResultVo edit(@RequestParam("price")BigDecimal price, @RequestParam("period") Integer period,
                          @RequestParam("descreption") String descreption, @RequestParam("teacherId") String teacherId,
-                         @RequestParam("id") String id, @RequestParam("image") MultipartFile multipartFile) {
+                         @RequestParam("courseId") String courseId, @RequestParam("image") MultipartFile multipartFile) {
         try {
             String imgUrl = uploadFileService.uploadFile(multipartFile);
             Course course = new Course();
-            course.setId(id);
+            course.setId(courseId);
             course.setPeriod(period);
             course.setPrice(price);
             course.setDescreption(descreption);
@@ -100,10 +113,14 @@ public class CourseController {
      */
     @PostMapping("/list")
     public ResultVo list(@RequestParam(value = "teacherId",required = false) String teacherId,
+                         @RequestParam(value = "status", required = false) Integer status,
                          @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
                          @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
         try {
-            IPage<Course> courseIPage = courseService.selectPage(pageNum,pageSize,teacherId);
+            Course course = new Course();
+            course.setStatus(status);
+            course.setTeacherId(teacherId);
+            IPage<Course> courseIPage = courseService.selectPage(pageNum,pageSize,course);
             return ResultVoUtil.success(courseIPage);
         } catch (Exception e) {
             e.printStackTrace();
@@ -120,7 +137,23 @@ public class CourseController {
     public ResultVo detail(@RequestParam("courseId") String courseId) {
         try {
             Course course = courseService.selectDetailById(courseId);
-            return ResultVoUtil.success(courseId);
+            return ResultVoUtil.success(course);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultVoUtil.error(e.getMessage());
+        }
+    }
+
+    /**
+     * 删除课程
+     * @param courseId
+     * @return
+     */
+    @PostMapping("/delete")
+    public ResultVo delete(@RequestParam("courseId") String courseId) {
+        try {
+            courseService.removeById(courseId);
+            return ResultVoUtil.success("删除成功");
         } catch (Exception e) {
             e.printStackTrace();
             return ResultVoUtil.error(e.getMessage());

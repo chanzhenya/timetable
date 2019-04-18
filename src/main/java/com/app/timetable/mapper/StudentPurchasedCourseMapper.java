@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
+import java.util.List;
+
 /**
  * <p>
  *  Mapper 接口
@@ -17,4 +19,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 public interface StudentPurchasedCourseMapper extends BaseMapper<StudentPurchasedCourse> {
 
     IPage<PurchasedCourseDTO> selectByPage(Page<PurchasedCourseDTO> page, String studentId);
+
+    List<PurchasedCourseDTO> selectList(String StudentId);
 }

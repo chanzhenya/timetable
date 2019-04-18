@@ -2,17 +2,14 @@ package com.app.timetable.controller;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.app.timetable.dto.PurchasedCourseDTO;
 import com.app.timetable.dto.SysUserDTO;
-import com.app.timetable.dto.SysUserDetailDTO;
 import com.app.timetable.dto.TeacherEvaluationDTO;
 import com.app.timetable.entity.Course;
 import com.app.timetable.entity.SysUser;
 import com.app.timetable.entity.TeacherEvaluation;
 import com.app.timetable.enums.UserType;
-import com.app.timetable.service.ICourseService;
-import com.app.timetable.service.ISysUserService;
-import com.app.timetable.service.ITeacherEvaluationService;
-import com.app.timetable.service.UploadFileService;
+import com.app.timetable.service.*;
 import com.app.timetable.utils.ClassObjectUtils;
 import com.app.timetable.utils.ResultVoUtil;
 import com.app.timetable.vo.ResultVo;
@@ -51,6 +48,9 @@ public class SysUserController {
 
     @Autowired
     private ITeacherEvaluationService evaluationService;
+
+    @Autowired
+    private IStudentPurchasedCourseService purchasedCourseService;
 
     /**
      * 用户注册
@@ -107,10 +107,12 @@ public class SysUserController {
     @PostMapping("/list")
     public ResultVo list(@RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
                          @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
-                         @RequestParam(value = "userType", required = false) Integer userType) {
+                         @RequestParam(value = "userType", required = false) Integer userType,
+                         @RequestParam(value = "userId", required = false) String userId) {
         try {
             SysUser sysUser = new SysUser();
             sysUser.setUserType(userType);
+            sysUser.setId(userId);
             IPage<SysUserDTO> page = userService.selectPage(pageNum,pageSize,sysUser);
             return ResultVoUtil.success(page);
         } catch (Exception e) {
@@ -128,19 +130,14 @@ public class SysUserController {
     public ResultVo detail(@RequestParam("userId") String userId) {
         try {
             JSONObject result = new JSONObject();
-            SysUserDetailDTO sysUser = userService.getUserDetail(userId);
-            if(UserType.TEACHER.getCode().equals(sysUser.getUserType())) {
-                IPage<Course> courseIPage = courseService.selectPage(1,20,sysUser.getId());
-                List<Course> courseList = courseIPage.getRecords();
+            SysUser sysUser = userService.getById(userId);
+            JSONObject extendObj = new JSONObject();
 
-                TeacherEvaluation evaluation = new TeacherEvaluation();
-                evaluation.setTeacherId(sysUser.getId());
-                IPage<TeacherEvaluationDTO> evaluationDTOIPage = evaluationService.selectByPage(1,10,evaluation);
-                List<TeacherEvaluationDTO> evaluationDTOS = evaluationDTOIPage.getRecords();
-                result.put("courses",courseList);
-                result.put("evaluationS",evaluationDTOS);
+            if(UserType.STUDENT.getCode().equals(sysUser.getUserType())) {
+                extendObj = userService.studetnDetail(userId);
             }
-            result.put("user", sysUser);
+            result.put("userInfo",sysUser);
+            result.put("extendData",extendObj);
             return ResultVoUtil.success(result);
         } catch (Exception e) {
             e.printStackTrace();

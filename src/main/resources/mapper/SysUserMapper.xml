@@ -17,6 +17,7 @@
         <result column="user_type" property="userType" />
         <result column="create_time" property="createTime" />
         <result column="description" property="description" />
+        <result column="score" property="score"/>
     </resultMap>
 
     <resultMap id="ListResultMap" type="com.app.timetable.dto.SysUserDTO">
@@ -28,37 +29,14 @@
         <result column="user_type" property="userType" />
     </resultMap>
 
-    <resultMap id="DetailResutlMap" type="com.app.timetable.dto.SysUserDetailDTO">
-        <id column="id" property="id" />
-        <result column="usename" property="usename" />
-        <result column="name" property="name" />
-        <result column="account" property="account" />
-        <result column="phone" property="phone" />
-        <result column="img_url" property="imgUrl" />
-        <result column="photo_url" property="photoUrl" />
-        <result column="gender" property="gender" />
-        <result column="user_type" property="userType" />
-        <result column="description" property="description" />
-        <association property="teacher" column="id" select="com.app.timetable.mapper.TeacherMapper.selectByUserId"/>
-        <association property="student" column="id" select="com.app.timetable.mapper.StudentMapper.selectByUserId"/>
-    </resultMap>
-
     <select id="selectPage" resultMap="ListResultMap" parameterType="com.app.timetable.entity.SysUser">
-        SELECT u.* FROM sys_user u
-        LEFT ON teacher t ON u.id = t.user_id
+        SELECT * FROM sys_user
         <where>
             1=1
             <if test="user.userType != null">
                 AND user_type = #{user.userType, jdbcType=INTEGER}
             </if>
         </where>
-
-        <if test="user.userType != null and user.userType == 1">
-            ORDER BY t.score DESC
-        </if>
-    </select>
-    
-    <select id="selectDetailById" parameterType="java.lang.String" resultMap="DetailResutlMap">
-        SELECT * FROM sys_user WHERE id = #{id}
+        ORDER BY score DESC
     </select>
 </mapper>

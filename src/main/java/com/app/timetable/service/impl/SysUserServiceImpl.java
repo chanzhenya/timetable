@@ -1,26 +1,23 @@
 package com.app.timetable.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
+import com.app.timetable.dto.PurchasedCourseDTO;
 import com.app.timetable.dto.SysUserDTO;
-import com.app.timetable.dto.SysUserDetailDTO;
-import com.app.timetable.entity.Student;
 import com.app.timetable.entity.SysUser;
-import com.app.timetable.entity.Teacher;
-import com.app.timetable.enums.UserType;
+import com.app.timetable.mapper.StudentPurchasedCourseMapper;
 import com.app.timetable.mapper.SysUserMapper;
-import com.app.timetable.service.IStudentService;
 import com.app.timetable.service.ISysUserService;
-import com.app.timetable.service.ITeacherService;
-import com.app.timetable.utils.ClassObjectUtils;
 import com.app.timetable.utils.CommonContent;
 import com.app.timetable.utils.CookieUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
-import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -37,19 +34,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     private SysUserMapper  userMapper;
 
     @Autowired
-    private ITeacherService teacherService;
-
-    @Autowired
-    private IStudentService studentService;
+    private StudentPurchasedCourseMapper purchasedCourseMapper;
 
     @Override
     public void register(SysUser sysUser, HttpServletResponse response) throws Exception {
         userMapper.insert(sysUser);
-        if(UserType.TEACHER.getCode().equals(sysUser.getUserType())) {
-            saveTeacher(sysUser);
-        } else if(UserType.STUDENT.getCode().equals(sysUser.getUserType())) {
-            saveStudent(sysUser);
-        }
         String token = CookieUtil.getUUToken();
         CookieUtil.setTokenCookie(CommonContent.TOKEN_KEY,token, (int) CommonContent.LOGIN_EXPIRE_TIME, response);
     }
@@ -61,24 +50,23 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public SysUserDetailDTO getUserDetail(String userId) throws Exception {
-        SysUserDetailDTO sysUser = userMapper.selectDetailById(userId);
-        return sysUser;
-    }
-
-    private void saveTeacher(SysUser sysUser) {
-        Teacher teacher = new Teacher();
-        teacher.setId(ClassObjectUtils.getUUID());
-        teacher.setUserId(sysUser.getId());
-        teacher.setCreateTime(LocalDateTime.now());
-        teacherService.save(teacher);
-    }
-
-    private void saveStudent(SysUser sysUser) {
-        Student student = new Student();
-        student.setId(ClassObjectUtils.getUUID());
-        student.setUserId(sysUser.getId());
-        student.setCreateTime(LocalDateTime.now());
-        studentService.save(student);
+    public JSONObject studetnDetail(String userId) throws Exception {
+        List<PurchasedCourseDTO> list = purchasedCourseMapper.selectList(userId);
+        String teachers = "";
+        Integer truancyNum = 0; // 旷课次数
+        Integer leaveNum = 0; // 请假次数
+        for(PurchasedCourseDTO dto : list) {
+            if(StringUtils.isNotBlank(teachers)) {
+                teachers += ", ";
+            }
+            teachers += dto.getTeacherName();
+            truancyNum += dto.getTruancyNum()!=null?dto.getTruancyNum():0;
+            leaveNum += dto.getLeaveNum()!=null?dto.getLeaveNum():0;
+        }
+        JSONObject result = new JSONObject();
+        result.put("teachers",teachers);
+        result.put("truancyNum",truancyNum);
+        result.put("leaveNum",leaveNum);
+        return result;
     }
 }

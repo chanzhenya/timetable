@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,10 +27,14 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     private CourseMapper courseMapper;
 
     @Override
-    public IPage<Course> selectPage(int pageNum, int pageSize, String teacherId) throws Exception {
+    public IPage<Course> selectPage(int pageNum, int pageSize, Course course) throws Exception {
         QueryWrapper<Course> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("teacher_id",teacherId);
-        queryWrapper.ne("status",CourseStatus.UNPUBLISHED.getCode());
+        if(StringUtils.isNotBlank(course.getTeacherId())) {
+            queryWrapper.eq("teacher_id", course.getTeacherId());
+        }
+        if(course.getStatus() != null) {
+            queryWrapper.ne("status", course.getStatus());
+        }
         queryWrapper.orderByDesc("create_time");
         Page<Course> page = new Page<>(pageNum,pageSize);
         return courseMapper.selectPage(page,queryWrapper);

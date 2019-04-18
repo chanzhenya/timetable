@@ -22,11 +22,6 @@ public class Course implements Serializable {
     private String id;
 
     /**
-     * 课程名称
-     */
-    private String name;
-
-    /**
      * 课程描述
      */
     private String descreption;
@@ -63,21 +58,12 @@ public class Course implements Serializable {
 
     private LocalDateTime createTime;
 
-
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getDescreption() {
@@ -142,20 +128,5 @@ public class Course implements Serializable {
 
     public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
-    }
-
-    @Override
-    public String toString() {
-        return "Course{" +
-        "id=" + id +
-        ", name=" + name +
-        ", descreption=" + descreption +
-        ", price=" + price +
-        ", period=" + period +
-        ", teacherId=" + teacherId +
-        ", status=" + status +
-        ", tagId=" + tagId +
-        ", imgUrl=" + imgUrl +
-        "}";
     }
 }

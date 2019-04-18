@@ -5,6 +5,8 @@ import com.app.timetable.entity.StudentPurchasedCourse;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务类

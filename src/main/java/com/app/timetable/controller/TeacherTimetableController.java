@@ -9,6 +9,7 @@ import com.app.timetable.service.ITeacherTimetableService;
 import com.app.timetable.utils.ClassObjectUtils;
 import com.app.timetable.utils.ResultVoUtil;
 import com.app.timetable.vo.ResultVo;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -96,6 +97,27 @@ public class TeacherTimetableController {
         try {
             TeacherTimetableDTO dto = teacherTimetableService.selectDetailById(teacherId);
             return ResultVoUtil.success(dto);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultVoUtil.error(e.getMessage());
+        }
+    }
+
+    /**
+     * 发布作业
+     * @param timetableId
+     * @param homework
+     * @return
+     */
+    @PostMapping("/edit")
+    public ResultVo edit(@RequestParam("timetableId") String timetableId,
+                         @RequestParam(value = "homework", required = false) String homework) {
+        try {
+            TeacherTimetable timetable = new TeacherTimetable();
+            timetable.setId(timetableId);
+            timetable.setHomework(homework);
+            teacherTimetableService.update(timetable);
+            return ResultVoUtil.success("更新成功");
         } catch (Exception e) {
             e.printStackTrace();
             return ResultVoUtil.error(e.getMessage());

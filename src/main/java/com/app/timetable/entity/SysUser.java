@@ -61,6 +61,11 @@ public class SysUser implements Serializable {
     private Integer gender;
 
     /**
+     * 学生积分/教师综合评分
+     */
+    private double score;
+
+    /**
      * 用户token
      */
     private String accessToken;
@@ -183,6 +188,14 @@ public class SysUser implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public double getScore() {
+        return score;
+    }
+
+    public void setScore(double score) {
+        this.score = score;
     }
 
     @Override

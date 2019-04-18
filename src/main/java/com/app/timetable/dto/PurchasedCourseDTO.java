@@ -37,4 +37,14 @@ public class PurchasedCourseDTO {
      * 距离截止日期还有多少天
      */
     private Long countDownDays;
+
+    /**
+     * 旷课次数
+     */
+    private Integer truancyNum;
+
+    /**
+     * 请假次数
+     */
+    private Integer leaveNum;
 }

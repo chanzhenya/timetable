@@ -36,6 +36,16 @@ public class StudentPurchasedCourse implements Serializable {
     private String teacherId;
 
     /**
+     * 旷课次数
+     */
+    private Integer truancyNum;
+
+    /**
+     * 请假次数
+     */
+    private Integer leaveNum;
+
+    /**
      * 课时余量
      */
     private Integer remain;
@@ -86,6 +96,22 @@ public class StudentPurchasedCourse implements Serializable {
 
     public void setTeacherId(String teacherId) {
         this.teacherId = teacherId;
+    }
+
+    public Integer getTruancyNum() {
+        return truancyNum;
+    }
+
+    public void setTruancyNum(Integer truancyNum) {
+        this.truancyNum = truancyNum;
+    }
+
+    public Integer getLeaveNum() {
+        return leaveNum;
+    }
+
+    public void setLeaveNum(Integer leaveNum) {
+        this.leaveNum = leaveNum;
     }
 
     public Integer getRemain() {

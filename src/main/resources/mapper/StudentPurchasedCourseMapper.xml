@@ -9,7 +9,10 @@
         <result column="course_id" property="courseId" />
         <result column="remain" property="remain" />
         <result column="due_time" property="dueTime" />
+        <result column="status" property="status" />
         <result column="create_time" property="createTime" />
+        <result column="truancy_num" property="truancyNum" />
+        <result column="leave_num" property="leaveNum" />
     </resultMap>
 
     <resultMap id="DetailResultMap" type="com.app.timetable.dto.PurchasedCourseDTO">
@@ -21,7 +24,10 @@
         <result column="due_time" property="dueTime" />
         <result column="teacher_id" property="teacherId"/>
         <result column="teacher_name" property="teacherName"/>
+        <result column="status" property="status" />
         <result column="create_time" property="createTime" />
+        <result column="truancy_num" property="truancyNum" />
+        <result column="leave_num" property="leaveNum" />
     </resultMap>
 
     <select id="selectByPage" resultMap="DetailResultMap" parameterType="java.lang.String">
@@ -30,5 +36,13 @@
         LEFT JOIN `course` c ON c.id = spc.course_id
         LEFT JOIN `sys_user` u ON u.id = c.teacher_id
         WHERE student_id = #{studentId}
+    </select>
+
+    <select id="selectList" resultMap="DetailResultMap" parameterType="java.lang.String">
+        SELECT spc.*, c.name course_name, u.name teacher_name
+        FROM `student_purchased_course` spc
+        LEFT JOIN `course` c ON c.id = spc.course_id
+        LEFT JOIN `sys_user` u ON u.id = c.teacher_id
+        WHERE student_id = #{studentId} AND stutus = 1
     </select>
 </mapper>

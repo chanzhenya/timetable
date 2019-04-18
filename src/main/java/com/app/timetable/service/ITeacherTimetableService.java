@@ -18,4 +18,6 @@ public interface ITeacherTimetableService extends IService<TeacherTimetable> {
     IPage<TeacherTimetableDTO> selectByPage(int pageNum, int pageSize, TeacherTimetable timetable) throws Exception;
 
     TeacherTimetableDTO selectDetailById(String id) throws Exception;
+
+    void update(TeacherTimetable timetable) throws Exception;
 }

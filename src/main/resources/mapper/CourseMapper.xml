@@ -5,7 +5,7 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.app.timetable.entity.Course">
         <id column="id" property="id" />
-        <result column="name" property="name" />
+        <result column="tag_id" property="tagId" />
         <result column="descreption" property="descreption" />
         <result column="price" property="price" />
         <result column="period" property="period" />
@@ -17,7 +17,8 @@
 
     <resultMap id="DetailResultMap" type="com.app.timetable.dto.CourseDTO">
         <id column="id" property="id" />
-        <result column="name" property="name" />
+        <result column="tag_id" property="tagId" />
+        <result column="tag_name" property="tagName" />
         <result column="descreption" property="descreption" />
         <result column="price" property="price" />
         <result column="period" property="period" />
@@ -29,8 +30,9 @@
     </resultMap>
 
     <select id="selectDetailById" resultMap="DetailResultMap" parameterType="java.lang.String">
-        SELECT c.*, u.name teacher_name FROM course c
+        SELECT c.*, u.name teacher_name, t.name tag_name FROM course c
         LEFT ON sys_user u ON u.id = c.teacher_id
+        LEFT ON tag t ON t.id = c.tag_id
         WHERE c.id = #{courseId}
     </select>
 </mapper>

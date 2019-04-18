@@ -5,6 +5,7 @@ import com.app.timetable.entity.TeacherTimetable;
 import com.app.timetable.mapper.TeacherTimetableMapper;
 import com.app.timetable.service.ITeacherTimetableService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -35,5 +36,15 @@ public class TeacherTimetableServiceImpl extends ServiceImpl<TeacherTimetableMap
     @Override
     public TeacherTimetableDTO selectDetailById(String id) throws Exception {
         return timetableMapper.selectDetailById(id);
+    }
+
+    @Override
+    public void update(TeacherTimetable timetable) throws Exception {
+        UpdateWrapper<TeacherTimetable> updateWrapper = new UpdateWrapper<>();
+        if(StringUtils.isNotBlank(timetable.getHomework())) {
+            updateWrapper.set("homework",timetable.getHomework());
+        }
+        updateWrapper.eq("id", timetable.getId());
+        timetableMapper.update(timetable,updateWrapper);
     }
 }
