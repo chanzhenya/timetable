@@ -1,6 +1,7 @@
 package com.app.timetable.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.app.timetable.dto.CourseDTO;
 import com.app.timetable.dto.PurchasedCourseDTO;
 import com.app.timetable.dto.TeacherEvaluationDTO;
 import com.app.timetable.entity.Course;
@@ -51,8 +52,8 @@ public class TeacherController {
             SysUser sysUser = userService.getById(teacherId);
             Course queryCourse = new Course();
             queryCourse.setTeacherId(sysUser.getId());
-            IPage<Course> courseIPage = courseService.selectPage(1,20,queryCourse);
-            List<Course> courseList = courseIPage.getRecords();
+            IPage<CourseDTO> courseIPage = courseService.selectPage(1,20,queryCourse);
+            List<CourseDTO> courseList = courseIPage.getRecords();
 
             TeacherEvaluation evaluation = new TeacherEvaluation();
             evaluation.setTeacherId(sysUser.getId());

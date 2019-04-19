@@ -1,11 +1,17 @@
 package com.app.timetable.service.impl;
 
+import com.app.timetable.entity.Picture;
+import com.app.timetable.mapper.PictureMapper;
 import com.app.timetable.service.UploadFileService;
+import com.app.timetable.utils.ClassObjectUtils;
 import com.app.timetable.utils.CommonContent;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -16,18 +22,24 @@ import java.util.UUID;
 @Service
 public class UploadFileServiceImpl implements UploadFileService {
 
+    @Autowired
+    private PictureMapper pictureMapper;
+
     @Override
-    public String uploadFile(MultipartFile multipartFile) throws Exception {
+    public Picture uploadFile(MultipartFile multipartFile) throws Exception {
         if(multipartFile == null) {
             throw new NullPointerException("文件为空");
         }
+
+        Picture picture = new Picture();
+        picture.setId(ClassObjectUtils.getUUID());
 
         //获取文件名后缀
         String suffix = multipartFile.getOriginalFilename();
         String prefix = suffix.substring(suffix.lastIndexOf(".")+1);
 
         //重命名
-        String filename = UUID.randomUUID()+"."+prefix;
+        String filename = picture.getId()+"."+prefix;
 
         //创建文件路径
         File dest = new File(CommonContent.FILE_PATH+filename);
@@ -39,6 +51,24 @@ public class UploadFileServiceImpl implements UploadFileService {
 
         //将文件写到服务器上指定的文件中
         multipartFile.transferTo(dest);
-        return CommonContent.IMAGE_URL+filename;
+        picture.setImgPath(CommonContent.FILE_PATH+filename);
+        picture.setImgUrl(CommonContent.IMAGE_URL+filename);
+        pictureMapper.insert(picture);
+        return picture;
+    }
+
+    @Override
+    public void delete(String imgUrl) throws Exception {
+        QueryWrapper<Picture> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("img_url",imgUrl);
+        List<Picture> pictures = pictureMapper.selectList(queryWrapper);
+        if(!pictures.isEmpty()) {
+            Picture picture = pictures.get(0);
+            pictureMapper.deleteById(picture.getId());
+            File file = new File(picture.getImgPath());
+            if(file.exists() && file.isFile()) {
+                file.delete();
+            }
+        }
     }
 }

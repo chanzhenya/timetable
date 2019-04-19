@@ -6,6 +6,7 @@ import com.app.timetable.dto.PurchasedCourseDTO;
 import com.app.timetable.dto.SysUserDTO;
 import com.app.timetable.dto.TeacherEvaluationDTO;
 import com.app.timetable.entity.Course;
+import com.app.timetable.entity.Picture;
 import com.app.timetable.entity.SysUser;
 import com.app.timetable.entity.TeacherEvaluation;
 import com.app.timetable.enums.UserType;
@@ -75,7 +76,7 @@ public class SysUserController {
                              @RequestParam(value = "gender",required = false) Integer gender, @RequestParam(value = "description", required = false)  String description,
                              @RequestParam("userType") Integer userType, HttpServletResponse response) {
         try {
-            String photoUrl = uploadFileService.uploadFile(multipartFile);
+            Picture picture = uploadFileService.uploadFile(multipartFile);
             SysUser sysUser = new SysUser();
             sysUser.setId(ClassObjectUtils.getUUID());
             sysUser.setAccount(account);
@@ -87,7 +88,7 @@ public class SysUserController {
             sysUser.setPhone(phone);
             sysUser.setDescription(description);
             sysUser.setUserType(userType);
-            sysUser.setPhotoUrl(photoUrl);
+            sysUser.setPhotoUrl(picture.getImgUrl());
             sysUser.setCreateTime(LocalDateTime.now());
             userService.register(sysUser, response);
             return ResultVoUtil.success("注册成功");

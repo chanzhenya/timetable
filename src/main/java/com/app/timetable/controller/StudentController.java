@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.app.timetable.dto.PurchasedCourseDTO;
 import com.app.timetable.dto.TeacherEvaluationDTO;
 import com.app.timetable.entity.Course;
+import com.app.timetable.entity.StudentPurchasedCourse;
 import com.app.timetable.entity.SysUser;
 import com.app.timetable.entity.TeacherEvaluation;
 import com.app.timetable.enums.UserType;
@@ -45,7 +46,9 @@ public class StudentController {
         try {
             JSONObject result = new JSONObject();
             SysUser sysUser = userService.getById(studentId);
-            IPage<PurchasedCourseDTO> courseDTOIPage = purchasedCourseService.selectByPage(1,10,sysUser.getId());
+            StudentPurchasedCourse purchasedCourse = new StudentPurchasedCourse();
+            purchasedCourse.setStudentId(sysUser.getId());
+            IPage<PurchasedCourseDTO> courseDTOIPage = purchasedCourseService.selectByPage(1,10,purchasedCourse);
             List<PurchasedCourseDTO> purchasedCourses = courseDTOIPage.getRecords();
             result.put("purchasedCourses",purchasedCourses);
             result.put("student", sysUser);

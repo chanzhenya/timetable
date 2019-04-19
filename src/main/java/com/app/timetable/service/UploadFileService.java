@@ -1,5 +1,6 @@
 package com.app.timetable.service;
 
+import com.app.timetable.entity.Picture;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -9,5 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
  **/
 public interface UploadFileService {
 
-    String uploadFile(MultipartFile multipartFile) throws Exception;
+    Picture uploadFile(MultipartFile multipartFile) throws Exception;
+
+    void delete(String imgUrl) throws Exception;
 }

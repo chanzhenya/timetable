@@ -1,5 +1,6 @@
 package com.app.timetable.service.impl;
 
+import com.app.timetable.dto.CourseDTO;
 import com.app.timetable.entity.Course;
 import com.app.timetable.enums.CourseStatus;
 import com.app.timetable.mapper.CourseMapper;
@@ -27,21 +28,13 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     private CourseMapper courseMapper;
 
     @Override
-    public IPage<Course> selectPage(int pageNum, int pageSize, Course course) throws Exception {
-        QueryWrapper<Course> queryWrapper = new QueryWrapper<>();
-        if(StringUtils.isNotBlank(course.getTeacherId())) {
-            queryWrapper.eq("teacher_id", course.getTeacherId());
-        }
-        if(course.getStatus() != null) {
-            queryWrapper.ne("status", course.getStatus());
-        }
-        queryWrapper.orderByDesc("create_time");
-        Page<Course> page = new Page<>(pageNum,pageSize);
-        return courseMapper.selectPage(page,queryWrapper);
+    public IPage<CourseDTO> selectPage(int pageNum, int pageSize, Course course) throws Exception {
+        Page<CourseDTO> page = new Page<>(pageNum,pageSize);
+        return courseMapper.selectByPage(page,course);
     }
 
     @Override
-    public Course selectDetailById(String courseId) throws Exception {
-        return courseMapper.selectById(courseId);
+    public CourseDTO selectDetailById(String courseId) throws Exception {
+        return courseMapper.selectDetailById(courseId);
     }
 }

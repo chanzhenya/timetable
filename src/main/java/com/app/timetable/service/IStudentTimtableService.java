@@ -20,4 +20,16 @@ public interface IStudentTimtableService extends IService<StudentTimtable> {
     void add(List<StudentTimtable> timtableList) throws Exception;
 
     IPage<StudentTimetableDTO> selectBuPage(int pageNum, int pageSize, StudentTimtable timtable);
+
+    void signIn(StudentTimtable studentTimtable, String teacherTimetableId) throws Exception;
+
+    void publishHomework(String id, String homework) throws Exception;
+
+    /**
+     * 学生请假和旷课处理
+     * @param studentTimtable
+     * @return
+     * @throws Exception
+     */
+    int leaveAndTruancy(StudentTimtable studentTimtable) throws Exception;
 }

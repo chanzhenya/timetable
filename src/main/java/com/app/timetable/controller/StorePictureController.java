@@ -1,6 +1,7 @@
 package com.app.timetable.controller;
 
 
+import com.app.timetable.entity.Picture;
 import com.app.timetable.entity.StorePicture;
 import com.app.timetable.service.IStorePictureService;
 import com.app.timetable.service.UploadFileService;
@@ -50,10 +51,10 @@ public class StorePictureController {
         try {
             List<StorePicture> pictureList = new ArrayList<>();
             for(MultipartFile img:images) {
-                String path = uploadFileService.uploadFile(img);
+                Picture p = uploadFileService.uploadFile(img);
                 StorePicture picture = new StorePicture();
                 picture.setId(ClassObjectUtils.getUUID());
-                picture.setImgUrl(path);
+                picture.setImgUrl(p.getImgUrl());
                 picture.setCreateTime(LocalDateTime.now());
                 pictureList.add(picture);
             }

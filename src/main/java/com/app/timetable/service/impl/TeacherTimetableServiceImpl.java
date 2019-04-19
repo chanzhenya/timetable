@@ -44,6 +44,9 @@ public class TeacherTimetableServiceImpl extends ServiceImpl<TeacherTimetableMap
         if(StringUtils.isNotBlank(timetable.getHomework())) {
             updateWrapper.set("homework",timetable.getHomework());
         }
+        if(timetable.getStatus() != null) {
+            updateWrapper.set("status",timetable.getStatus());
+        }
         updateWrapper.eq("id", timetable.getId());
         timetableMapper.update(timetable,updateWrapper);
     }

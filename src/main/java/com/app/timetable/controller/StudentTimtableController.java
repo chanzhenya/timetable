@@ -90,5 +90,63 @@ public class StudentTimtableController {
             return ResultVoUtil.error(e.getMessage());
         }
     }
+
+    /**
+     * 学生签到
+     * @param status
+     * @param id
+     * @return
+     */
+    @PostMapping("/signIn")
+    public ResultVo signIn(@RequestParam("status") Integer status, @RequestParam("id") String id,
+                           @RequestParam("teacherTimetableId") String teacherTimetableId) {
+        try {
+            StudentTimtable timtable = new StudentTimtable();
+            timtable.setId(id);
+            timtable.setStatus(status);
+            studentTimtableService.signIn(timtable,teacherTimetableId);
+            return ResultVoUtil.success("签到成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultVoUtil.error(e.getMessage());
+        }
+    }
+
+    /**
+     * 发布学生个人作业
+     * @param id
+     * @param homework
+     * @return
+     */
+    @PostMapping("/homework")
+    public ResultVo homework(@RequestParam("id") String id, @RequestParam("homework") String homework) {
+        try {
+            studentTimtableService.publishHomework(id,homework);
+            return ResultVoUtil.success("发布成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultVoUtil.error(e.getMessage());
+        }
+    }
+
+    /**
+     * 请假，取消课程
+     * @param id
+     * @return
+     */
+    @PostMapping("/cancel")
+    public ResultVo leave(@RequestParam("studentId") String studentId,@RequestParam("id") String id) {
+        try {
+            StudentTimtable timtable = new StudentTimtable();
+            timtable.setId(id);
+            timtable.setStudentId(studentId);
+            timtable.setStatus(TimetableStatus.LEAVE.getCode());
+            studentTimtableService.leaveAndTruancy(timtable);
+            return ResultVoUtil.success("取消成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultVoUtil.error(e.getMessage());
+        }
+    }
 }
 

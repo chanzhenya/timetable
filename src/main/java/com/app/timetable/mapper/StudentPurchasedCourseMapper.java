@@ -18,7 +18,7 @@ import java.util.List;
  */
 public interface StudentPurchasedCourseMapper extends BaseMapper<StudentPurchasedCourse> {
 
-    IPage<PurchasedCourseDTO> selectByPage(Page<PurchasedCourseDTO> page, String studentId);
+    IPage<PurchasedCourseDTO> selectByPage(Page<PurchasedCourseDTO> page, StudentPurchasedCourse purchasedCourse);
 
     List<PurchasedCourseDTO> selectList(String StudentId);
 }

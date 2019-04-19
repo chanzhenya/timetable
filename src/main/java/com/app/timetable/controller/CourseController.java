@@ -1,7 +1,9 @@
 package com.app.timetable.controller;
 
 
+import com.app.timetable.dto.CourseDTO;
 import com.app.timetable.entity.Course;
+import com.app.timetable.entity.Picture;
 import com.app.timetable.enums.CourseStatus;
 import com.app.timetable.service.ICourseService;
 import com.app.timetable.service.UploadFileService;
@@ -53,7 +55,7 @@ public class CourseController {
                         @RequestParam("descreption") String descreption, @RequestParam("teacherId") String teacherId,
                         @RequestParam("image") MultipartFile multipartFile) {
         try {
-            String imgUrl = uploadFileService.uploadFile(multipartFile);
+            Picture picture = uploadFileService.uploadFile(multipartFile);
             Course course = new Course();
             course.setId(ClassObjectUtils.getUUID());
             course.setTagId(tagId);
@@ -61,7 +63,7 @@ public class CourseController {
             course.setPrice(price);
             course.setDescreption(descreption);
             course.setTeacherId(teacherId);
-            course.setImgUrl(imgUrl);
+            course.setImgUrl(picture.getImgUrl());
             course.setStatus(CourseStatus.PUBLISHED.getCode());
             course.setCreateTime(LocalDateTime.now());
             courseService.save(course);
@@ -73,7 +75,7 @@ public class CourseController {
     }
 
     /**
-     * 课程分配
+     * 修改课程
      * @param price
      * @param period
      * @param descreption
@@ -87,17 +89,21 @@ public class CourseController {
                          @RequestParam("descreption") String descreption, @RequestParam("teacherId") String teacherId,
                          @RequestParam("courseId") String courseId, @RequestParam("image") MultipartFile multipartFile) {
         try {
-            String imgUrl = uploadFileService.uploadFile(multipartFile);
-            Course course = new Course();
-            course.setId(courseId);
-            course.setPeriod(period);
-            course.setPrice(price);
-            course.setDescreption(descreption);
-            course.setTeacherId(teacherId);
-            course.setImgUrl(imgUrl);
-            course.setStatus(CourseStatus.PUBLISHED.getCode());
-            courseService.updateById(course);
-            return ResultVoUtil.success("更新成功");
+            Course course = courseService.getById(courseId);
+            if(course != null) {
+                uploadFileService.delete(course.getImgUrl());
+                Picture picture = uploadFileService.uploadFile(multipartFile);
+                course.setPeriod(period);
+                course.setPrice(price);
+                course.setDescreption(descreption);
+                course.setTeacherId(teacherId);
+                course.setImgUrl(picture.getImgUrl());
+                course.setStatus(CourseStatus.PUBLISHED.getCode());
+                courseService.updateById(course);
+                return ResultVoUtil.success("更新成功");
+            } else {
+                return ResultVoUtil.error("课程不存在");
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return ResultVoUtil.error(e.getMessage());
@@ -120,7 +126,7 @@ public class CourseController {
             Course course = new Course();
             course.setStatus(status);
             course.setTeacherId(teacherId);
-            IPage<Course> courseIPage = courseService.selectPage(pageNum,pageSize,course);
+            IPage<CourseDTO> courseIPage = courseService.selectPage(pageNum,pageSize,course);
             return ResultVoUtil.success(courseIPage);
         } catch (Exception e) {
             e.printStackTrace();
@@ -136,7 +142,7 @@ public class CourseController {
     @PostMapping("/detail")
     public ResultVo detail(@RequestParam("courseId") String courseId) {
         try {
-            Course course = courseService.selectDetailById(courseId);
+            CourseDTO course = courseService.selectDetailById(courseId);
             return ResultVoUtil.success(course);
         } catch (Exception e) {
             e.printStackTrace();

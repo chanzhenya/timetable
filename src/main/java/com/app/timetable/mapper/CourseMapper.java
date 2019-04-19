@@ -18,4 +18,6 @@ import org.apache.ibatis.annotations.Param;
 public interface CourseMapper extends BaseMapper<Course> {
 
     CourseDTO selectDetailById(@Param("courseId") String courseId);
+
+    IPage<CourseDTO> selectByPage(Page<CourseDTO> page, @Param("course") Course course);
 }

@@ -35,4 +35,19 @@
         LEFT ON tag t ON t.id = c.tag_id
         WHERE c.id = #{courseId}
     </select>
+
+    <select id="selectByPage" resultMap="DetailResultMap" parameterType="com.app.timetable.entity.Course">
+        SELECT c.*, u.name teacher_name, t.name tag_name FROM course c
+        LEFT ON sys_user u ON u.id = c.teacher_id
+        LEFT ON tag t ON t.id = c.tag_id
+        <where>
+            1=1
+            <if test="course.status != null">
+                AND c.status = #{course.status}
+            </if>
+            <if test="course.teacherId != null and course.teacherId != ''">
+                AND c.teacher_id = #{course.teacherId}
+            </if>
+        </where>
+    </select>
 </mapper>

@@ -30,12 +30,17 @@
         <result column="leave_num" property="leaveNum" />
     </resultMap>
 
-    <select id="selectByPage" resultMap="DetailResultMap" parameterType="java.lang.String">
+    <select id="selectByPage" resultMap="DetailResultMap" parameterType="com.app.timetable.entity.StudentPurchasedCourse">
         SELECT spc.*, c.name course_name, u.name teacher_name
         FROM `student_purchased_course` spc
         LEFT JOIN `course` c ON c.id = spc.course_id
         LEFT JOIN `sys_user` u ON u.id = c.teacher_id
-        WHERE student_id = #{studentId}
+        <where>
+            1=1
+            <if test="purchasedCourse.studentId != null and purchasedCourse.studentId != ''">
+                spc.student_id = #{purchasedCourse.studentId}
+            </if>
+        </where>
     </select>
 
     <select id="selectList" resultMap="DetailResultMap" parameterType="java.lang.String">

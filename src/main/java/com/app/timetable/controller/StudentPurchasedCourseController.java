@@ -77,8 +77,26 @@ public class StudentPurchasedCourseController {
                          @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
                          @RequestParam(value = "studentId", required = false) String studentId) {
         try {
-            IPage<PurchasedCourseDTO> dtoiPage = purchasedCourseService.selectByPage(pageNum,pageSize,studentId);
+            StudentPurchasedCourse purchasedCourse = new StudentPurchasedCourse();
+            purchasedCourse.setStudentId(studentId);
+            IPage<PurchasedCourseDTO> dtoiPage = purchasedCourseService.selectByPage(pageNum,pageSize,purchasedCourse);
             return ResultVoUtil.success(dtoiPage);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultVoUtil.error(e.getMessage());
+        }
+    }
+
+    /**
+     * 删除已购课程
+     * @param id
+     * @return
+     */
+    @PostMapping("/delete")
+    public ResultVo delete(@RequestParam("id") String id) {
+        try {
+            purchasedCourseService.removeById(id);
+            return ResultVoUtil.success("删除成功");
         } catch (Exception e) {
             e.printStackTrace();
             return ResultVoUtil.error(e.getMessage());
