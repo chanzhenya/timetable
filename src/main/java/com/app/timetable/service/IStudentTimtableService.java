@@ -17,7 +17,12 @@ import java.util.List;
  */
 public interface IStudentTimtableService extends IService<StudentTimtable> {
 
-    void add(List<StudentTimtable> timtableList) throws Exception;
+    /**
+     * 预约课程
+     * @param teacherTimetableIds
+     * @throws Exception
+     */
+    List<StudentTimtable> add(String[] teacherTimetableIds, String studentId) throws Exception;
 
     IPage<StudentTimetableDTO> selectBuPage(int pageNum, int pageSize, StudentTimtable timtable);
 

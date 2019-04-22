@@ -39,29 +39,14 @@ public class StudentTimtableController {
 
     /**
      * 预约课程
-     * @param courses
+     * @param teacherTimetableIds 教师课表id
      * @return
      */
     @PostMapping("/add")
-    public ResultVo add(@RequestParam("courses") String courses) {
+    public ResultVo add(@RequestParam("teacherTimetableIds") String[] teacherTimetableIds, @RequestParam("studentId") String studentId) {
         try {
-            JSONArray jsonArray = JSONArray.parseArray(courses);
-            List<StudentTimtable> timtableList = new ArrayList<>();
-            for(int i=0;i<jsonArray.size();i++) {
-                JSONObject item = jsonArray.getJSONObject(i);
-                StudentTimtable timtable = new StudentTimtable();
-                timtable.setId(ClassObjectUtils.getUUID());
-                timtable.setTeacherId(item.getString("teacherId"));
-                timtable.setCourseId(item.getString("courseId"));
-                timtable.setStudentId(item.getString("studentId"));
-                timtable.setStatus(TimetableStatus.VALID.getCode());
-                timtable.setCourseTime(LocalDateTime.parse(item.getString("studentId")));
-                timtable.setCreateTime(LocalDateTime.now());
-
-                timtableList.add(timtable);
-            }
-            studentTimtableService.add(timtableList);
-            return ResultVoUtil.success("预约成功");
+            List<StudentTimtable> studentTimtables = studentTimtableService.add(teacherTimetableIds,studentId);
+            return ResultVoUtil.success(studentTimtables);
         } catch (Exception e) {
             e.printStackTrace();
             return ResultVoUtil.success(e.getMessage());
