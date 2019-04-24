@@ -71,7 +71,7 @@ public class SysUser implements Serializable {
     private String accessToken;
 
     /**
-     * 用户类型：0-管理员；1-教师；2-学生
+     * 用户类型：0-管理员；1-教师；2-学生；3-游客
      */
     private Integer userType;
 

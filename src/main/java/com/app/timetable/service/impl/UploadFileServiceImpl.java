@@ -28,7 +28,7 @@ public class UploadFileServiceImpl implements UploadFileService {
     @Override
     public Picture uploadFile(MultipartFile multipartFile) throws Exception {
         if(multipartFile == null) {
-            throw new NullPointerException("文件为空");
+            return new Picture();
         }
 
         Picture picture = new Picture();

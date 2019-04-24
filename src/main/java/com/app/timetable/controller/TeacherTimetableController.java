@@ -3,13 +3,11 @@ package com.app.timetable.controller;
 
 import com.app.timetable.dto.TeacherTimetableDTO;
 import com.app.timetable.entity.TeacherTimetable;
-import com.app.timetable.enums.CourseType;
 import com.app.timetable.enums.TimetableStatus;
 import com.app.timetable.service.ITeacherTimetableService;
 import com.app.timetable.utils.ClassObjectUtils;
 import com.app.timetable.utils.ResultVoUtil;
 import com.app.timetable.vo.ResultVo;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 /**
  * <p>
@@ -45,14 +45,14 @@ public class TeacherTimetableController {
      */
     @PostMapping("/add")
     public ResultVo add(@RequestParam("courseId") String courseId, @RequestParam("teacherId") String teacherId,
-                        @RequestParam("number") Integer number, @RequestParam("courseTime") String courseTime) {
+                        @RequestParam("number") Integer number, @RequestParam("courseTime") long courseTime) {
         try {
             TeacherTimetable timetable = new TeacherTimetable();
             timetable.setId(ClassObjectUtils.getUUID());
             timetable.setTeacherId(teacherId);
             timetable.setCourseId(courseId);
             timetable.setNumber(number);
-            timetable.setCourseTime(LocalDateTime.parse(courseTime));
+            timetable.setCourseTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(courseTime), ZoneId.of("Asia/Shanghai")));
             timetable.setCreateTime(LocalDateTime.now());
             timetable.setStatus(TimetableStatus.VALID.getCode());
             teacherTimetableService.save(timetable);
@@ -89,13 +89,13 @@ public class TeacherTimetableController {
 
     /**
      * 获取课表详情
-     * @param teacherId
+     * @param timetableId
      * @return
      */
     @PostMapping("/detail")
-    public ResultVo detail(@RequestParam("teacherId") String teacherId) {
+    public ResultVo detail(@RequestParam("timetableId") String timetableId) {
         try {
-            TeacherTimetableDTO dto = teacherTimetableService.selectDetailById(teacherId);
+            TeacherTimetableDTO dto = teacherTimetableService.selectDetailById(timetableId);
             return ResultVoUtil.success(dto);
         } catch (Exception e) {
             e.printStackTrace();

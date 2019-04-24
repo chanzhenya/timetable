@@ -31,9 +31,10 @@
     </resultMap>
 
     <select id="selectDetailList" resultMap="DetailResultMap" parameterType="com.app.timetable.entity.StudentTimtable">
-        SELECT t.*, u.name student_name, u.img_url, c.name course_name, tt.homework course_homework FROM `student_timtable` t
+        SELECT t.*, u.name student_name, u.img_url, tag.name course_name, tt.homework course_homework FROM `student_timtable` t
         LEFT JOIN `sys_user` u ON u.id = t.student_id
         LEFT JOIN `course` c ON c.id = t.course_id
+        LEFT JOIN `tag` ON tag.id = c.tag_id
         LEFT JOIN `teacher_timetable` tt ON tt.teacher_id = t.teacher_id
         <where>
             1=1
@@ -47,9 +48,10 @@
     </select>
 
     <select id="selectByCourse" resultMap="DetailResultMap" parameterType="java.lang.String">
-        SELECT t.*, u.name student_name, u.img_url, c.name course_name, tt.homework course_homework FROM `student_timtable` t
+        SELECT t.*, u.name student_name, u.img_url, tag.name course_name, tt.homework course_homework FROM `student_timtable` t
         LEFT JOIN `sys_user` u ON u.id = t.student_id
         LEFT JOIN `course` c ON c.id = t.course_id
+        LEFT JOIN `tag` ON tag.id = c.tag_id
         LEFT JOIN `teacher_timetable` tt ON tt.teacher_id = t.teacher_id
         WHERE t.course_id = #{courseId}
     </select>
@@ -59,7 +61,7 @@
       INSERT INTO `student_timtable`(id, student_id, teacher_id, course_id, course_time, course_type, status, homework, create_time)
       VALUES
       <foreach collection="list" item="item" index="index" separator=",">
-          (#{item.id}, #{item.studentId}, #{item.teacherId}, #{courseId}, #{item.courseTime}, #{item.courseType}, #{item.status},
+          (#{item.id}, #{item.studentId}, #{item.teacherId}, #{item.courseId}, #{item.courseTime}, #{item.courseType}, #{item.status},
           #{item.homework}, #{item.createTime})
       </foreach>
     </insert>

@@ -22,7 +22,7 @@
         <result column="create_time" property="createTime" />
     </resultMap>
 
-    <select id="selectByPage" parameterType="com.app.timetable.entity.TeacherEvaluation">
+    <select id="selectByPage" parameterType="com.app.timetable.entity.TeacherEvaluation" resultMap="DetailResultMap">
         SELECT e.*, u.account student_account FROM `teacher_evaluation` e
         LEFT JOIN `sys_user` u ON u.id = e.student_id
         <where>

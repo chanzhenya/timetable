@@ -5,6 +5,7 @@ import com.app.timetable.entity.StudentPurchasedCourse;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -18,7 +19,9 @@ import java.util.List;
  */
 public interface StudentPurchasedCourseMapper extends BaseMapper<StudentPurchasedCourse> {
 
-    IPage<PurchasedCourseDTO> selectByPage(Page<PurchasedCourseDTO> page, StudentPurchasedCourse purchasedCourse);
+    IPage<PurchasedCourseDTO> selectByPage(Page<PurchasedCourseDTO> page, @Param("purchasedCourse") StudentPurchasedCourse purchasedCourse);
 
     List<PurchasedCourseDTO> selectList(String StudentId);
+
+    List<StudentPurchasedCourse> query(@Param("purchasedCourse") StudentPurchasedCourse purchasedCourse);
 }

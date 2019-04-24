@@ -11,6 +11,7 @@ import com.app.timetable.utils.ClassObjectUtils;
 import com.app.timetable.utils.ResultVoUtil;
 import com.app.timetable.vo.ResultVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -85,20 +86,29 @@ public class CourseController {
      * @return
      */
     @PostMapping("/edit")
-    public ResultVo edit(@RequestParam("price")BigDecimal price, @RequestParam("period") Integer period,
-                         @RequestParam("descreption") String descreption, @RequestParam("teacherId") String teacherId,
-                         @RequestParam("courseId") String courseId, @RequestParam("image") MultipartFile multipartFile) {
+    public ResultVo edit(@RequestParam(value = "price", required = false)BigDecimal price,
+                         @RequestParam(value = "period", required = false) Integer period,
+                         @RequestParam(value = "descreption", required = false) String descreption,
+                         @RequestParam("teacherId") String teacherId,  @RequestParam("courseId") String courseId,
+                         @RequestParam(value = "image", required = false) MultipartFile multipartFile) {
         try {
             Course course = courseService.getById(courseId);
             if(course != null) {
-                uploadFileService.delete(course.getImgUrl());
-                Picture picture = uploadFileService.uploadFile(multipartFile);
-                course.setPeriod(period);
-                course.setPrice(price);
-                course.setDescreption(descreption);
+                if(multipartFile != null) {
+                    uploadFileService.delete(course.getImgUrl());
+                    Picture picture = uploadFileService.uploadFile(multipartFile);
+                    course.setImgUrl(picture.getImgUrl());
+                }
+                if(period != null) {
+                    course.setPeriod(period);
+                }
+                if(price != null) {
+                    course.setPrice(price);
+                }
+                if(StringUtils.isNotBlank(descreption)) {
+                    course.setDescreption(descreption);
+                }
                 course.setTeacherId(teacherId);
-                course.setImgUrl(picture.getImgUrl());
-                course.setStatus(CourseStatus.PUBLISHED.getCode());
                 courseService.updateById(course);
                 return ResultVoUtil.success("更新成功");
             } else {

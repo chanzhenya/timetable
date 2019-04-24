@@ -83,5 +83,21 @@ public class TeacherEvaluationController {
             return ResultVoUtil.error(e.getMessage());
         }
     }
+
+    /**
+     * 删除评论
+     * @param id
+     * @return
+     */
+    @PostMapping("/delete")
+    public ResultVo delete(@RequestParam("id") String id) {
+        try {
+            teacherEvaluationService.removeById(id);
+            return ResultVoUtil.success("删除成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultVoUtil.error(e.getMessage());
+        }
+    }
 }
 

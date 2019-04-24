@@ -19,11 +19,6 @@ public class CourseDTO {
     private String id;
 
     /**
-     * 课程名称
-     */
-    private String name;
-
-    /**
      * 课程描述
      */
     private String descreption;
@@ -57,6 +52,11 @@ public class CourseDTO {
      * 课程分类ID
      */
     private String tagId;
+
+    /**
+     * 课程分类名称
+     */
+    private String tagName;
 
     /**
      * 图片url

@@ -3,8 +3,14 @@ package com.app.timetable.service.impl;
 import com.app.timetable.entity.SysConfig;
 import com.app.timetable.mapper.SysConfigMapper;
 import com.app.timetable.service.ISysConfigService;
+import com.app.timetable.utils.ClassObjectUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -15,6 +21,26 @@ import org.springframework.stereotype.Service;
  * @since 2019-04-19
  */
 @Service
+@Transactional
 public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig> implements ISysConfigService {
 
+    @Autowired
+    private SysConfigMapper sysConfigMapper;
+
+    @Override
+    public void config(int number) throws Exception {
+        sysConfigMapper.deleteAll();
+        SysConfig sysConfig = new SysConfig();
+        sysConfig.setId(ClassObjectUtils.getUUID());
+        sysConfig.setNumber(number);
+        sysConfig.setDescription("可请假次数");
+        sysConfig.setCreateTime(LocalDateTime.now());
+        sysConfigMapper.insert(sysConfig);
+    }
+
+    @Override
+    public SysConfig getConfig() throws Exception {
+        List<SysConfig> sysConfigs = sysConfigMapper.selectAll();
+        return sysConfigs.size() > 0 ? sysConfigs.get(0) : null;
+    }
 }

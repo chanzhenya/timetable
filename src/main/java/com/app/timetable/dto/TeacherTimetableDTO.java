@@ -1,6 +1,5 @@
 package com.app.timetable.dto;
 
-import com.app.timetable.entity.StudentTimtable;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -29,7 +28,9 @@ public class TeacherTimetableDTO {
 
     private String homework;
 
+    private Integer status;
+
     private LocalDateTime courseTime;
 
-    private List<StudentTimtable> students = new ArrayList<>();
+    private List<StudentTimetableDTO> students = new ArrayList<>();
 }

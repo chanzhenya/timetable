@@ -17,9 +17,9 @@ public class SysConfig implements Serializable {
 
     private String id;
 
-    private String key;
+    private String description;
 
-    private String value;
+    private Integer number;
 
     private LocalDateTime createTime;
 
@@ -32,20 +32,20 @@ public class SysConfig implements Serializable {
         this.id = id;
     }
 
-    public String getKey() {
-        return key;
+    public String getDescription() {
+        return description;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getValue() {
-        return value;
+    public Integer getNumber() {
+        return number;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setNumber(Integer number) {
+        this.number = number;
     }
 
     public LocalDateTime getCreateTime() {
@@ -54,15 +54,5 @@ public class SysConfig implements Serializable {
 
     public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
-    }
-
-    @Override
-    public String toString() {
-        return "SysConfig{" +
-        "id=" + id +
-        ", key=" + key +
-        ", value=" + value +
-        ", createTime=" + createTime +
-        "}";
     }
 }

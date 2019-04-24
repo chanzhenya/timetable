@@ -3,6 +3,8 @@ package com.app.timetable.mapper;
 import com.app.timetable.entity.SysConfig;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
+import java.util.List;
+
 /**
  * <p>
  *  Mapper 接口
@@ -13,4 +15,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface SysConfigMapper extends BaseMapper<SysConfig> {
 
+    void deleteAll();
+
+    List<SysConfig> selectAll();
 }

@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 /**
  * <p>
@@ -44,7 +46,7 @@ public class StudentPurchasedCourseController {
      */
     @PostMapping("/add")
     public ResultVo add(@RequestParam("courseId") String courseId, @RequestParam("studentId") String studentId,
-                        @RequestParam("remain") Integer remain, @RequestParam("dueTime") String dueTime,
+                        @RequestParam("remain") Integer remain, @RequestParam("dueTime") long dueTime,
                         @RequestParam("teacerId") String teacherId) {
         try {
             StudentPurchasedCourse purchasedCourse = new StudentPurchasedCourse();
@@ -54,7 +56,7 @@ public class StudentPurchasedCourseController {
             purchasedCourse.setTeacherId(teacherId);
             purchasedCourse.setRemain(remain);
             purchasedCourse.setStatus(PurchasedCourseStatus.VALID.getCode());
-            purchasedCourse.setDueTime(LocalDateTime.parse(dueTime));
+            purchasedCourse.setDueTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(dueTime), ZoneId.of("Asia/Shanghai")));
             purchasedCourse.setCreateTime(LocalDateTime.now());
             purchasedCourseService.save(purchasedCourse);
             return ResultVoUtil.success("新增成功");

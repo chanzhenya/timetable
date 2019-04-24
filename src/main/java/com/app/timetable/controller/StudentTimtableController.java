@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -120,14 +121,13 @@ public class StudentTimtableController {
      * @return
      */
     @PostMapping("/cancel")
-    public ResultVo leave(@RequestParam("studentId") String studentId,@RequestParam("id") String id) {
+    public ResultVo leave(@RequestParam("id") String id) {
         try {
             StudentTimtable timtable = new StudentTimtable();
             timtable.setId(id);
-            timtable.setStudentId(studentId);
             timtable.setStatus(TimetableStatus.LEAVE.getCode());
-            studentTimtableService.leaveAndTruancy(timtable);
-            return ResultVoUtil.success("取消成功");
+            int result = studentTimtableService.leaveAndTruancy(timtable);
+            return ResultVoUtil.success(result);
         } catch (Exception e) {
             e.printStackTrace();
             return ResultVoUtil.error(e.getMessage());

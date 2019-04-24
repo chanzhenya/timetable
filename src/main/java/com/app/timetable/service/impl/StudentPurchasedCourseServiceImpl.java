@@ -64,7 +64,7 @@ public class StudentPurchasedCourseServiceImpl extends ServiceImpl<StudentPurcha
             int leaveNum = purchasedCourse.getLeaveNum();
             leaveNum += 1;
             purchasedCourse.setLeaveNum(leaveNum);
-            res = Math.max(Integer.valueOf(sysConfig.getValue())-leaveNum,0);
+            res = Math.max(sysConfig.getNumber()-leaveNum,0);
         } else if(TimetableStatus.TRUANCY.equals(timetableStatus)) {
             int truancyNum = purchasedCourse.getTruancyNum();
             truancyNum+=1;
@@ -72,5 +72,10 @@ public class StudentPurchasedCourseServiceImpl extends ServiceImpl<StudentPurcha
         }
         purchasedCourseMapper.updateById(purchasedCourse);
         return res;
+    }
+
+    @Override
+    public List<StudentPurchasedCourse> query(StudentPurchasedCourse purchasedCourse) throws Exception {
+        return purchasedCourseMapper.query(purchasedCourse);
     }
 }

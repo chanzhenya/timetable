@@ -8,11 +8,7 @@ import com.app.timetable.utils.ClassObjectUtils;
 import com.app.timetable.utils.ResultVoUtil;
 import com.app.timetable.vo.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -40,17 +36,19 @@ public class SysConfigController {
     @PostMapping("/config")
     public ResultVo config(@RequestParam("number") Integer number) {
         try {
-            List<SysConfig> sysConfigs = configService.list();
-            if(!sysConfigs.isEmpty()) {
-               configService.removeById(sysConfigs.get(0).getId());
-            }
-            SysConfig sysConfig = new SysConfig();
-            sysConfig.setId(ClassObjectUtils.getUUID());
-            sysConfig.setValue(number.toString());
-            sysConfig.setKey("可请假次数");
-            sysConfig.setCreateTime(LocalDateTime.now());
-            configService.save(sysConfig);
+            configService.config(number);
             return ResultVoUtil.success("设置成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultVoUtil.error(e.getMessage());
+        }
+    }
+
+    @GetMapping("/configInfo")
+    public ResultVo getConfig() {
+        try {
+            SysConfig sysConfig = configService.getConfig();
+            return ResultVoUtil.success(sysConfig);
         } catch (Exception e) {
             e.printStackTrace();
             return ResultVoUtil.error(e.getMessage());

@@ -1,18 +1,19 @@
 package com.app.timetable.service.impl;
 
+import com.app.timetable.dto.PurchasedCourseDTO;
 import com.app.timetable.dto.StudentTimetableDTO;
-import com.app.timetable.entity.AuditionLog;
-import com.app.timetable.entity.StudentPurchasedCourse;
-import com.app.timetable.entity.StudentTimtable;
-import com.app.timetable.entity.TeacherTimetable;
+import com.app.timetable.entity.*;
 import com.app.timetable.enums.CourseType;
+import com.app.timetable.enums.ErrorMessage;
 import com.app.timetable.enums.TimetableStatus;
+import com.app.timetable.exception.MyException;
 import com.app.timetable.mapper.StudentPurchasedCourseMapper;
 import com.app.timetable.mapper.StudentTimtableMapper;
 import com.app.timetable.mapper.TeacherTimetableMapper;
 import com.app.timetable.service.IAuditionLogService;
 import com.app.timetable.service.IStudentPurchasedCourseService;
 import com.app.timetable.service.IStudentTimtableService;
+import com.app.timetable.service.ISysConfigService;
 import com.app.timetable.utils.ClassObjectUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
@@ -53,6 +54,9 @@ public class StudentTimtableServiceImpl extends ServiceImpl<StudentTimtableMappe
     @Autowired
     private IStudentPurchasedCourseService studentPurchasedCourseService;
 
+    @Autowired
+    private ISysConfigService sysConfigService;
+
     @Override
     public  List<StudentTimtable> add(String[] teacherTimetableIds, String studentId) throws Exception {
         //获取预约课的详情
@@ -68,9 +72,9 @@ public class StudentTimtableServiceImpl extends ServiceImpl<StudentTimtableMappe
         List<AuditionLog> auditionLogs = auditionLogService.list(queryWrapper);
 
         //获取学生已购买课程
-        QueryWrapper<StudentPurchasedCourse> purchasedCourseQueryWrapper = new QueryWrapper<>();
-        purchasedCourseQueryWrapper.eq("student_id",studentId);
-        List<StudentPurchasedCourse> purchasedCourses = studentPurchasedCourseService.list(purchasedCourseQueryWrapper);
+        StudentPurchasedCourse studentPurchasedCourse = new StudentPurchasedCourse();
+        studentPurchasedCourse.setStudentId(studentId);
+        List<StudentPurchasedCourse> purchasedCourses = studentPurchasedCourseService.query(studentPurchasedCourse);
 
         List<StudentTimtable> newStudentTimtables = new ArrayList<>();
         List<AuditionLog> auditionLogList = new ArrayList<>();
@@ -109,6 +113,7 @@ public class StudentTimtableServiceImpl extends ServiceImpl<StudentTimtableMappe
                 StudentTimtable studentTimtable = new StudentTimtable();
                 studentTimtable.setId(ClassObjectUtils.getUUID());
                 studentTimtable.setStudentId(studentId);
+                studentTimtable.setStatus(TimetableStatus.VALID.getCode());
                 studentTimtable.setCourseId(teacherTimetable.getCourseId());
                 studentTimtable.setTeacherId(teacherTimetable.getTeacherId());
                 studentTimtable.setCourseTime(teacherTimetable.getCourseTime());
@@ -165,8 +170,42 @@ public class StudentTimtableServiceImpl extends ServiceImpl<StudentTimtableMappe
 
     @Override
     public int leaveAndTruancy(StudentTimtable studentTimtable) throws Exception {
-        update(studentTimtable);
-        return 0;
+        StudentTimtable timtable = studentTimtableMapper.selectById(studentTimtable.getId());
+        //获取该已购买课程信息
+        StudentPurchasedCourse res = new StudentPurchasedCourse();
+        res.setStudentId(timtable.getStudentId());
+        res.setCourseId(timtable.getCourseId());
+        List<StudentPurchasedCourse> list = studentPurchasedCourseService.query(res);
+
+        //取消/旷课试听课程
+        if(list.isEmpty() && CourseType.AUDITION.getCode().equals(timtable.getCourseType())) {
+            update(studentTimtable);
+            return -1;
+        }
+
+        StudentPurchasedCourse purchasedCourse = list.get(0);
+        if(TimetableStatus.LEAVE.getCode().equals(studentTimtable.getStatus()))  { //请假、取消课程
+            SysConfig sysConfig = sysConfigService.getConfig();
+            int leaveNum = purchasedCourse.getLeaveNum();
+            if(leaveNum >= sysConfig.getNumber()) {
+                throw new MyException(ErrorMessage.ERROR_MSG_1.getCode(),ErrorMessage.ERROR_MSG_1.getMessage());
+            }
+
+            leaveNum+=1;
+            purchasedCourse.setLeaveNum(leaveNum);
+            //更新课表状态、已购课程请假次数
+            update(studentTimtable);
+            studentPurchasedCourseService.updateById(purchasedCourse);
+            return sysConfig.getNumber()-leaveNum;
+        } else if(TimetableStatus.TRUANCY.getCode().equals(studentTimtable.getStatus())) { //旷课
+            int truancyNum = purchasedCourse.getTruancyNum();
+            truancyNum += 1;
+            purchasedCourse.setTruancyNum(truancyNum);
+            studentPurchasedCourseService.updateById(purchasedCourse);
+            update(studentTimtable);
+            return -1;
+        }
+        return -1;
     }
 
     private void update(StudentTimtable studentTimtable) {

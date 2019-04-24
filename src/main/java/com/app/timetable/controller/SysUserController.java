@@ -108,12 +108,10 @@ public class SysUserController {
     @PostMapping("/list")
     public ResultVo list(@RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
                          @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
-                         @RequestParam(value = "userType", required = false) Integer userType,
-                         @RequestParam(value = "userId", required = false) String userId) {
+                         @RequestParam(value = "userType", required = false) Integer userType) {
         try {
             SysUser sysUser = new SysUser();
             sysUser.setUserType(userType);
-            sysUser.setId(userId);
             IPage<SysUserDTO> page = userService.selectPage(pageNum,pageSize,sysUser);
             return ResultVoUtil.success(page);
         } catch (Exception e) {
