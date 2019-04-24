@@ -38,10 +38,10 @@
         LEFT JOIN `teacher_timetable` tt ON tt.teacher_id = t.teacher_id
         <where>
             1=1
-            <if test="timtable.courseId != null and timtable.courseId != ''">
+            <if test="timetable.courseId != null and timetable.courseId != ''">
                 AND t.course_id = #{timetable.courseId}
             </if>
-            <if test="timetable.studentId != null and timetabke.studentId != ''">
+            <if test="timetable.studentId != null and timetable.studentId != ''">
                 AND t.studentId = #{timetable.studentId}
             </if>
         </where>
