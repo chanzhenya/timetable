@@ -65,4 +65,8 @@
             </if>
         </where>
     </select>
+
+    <update id="updateBySchedule">
+        UPDATE student_purchased_course SET leave_num = 0 WHERE status = 1
+    </update>
 </mapper>

@@ -78,4 +78,9 @@ public class StudentPurchasedCourseServiceImpl extends ServiceImpl<StudentPurcha
     public List<StudentPurchasedCourse> query(StudentPurchasedCourse purchasedCourse) throws Exception {
         return purchasedCourseMapper.query(purchasedCourse);
     }
+
+    @Override
+    public void updateWithSchedule() throws Exception {
+        purchasedCourseMapper.updateBySchedule();
+    }
 }

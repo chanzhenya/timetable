@@ -24,4 +24,6 @@ public interface StudentPurchasedCourseMapper extends BaseMapper<StudentPurchase
     List<PurchasedCourseDTO> selectList(String StudentId);
 
     List<StudentPurchasedCourse> query(@Param("purchasedCourse") StudentPurchasedCourse purchasedCourse);
+
+    void updateBySchedule();
 }

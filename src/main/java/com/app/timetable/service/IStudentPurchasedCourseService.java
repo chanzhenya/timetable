@@ -24,4 +24,6 @@ public interface IStudentPurchasedCourseService extends IService<StudentPurchase
     int leaveAndTruancy(String studentId, TimetableStatus timetableStatus) throws Exception;
 
     List<StudentPurchasedCourse> query(StudentPurchasedCourse purchasedCourse) throws Exception;
+
+    void updateWithSchedule() throws Exception;
 }
