@@ -18,4 +18,6 @@ import org.apache.ibatis.annotations.Param;
 public interface SysUserMapper extends BaseMapper<SysUser> {
 
     IPage<SysUserDTO> selectPage(Page<SysUserDTO> page, @Param("user") SysUser user);
+
+    SysUser selectByOpenId(@Param("openId") String openId);
 }

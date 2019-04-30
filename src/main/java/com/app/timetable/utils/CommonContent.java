@@ -12,9 +12,11 @@ public class CommonContent {
     // token 有效时间
     public static final long LOGIN_EXPIRE_TIME = 60*60;
 
-//    public static final String FILE_PATH = "/usr/share/nginx/images/";
+    public static final String FILE_PATH = "/usr/share/nginx/images/";
 
-    public static final String FILE_PATH = "D:\\documents\\images\\";
+//    public static final String FILE_PATH = "D:\\documents\\images\\";
 
     public static final String IMAGE_URL = "http://47.107.239.122/";
+
+    public static final int EXPIRE_WEEK = 604800;
 }

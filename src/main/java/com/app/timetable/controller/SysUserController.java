@@ -2,19 +2,16 @@ package com.app.timetable.controller;
 
 
 import com.alibaba.fastjson.JSONObject;
-import com.app.timetable.dto.PurchasedCourseDTO;
 import com.app.timetable.dto.SysUserDTO;
-import com.app.timetable.dto.TeacherEvaluationDTO;
-import com.app.timetable.entity.Course;
 import com.app.timetable.entity.Picture;
 import com.app.timetable.entity.SysUser;
-import com.app.timetable.entity.TeacherEvaluation;
 import com.app.timetable.enums.UserType;
 import com.app.timetable.service.*;
 import com.app.timetable.utils.ClassObjectUtils;
 import com.app.timetable.utils.ResultVoUtil;
 import com.app.timetable.vo.ResultVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * <p>
@@ -54,8 +50,27 @@ public class SysUserController {
     private IStudentPurchasedCourseService purchasedCourseService;
 
     /**
-     * 用户注册
+     * 上传图片
      * @param multipartFile
+     * @return
+     */
+    @PostMapping("/uploadFile")
+    public ResultVo uploadFile(@RequestParam(value = "img")MultipartFile multipartFile,
+                               @RequestParam(value = "photoUrl", required = false) String photoUrl) {
+        try {
+            if(StringUtils.isNotBlank(photoUrl)) {
+                uploadFileService.delete(photoUrl);
+            }
+            Picture picture = uploadFileService.uploadFile(multipartFile);
+            return ResultVoUtil.success(picture.getImgUrl());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultVoUtil.error(e.getMessage());
+        }
+    }
+
+    /**
+     * 用户注册
      * @param account
      * @param imgUrl
      * @param openId
@@ -69,14 +84,13 @@ public class SysUserController {
      * @return
      */
     @PostMapping("/register")
-    public ResultVo register(@RequestParam(value = "photo", required = false)MultipartFile multipartFile,
+    public ResultVo register(@RequestParam(value = "photoUrl", required = false)String photoUrl,
                              @RequestParam("account") String account, @RequestParam(value = "imgUrl", required = false) String imgUrl,
                              @RequestParam("openId") String openId, @RequestParam(value = "username", required = false) String username,
                              @RequestParam(value = "name", required = false) String name, @RequestParam("phone") String phone,
                              @RequestParam(value = "gender",required = false) Integer gender, @RequestParam(value = "description", required = false)  String description,
                              @RequestParam("userType") Integer userType, HttpServletResponse response) {
         try {
-            Picture picture = uploadFileService.uploadFile(multipartFile);
             SysUser sysUser = new SysUser();
             sysUser.setId(ClassObjectUtils.getUUID());
             sysUser.setAccount(account);
@@ -88,7 +102,7 @@ public class SysUserController {
             sysUser.setPhone(phone);
             sysUser.setDescription(description);
             sysUser.setUserType(userType);
-            sysUser.setPhotoUrl(picture.getImgUrl());
+            sysUser.setPhotoUrl(photoUrl);
             sysUser.setCreateTime(LocalDateTime.now());
             userService.register(sysUser, response);
             return ResultVoUtil.success("注册成功");

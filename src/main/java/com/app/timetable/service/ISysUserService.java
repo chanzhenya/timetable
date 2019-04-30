@@ -24,4 +24,6 @@ public interface ISysUserService extends IService<SysUser> {
     IPage<SysUserDTO> selectPage(int pageNum, int pageSize, SysUser user) throws Exception;
 
     JSONObject studetnDetail(String userId) throws Exception;
+
+    SysUser selectByOpenId(String openId) throws Exception;
 }

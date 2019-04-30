@@ -28,6 +28,16 @@ public class ResultVoUtil {
         return resultVo;
     }
 
+    public static ResultVo success(Object obj, String token,String msg) {
+        ResultVo resultVo = new ResultVo();
+        resultVo.setStatus(true);
+        resultVo.setCode(ResultCode.SUCCESS.getCode());
+        resultVo.setMsg(msg);
+        resultVo.setData(obj);
+        resultVo.setToken(token);
+        return resultVo;
+    }
+
     public static ResultVo error(String msg) {
         ResultVo resultVo = new ResultVo();
         resultVo.setStatus(false);

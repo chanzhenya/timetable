@@ -69,4 +69,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         result.put("leaveNum",leaveNum);
         return result;
     }
+
+    @Override
+    public SysUser selectByOpenId(String openId) throws Exception {
+        return userMapper.selectByOpenId(openId);
+    }
 }

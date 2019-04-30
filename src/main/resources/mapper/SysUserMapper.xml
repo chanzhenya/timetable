@@ -39,4 +39,8 @@
         </where>
         ORDER BY score DESC
     </select>
+
+    <select id="selectByOpenId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT * FROM sys_user WHERE open_id = #{openId}
+    </select>
 </mapper>
