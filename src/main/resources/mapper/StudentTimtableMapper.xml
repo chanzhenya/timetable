@@ -42,7 +42,7 @@
                 AND t.course_id = #{timetable.courseId}
             </if>
             <if test="timetable.studentId != null and timetable.studentId != ''">
-                AND t.studentId = #{timetable.studentId}
+                AND t.student_id = #{timetable.studentId}
             </if>
         </where>
     </select>
@@ -65,4 +65,14 @@
           #{item.homework}, #{item.createTime})
       </foreach>
     </insert>
+
+    <select id="selectByIds" parameterType="java.util.List" resultMap="DetailResultMap">
+      SELECT st.id, st.course_time, tag.name course_name FROM student_timtable st
+      LEFT JOIN `course` c ON c.id = st.course_id
+      LEFT JOIN `tag` ON tag.id = c.tag_id
+      WHERE st.id IN
+      <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+          #{item}
+      </foreach>
+    </select>
 </mapper>

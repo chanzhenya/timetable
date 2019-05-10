@@ -44,9 +44,15 @@ public class StudentTimtableController {
      * @return
      */
     @PostMapping("/add")
-    public ResultVo add(@RequestParam("teacherTimetableIds") String[] teacherTimetableIds, @RequestParam("studentId") String studentId) {
+    public ResultVo add(@RequestParam("teacherTimetableIds") String teacherTimetableIds, @RequestParam("studentId") String studentId) {
         try {
-            List<StudentTimtable> studentTimtables = studentTimtableService.add(teacherTimetableIds,studentId);
+            JSONArray jsonArray = JSONArray.parseArray(teacherTimetableIds);
+            List<String> idArray = new ArrayList<>();
+            for(int i=0;i<jsonArray.size();i++) {
+                JSONObject obj = jsonArray.getJSONObject(i);
+                idArray.add(obj.getString("id"));
+            }
+            List<StudentTimetableDTO> studentTimtables = studentTimtableService.add(idArray, studentId);
             return ResultVoUtil.success(studentTimtables);
         } catch (Exception e) {
             e.printStackTrace();

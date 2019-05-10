@@ -58,9 +58,9 @@ public class StudentTimtableServiceImpl extends ServiceImpl<StudentTimtableMappe
     private ISysConfigService sysConfigService;
 
     @Override
-    public  List<StudentTimtable> add(String[] teacherTimetableIds, String studentId) throws Exception {
+    public  List<StudentTimetableDTO> add(List<String> teacherTimetableIds, String studentId) throws Exception {
         //获取预约课的详情
-        List<TeacherTimetable> teacherTimetables = teacherTimetableMapper.selectBatchIds(Arrays.asList(teacherTimetableIds));
+        List<TeacherTimetable> teacherTimetables = teacherTimetableMapper.selectBatchIds(teacherTimetableIds);
         List<String> courseIds = new ArrayList<>();
         for(TeacherTimetable teacherTimetable:teacherTimetables) {
             courseIds.add(teacherTimetable.getCourseId());
@@ -79,6 +79,7 @@ public class StudentTimtableServiceImpl extends ServiceImpl<StudentTimtableMappe
         List<StudentTimtable> newStudentTimtables = new ArrayList<>();
         List<AuditionLog> auditionLogList = new ArrayList<>();
         List<StudentPurchasedCourse> purchasedCourseList = new ArrayList<>();
+        List<String> ids = new ArrayList<>();
         for(TeacherTimetable teacherTimetable:teacherTimetables) {
             boolean flag1 = true; // 是否可以试听
             boolean flag2 = false; // 是否可以预约课程
@@ -124,6 +125,7 @@ public class StudentTimtableServiceImpl extends ServiceImpl<StudentTimtableMappe
                 }
                 studentTimtable.setCreateTime(LocalDateTime.now());
                 newStudentTimtables.add(studentTimtable);
+                ids.add(studentTimtable.getId());
             }
 
             if(flag1) { //添加试听记录
@@ -139,7 +141,7 @@ public class StudentTimtableServiceImpl extends ServiceImpl<StudentTimtableMappe
         studentTimtableMapper.insertByBatch(newStudentTimtables);
         auditionLogService.saveBatch(auditionLogList);
         studentPurchasedCourseService.updateBatchById(purchasedCourseList);
-        return newStudentTimtables;
+        return studentTimtableMapper.selectByIds(ids);
     }
 
     @Override

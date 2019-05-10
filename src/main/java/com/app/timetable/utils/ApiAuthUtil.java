@@ -13,13 +13,14 @@ import redis.clients.jedis.Jedis;
  */
 public class ApiAuthUtil {
 
-    public static String getToken(SysUser sysUser) {
+    public static String getToken(SysUser sysUser, String session_key) {
         String token = "";
         token = JWT.create().withAudience(sysUser.getId(),sysUser.getUserType().toString())
-                .sign(Algorithm.HMAC256(sysUser.getOpenId()));
+                .sign(Algorithm.HMAC256(session_key));
         Jedis jedis = RedisUtil.getJedis(sysUser.getId());
         JSONObject userJson = new JSONObject();
         userJson.put("openId",sysUser.getOpenId());
+        userJson.put("session_key",session_key);
         userJson.put("userType", sysUser.getUserType());
         jedis.set(sysUser.getId(),userJson.toJSONString());
         jedis.expire(sysUser.getId(),CommonContent.EXPIRE_WEEK); // token有效时间

@@ -24,4 +24,6 @@ public interface StudentTimtableMapper extends BaseMapper<StudentTimtable> {
     List<StudentTimetableDTO> selectByCourse(@Param("courseId") String courseId);
 
     void insertByBatch(List<StudentTimtable> timtableList);
+
+    List<StudentTimetableDTO> selectByIds(List<String> ids);
 }

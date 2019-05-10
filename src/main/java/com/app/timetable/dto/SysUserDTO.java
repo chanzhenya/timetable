@@ -21,6 +21,16 @@ public class SysUserDTO {
     private String account;
 
     /**
+     * 用户昵称
+     */
+    private String username;
+
+    /**
+     * 用户真实名称
+     */
+    private String name;
+
+    /**
      * 联系电话
      */
     private String phone;

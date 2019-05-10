@@ -22,7 +22,7 @@ public interface IStudentTimtableService extends IService<StudentTimtable> {
      * @param teacherTimetableIds
      * @throws Exception
      */
-    List<StudentTimtable> add(String[] teacherTimetableIds, String studentId) throws Exception;
+    List<StudentTimetableDTO> add(List<String> teacherTimetableIds, String studentId) throws Exception;
 
     IPage<StudentTimetableDTO> selectBuPage(int pageNum, int pageSize, StudentTimtable timtable);
 

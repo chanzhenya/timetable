@@ -50,7 +50,7 @@ public class StudentTimetableDTO {
     /**
      * 上课时间
      */
-    private LocalDateTime courseTime;
+    private String courseTime;
 
     /**
      * 课程类型

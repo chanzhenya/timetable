@@ -71,7 +71,6 @@ public class SysUserController {
 
     /**
      * 用户注册
-     * @param account
      * @param imgUrl
      * @param openId
      * @param username
@@ -85,19 +84,21 @@ public class SysUserController {
      */
     @PostMapping("/register")
     public ResultVo register(@RequestParam(value = "photoUrl", required = false)String photoUrl,
-                             @RequestParam("account") String account, @RequestParam(value = "imgUrl", required = false) String imgUrl,
+                             @RequestParam(value = "imgUrl", required = false) String imgUrl,
                              @RequestParam("openId") String openId, @RequestParam(value = "username", required = false) String username,
                              @RequestParam(value = "name", required = false) String name, @RequestParam("phone") String phone,
                              @RequestParam(value = "gender",required = false) Integer gender, @RequestParam(value = "description", required = false)  String description,
                              @RequestParam("userType") Integer userType, HttpServletResponse response) {
         try {
-            SysUser sysUser = new SysUser();
-            sysUser.setId(ClassObjectUtils.getUUID());
-            sysUser.setAccount(account);
+            SysUser sysUser = userService.selectByOpenId(openId);
+            if(sysUser == null) {
+                sysUser = new SysUser();
+            }
+            sysUser.setAccount(username);
             sysUser.setImgUrl(imgUrl);
             sysUser.setOpenId(openId);
             sysUser.setGender(gender);
-            sysUser.setUsename(username);
+            sysUser.setUsername(username);
             sysUser.setName(name);
             sysUser.setPhone(phone);
             sysUser.setDescription(description);

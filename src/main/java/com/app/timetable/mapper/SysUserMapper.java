@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * <p>
  *  Mapper 接口
@@ -20,4 +22,6 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
     IPage<SysUserDTO> selectPage(Page<SysUserDTO> page, @Param("user") SysUser user);
 
     SysUser selectByOpenId(@Param("openId") String openId);
+
+    IPage<SysUserDTO> selectMyStudents(Page<SysUserDTO> page, @Param("teacherId") String teacherId);
 }

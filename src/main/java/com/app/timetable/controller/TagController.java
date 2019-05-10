@@ -30,7 +30,6 @@ public class TagController {
     @Autowired
     private ITagService tagService;
 
-    @UserLoginToken
     @PostMapping("/add")
     public ResultVo add(@RequestParam("tagName") String tagName) {
         try {
@@ -43,7 +42,6 @@ public class TagController {
         }
     }
 
-    @UserLoginToken
     @PostMapping("/edit")
     public ResultVo edit(@RequestParam("tagId") String tagId, @RequestParam("tagName") String tagName) {
         try {
@@ -56,7 +54,6 @@ public class TagController {
         }
     }
 
-    @UserLoginToken
     @PostMapping("/delete")
     public ResultVo delete(@RequestParam("tagId") String tagId) {
         try {
@@ -68,7 +65,6 @@ public class TagController {
         }
     }
 
-    @UserLoginToken
     @PostMapping("/list")
     public ResultVo list(@RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
                          @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {

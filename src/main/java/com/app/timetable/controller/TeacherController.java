@@ -3,6 +3,7 @@ package com.app.timetable.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.app.timetable.dto.CourseDTO;
 import com.app.timetable.dto.PurchasedCourseDTO;
+import com.app.timetable.dto.SysUserDTO;
 import com.app.timetable.dto.TeacherEvaluationDTO;
 import com.app.timetable.entity.Course;
 import com.app.timetable.entity.SysUser;
@@ -63,6 +64,26 @@ public class TeacherController {
             result.put("evaluations",evaluationDTOS);
             result.put("teacher", sysUser);
             return ResultVoUtil.success(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultVoUtil.error(e.getMessage());
+        }
+    }
+
+    /**
+     * 教师名下的学生
+     * @param teacherId
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @PostMapping("/myStudents")
+    public ResultVo myStudents(@RequestParam("teacherId") String teacherId,
+                               @RequestParam(value = "pageNum", required = false,defaultValue = "1") int pageNum,
+                               @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+        try {
+            IPage<SysUserDTO> sysUserDTOIPage = userService.selectMyStudents(pageNum,pageSize,teacherId);
+            return ResultVoUtil.success(sysUserDTOIPage);
         } catch (Exception e) {
             e.printStackTrace();
             return ResultVoUtil.error(e.getMessage());

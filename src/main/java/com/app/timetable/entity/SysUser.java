@@ -23,7 +23,7 @@ public class SysUser implements Serializable {
     /**
      * 用户昵称
      */
-    private String usename;
+    private String username;
 
     /**
      * 用户真实姓名
@@ -39,6 +39,8 @@ public class SysUser implements Serializable {
      * 用户的微信open ID
      */
     private String openId;
+
+    private String unionId;
 
     /**
      * 联系电话
@@ -94,12 +96,12 @@ public class SysUser implements Serializable {
         this.id = id;
     }
 
-    public String getUsename() {
-        return usename;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUsename(String usename) {
-        this.usename = usename;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getName() {
@@ -124,6 +126,14 @@ public class SysUser implements Serializable {
 
     public void setOpenId(String openId) {
         this.openId = openId;
+    }
+
+    public String getUnionId() {
+        return unionId;
+    }
+
+    public void setUnionId(String unionId) {
+        this.unionId = unionId;
     }
 
     public String getPhone() {
@@ -202,7 +212,7 @@ public class SysUser implements Serializable {
     public String toString() {
         return "SysUser{" +
         "id=" + id +
-        ", usename=" + usename +
+        ", username=" + username +
         ", name=" + name +
         ", account=" + account +
         ", openId=" + openId +

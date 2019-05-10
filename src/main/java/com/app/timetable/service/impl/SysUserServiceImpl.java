@@ -7,6 +7,7 @@ import com.app.timetable.entity.SysUser;
 import com.app.timetable.mapper.StudentPurchasedCourseMapper;
 import com.app.timetable.mapper.SysUserMapper;
 import com.app.timetable.service.ISysUserService;
+import com.app.timetable.utils.ClassObjectUtils;
 import com.app.timetable.utils.CommonContent;
 import com.app.timetable.utils.CookieUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -38,7 +39,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public void register(SysUser sysUser, HttpServletResponse response) throws Exception {
-        userMapper.insert(sysUser);
+        if(StringUtils.isNotBlank(sysUser.getId())) {
+            userMapper.updateById(sysUser);
+        } else {
+            sysUser.setId(ClassObjectUtils.getUUID());
+            userMapper.insert(sysUser);
+        }
         String token = CookieUtil.getUUToken();
         CookieUtil.setTokenCookie(CommonContent.TOKEN_KEY,token, (int) CommonContent.LOGIN_EXPIRE_TIME, response);
     }
@@ -73,5 +79,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public SysUser selectByOpenId(String openId) throws Exception {
         return userMapper.selectByOpenId(openId);
+    }
+
+    @Override
+    public IPage<SysUserDTO> selectMyStudents(int pageNum, int pageSize, String teacherId) throws Exception {
+        Page<SysUserDTO> page = new Page<>(pageNum,pageSize);
+        return userMapper.selectMyStudents(page, teacherId);
     }
 }

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -42,7 +43,9 @@ public class StudentPurchasedCourseServiceImpl extends ServiceImpl<StudentPurcha
         //计算已购买的课程距离截止日期还有多少天
         for(PurchasedCourseDTO dto : dtoiPage.getRecords()) {
             if(PurchasedCourseStatus.VALID.getCode().equals(dto.getStatus())) {
-                Duration duration = Duration.between(LocalDateTime.now(),dto.getDueTime());
+                DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                LocalDateTime dueTime = LocalDateTime.parse(dto.getDueTime(),df);
+                Duration duration = Duration.between(LocalDateTime.now(),dueTime);
                 long days = duration.toDays();
                 if(days <= 0) {
                     dto.setStatus(PurchasedCourseStatus.INVALID.getCode());

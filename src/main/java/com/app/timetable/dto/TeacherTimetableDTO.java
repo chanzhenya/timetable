@@ -30,7 +30,7 @@ public class TeacherTimetableDTO {
 
     private Integer status;
 
-    private LocalDateTime courseTime;
+    private String courseTime;
 
     private List<StudentTimetableDTO> students = new ArrayList<>();
 }

@@ -27,11 +27,11 @@ public class PurchasedCourseDTO {
 
     private Integer remain;
 
-    private LocalDateTime dueTime;
+    private String dueTime;
 
     private Integer status;
 
-    private LocalDateTime createTime;
+    private String createTime;
 
     /**
      * 距离截止日期还有多少天

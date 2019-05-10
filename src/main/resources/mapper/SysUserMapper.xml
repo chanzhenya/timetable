@@ -5,7 +5,7 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.app.timetable.entity.SysUser">
         <id column="id" property="id" />
-        <result column="usename" property="usename" />
+        <result column="username" property="username" />
         <result column="name" property="name" />
         <result column="account" property="account" />
         <result column="open_id" property="openId" />
@@ -23,6 +23,8 @@
     <resultMap id="ListResultMap" type="com.app.timetable.dto.SysUserDTO">
         <id column="id" property="id" />
         <result column="account" property="account" />
+        <result column="username" property="username" />
+        <result column="name" property="name" />
         <result column="phone" property="phone" />
         <result column="img_url" property="imgUrl" />
         <result column="photo_url" property="photoUrl" />
@@ -42,5 +44,11 @@
 
     <select id="selectByOpenId" resultMap="BaseResultMap" parameterType="java.lang.String">
         SELECT * FROM sys_user WHERE open_id = #{openId}
+    </select>
+
+    <select id="selectMyStudents" resultMap="ListResultMap" parameterType="java.lang.String">
+        SELECT DISTINCT u.* FROM sys_user u
+        LEFT JOIN student_purchased_course spc ON spc.student_id = u.id
+        WHERE spc.teacher_id=#{teacherId}
     </select>
 </mapper>
