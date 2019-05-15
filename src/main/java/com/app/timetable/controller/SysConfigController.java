@@ -35,24 +35,14 @@ public class SysConfigController {
      */
     @PostMapping("/config")
     public ResultVo config(@RequestParam("number") Integer number) {
-        try {
-            configService.config(number);
-            return ResultVoUtil.success("设置成功");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultVoUtil.error(e.getMessage());
-        }
+        configService.config(number);
+        return ResultVoUtil.success("设置成功");
     }
 
     @GetMapping("/configInfo")
     public ResultVo getConfig() {
-        try {
-            SysConfig sysConfig = configService.getConfig();
-            return ResultVoUtil.success(sysConfig);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultVoUtil.error(e.getMessage());
-        }
+        SysConfig sysConfig = configService.getConfig();
+        return ResultVoUtil.success(sysConfig);
     }
 }
 

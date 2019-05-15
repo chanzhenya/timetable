@@ -28,18 +28,18 @@ public class TeacherTimetableServiceImpl extends ServiceImpl<TeacherTimetableMap
     private TeacherTimetableMapper timetableMapper;
 
     @Override
-    public IPage<TeacherTimetableDTO> selectByPage(int pageNum, int pageSize, TeacherTimetable timetable) throws Exception {
+    public IPage<TeacherTimetableDTO> selectByPage(int pageNum, int pageSize, TeacherTimetable timetable, String tagId) {
         Page<TeacherTimetableDTO> page = new Page<>(pageNum, pageSize);
-        return timetableMapper.selectByPage(page,timetable);
+        return timetableMapper.selectByPage(page,timetable, tagId);
     }
 
     @Override
-    public TeacherTimetableDTO selectDetailById(String id) throws Exception {
+    public TeacherTimetableDTO selectDetailById(String id) {
         return timetableMapper.selectDetailById(id);
     }
 
     @Override
-    public void update(TeacherTimetable timetable) throws Exception {
+    public void update(TeacherTimetable timetable) {
         UpdateWrapper<TeacherTimetable> updateWrapper = new UpdateWrapper<>();
         if(StringUtils.isNotBlank(timetable.getHomework())) {
             updateWrapper.set("homework",timetable.getHomework());

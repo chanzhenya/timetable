@@ -22,13 +22,13 @@ public interface IStudentTimtableService extends IService<StudentTimtable> {
      * @param teacherTimetableIds
      * @throws Exception
      */
-    List<StudentTimetableDTO> add(List<String> teacherTimetableIds, String studentId) throws Exception;
+    List<StudentTimetableDTO> add(List<String> teacherTimetableIds, String studentId);
 
     IPage<StudentTimetableDTO> selectBuPage(int pageNum, int pageSize, StudentTimtable timtable);
 
-    void signIn(StudentTimtable studentTimtable, String teacherTimetableId) throws Exception;
+    void signIn(StudentTimtable studentTimtable, String teacherTimetableId);
 
-    void publishHomework(String id, String homework) throws Exception;
+    void publishHomework(String id, String homework);
 
     /**
      * 学生请假和旷课处理
@@ -36,5 +36,5 @@ public interface IStudentTimtableService extends IService<StudentTimtable> {
      * @return
      * @throws Exception
      */
-    int leaveAndTruancy(StudentTimtable studentTimtable) throws Exception;
+    int leaveAndTruancy(StudentTimtable studentTimtable);
 }

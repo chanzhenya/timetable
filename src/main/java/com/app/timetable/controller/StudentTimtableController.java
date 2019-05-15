@@ -45,19 +45,14 @@ public class StudentTimtableController {
      */
     @PostMapping("/add")
     public ResultVo add(@RequestParam("teacherTimetableIds") String teacherTimetableIds, @RequestParam("studentId") String studentId) {
-        try {
-            JSONArray jsonArray = JSONArray.parseArray(teacherTimetableIds);
-            List<String> idArray = new ArrayList<>();
-            for(int i=0;i<jsonArray.size();i++) {
-                JSONObject obj = jsonArray.getJSONObject(i);
-                idArray.add(obj.getString("id"));
-            }
-            List<StudentTimetableDTO> studentTimtables = studentTimtableService.add(idArray, studentId);
-            return ResultVoUtil.success(studentTimtables);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultVoUtil.success(e.getMessage());
+        JSONArray jsonArray = JSONArray.parseArray(teacherTimetableIds);
+        List<String> idArray = new ArrayList<>();
+        for(int i=0;i<jsonArray.size();i++) {
+            JSONObject obj = jsonArray.getJSONObject(i);
+            idArray.add(obj.getString("id"));
         }
+        List<StudentTimetableDTO> studentTimtables = studentTimtableService.add(idArray, studentId);
+        return ResultVoUtil.success(studentTimtables);
     }
 
 
@@ -72,15 +67,10 @@ public class StudentTimtableController {
     public ResultVo list(@RequestParam(value = "studentId", required = false) String studentId,
                          @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
                          @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
-        try {
-            StudentTimtable timtable = new StudentTimtable();
-            timtable.setStudentId(studentId);
-            IPage<StudentTimetableDTO> dtoiPage = studentTimtableService.selectBuPage(pageNum,pageSize,timtable);
-            return ResultVoUtil.success(dtoiPage);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultVoUtil.error(e.getMessage());
-        }
+        StudentTimtable timtable = new StudentTimtable();
+        timtable.setStudentId(studentId);
+        IPage<StudentTimetableDTO> dtoiPage = studentTimtableService.selectBuPage(pageNum,pageSize,timtable);
+        return ResultVoUtil.success(dtoiPage);
     }
 
     /**
@@ -92,16 +82,11 @@ public class StudentTimtableController {
     @PostMapping("/signIn")
     public ResultVo signIn(@RequestParam("status") Integer status, @RequestParam("id") String id,
                            @RequestParam("teacherTimetableId") String teacherTimetableId) {
-        try {
-            StudentTimtable timtable = new StudentTimtable();
-            timtable.setId(id);
-            timtable.setStatus(status);
-            studentTimtableService.signIn(timtable,teacherTimetableId);
-            return ResultVoUtil.success("签到成功");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultVoUtil.error(e.getMessage());
-        }
+        StudentTimtable timtable = new StudentTimtable();
+        timtable.setId(id);
+        timtable.setStatus(status);
+        studentTimtableService.signIn(timtable,teacherTimetableId);
+        return ResultVoUtil.success("签到成功");
     }
 
     /**
@@ -112,13 +97,8 @@ public class StudentTimtableController {
      */
     @PostMapping("/homework")
     public ResultVo homework(@RequestParam("id") String id, @RequestParam("homework") String homework) {
-        try {
-            studentTimtableService.publishHomework(id,homework);
-            return ResultVoUtil.success("发布成功");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultVoUtil.error(e.getMessage());
-        }
+        studentTimtableService.publishHomework(id,homework);
+        return ResultVoUtil.success("发布成功");
     }
 
     /**
@@ -128,16 +108,11 @@ public class StudentTimtableController {
      */
     @PostMapping("/cancel")
     public ResultVo leave(@RequestParam("id") String id) {
-        try {
-            StudentTimtable timtable = new StudentTimtable();
-            timtable.setId(id);
-            timtable.setStatus(TimetableStatus.LEAVE.getCode());
-            int result = studentTimtableService.leaveAndTruancy(timtable);
-            return ResultVoUtil.success(result);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultVoUtil.error(e.getMessage());
-        }
+        StudentTimtable timtable = new StudentTimtable();
+        timtable.setId(id);
+        timtable.setStatus(TimetableStatus.LEAVE.getCode());
+        int result = studentTimtableService.leaveAndTruancy(timtable);
+        return ResultVoUtil.success(result);
     }
 }
 

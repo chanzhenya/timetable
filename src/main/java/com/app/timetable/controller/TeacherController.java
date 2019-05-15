@@ -48,26 +48,21 @@ public class TeacherController {
      */
     @PostMapping("/detail")
     public ResultVo detail(@RequestParam("teacherId") String teacherId) {
-        try {
-            JSONObject result = new JSONObject();
-            SysUser sysUser = userService.getById(teacherId);
-            Course queryCourse = new Course();
-            queryCourse.setTeacherId(sysUser.getId());
-            IPage<CourseDTO> courseIPage = courseService.selectPage(1,20,queryCourse);
-            List<CourseDTO> courseList = courseIPage.getRecords();
+        JSONObject result = new JSONObject();
+        SysUser sysUser = userService.getById(teacherId);
+        Course queryCourse = new Course();
+        queryCourse.setTeacherId(sysUser.getId());
+        IPage<CourseDTO> courseIPage = courseService.selectPage(1,20,queryCourse);
+        List<CourseDTO> courseList = courseIPage.getRecords();
 
-            TeacherEvaluation evaluation = new TeacherEvaluation();
-            evaluation.setTeacherId(sysUser.getId());
-            IPage<TeacherEvaluationDTO> evaluationDTOIPage = evaluationService.selectByPage(1,10,evaluation);
-            List<TeacherEvaluationDTO> evaluationDTOS = evaluationDTOIPage.getRecords();
-            result.put("courses",courseList);
-            result.put("evaluations",evaluationDTOS);
-            result.put("teacher", sysUser);
-            return ResultVoUtil.success(result);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultVoUtil.error(e.getMessage());
-        }
+        TeacherEvaluation evaluation = new TeacherEvaluation();
+        evaluation.setTeacherId(sysUser.getId());
+        IPage<TeacherEvaluationDTO> evaluationDTOIPage = evaluationService.selectByPage(1,10,evaluation);
+        List<TeacherEvaluationDTO> evaluationDTOS = evaluationDTOIPage.getRecords();
+        result.put("courses",courseList);
+        result.put("evaluations",evaluationDTOS);
+        result.put("teacher", sysUser);
+        return ResultVoUtil.success(result);
     }
 
     /**
@@ -81,12 +76,18 @@ public class TeacherController {
     public ResultVo myStudents(@RequestParam("teacherId") String teacherId,
                                @RequestParam(value = "pageNum", required = false,defaultValue = "1") int pageNum,
                                @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
-        try {
-            IPage<SysUserDTO> sysUserDTOIPage = userService.selectMyStudents(pageNum,pageSize,teacherId);
-            return ResultVoUtil.success(sysUserDTOIPage);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultVoUtil.error(e.getMessage());
-        }
+        IPage<SysUserDTO> sysUserDTOIPage = userService.selectMyStudents(pageNum,pageSize,teacherId);
+        return ResultVoUtil.success(sysUserDTOIPage);
+    }
+
+    /**
+     * 教师选项
+     * @param tagId
+     * @return
+     */
+    @PostMapping("/options")
+    public ResultVo options(@RequestParam("tagId") String tagId) {
+        List<SysUserDTO> options = userService.teacherOptions(tagId);
+        return ResultVoUtil.success(options);
     }
 }

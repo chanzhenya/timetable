@@ -19,11 +19,11 @@ import java.util.List;
  */
 public interface IStudentPurchasedCourseService extends IService<StudentPurchasedCourse> {
 
-    IPage<PurchasedCourseDTO> selectByPage(int pageNum, int pageSize, StudentPurchasedCourse purchasedCourse) throws Exception;
+    IPage<PurchasedCourseDTO> selectByPage(int pageNum, int pageSize, StudentPurchasedCourse purchasedCourse);
 
-    int leaveAndTruancy(String studentId, TimetableStatus timetableStatus) throws Exception;
+    int leaveAndTruancy(String studentId, TimetableStatus timetableStatus);
 
-    List<StudentPurchasedCourse> query(StudentPurchasedCourse purchasedCourse) throws Exception;
+    List<StudentPurchasedCourse> query(StudentPurchasedCourse purchasedCourse);
 
-    void updateWithSchedule() throws Exception;
+    void updateWithSchedule();
 }

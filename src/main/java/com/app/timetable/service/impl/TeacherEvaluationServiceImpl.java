@@ -25,7 +25,7 @@ public class TeacherEvaluationServiceImpl extends ServiceImpl<TeacherEvaluationM
     private TeacherEvaluationMapper evaluationMapper;
 
     @Override
-    public IPage<TeacherEvaluationDTO> selectByPage(int pageNum, int pageSize, TeacherEvaluation evaluation) throws Exception {
+    public IPage<TeacherEvaluationDTO> selectByPage(int pageNum, int pageSize, TeacherEvaluation evaluation) {
         Page<TeacherEvaluationDTO> page = new Page<>(pageNum,pageSize);
         return evaluationMapper.selectByPage(page,evaluation);
     }

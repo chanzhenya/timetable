@@ -3,6 +3,7 @@ package com.app.timetable.controller;
 import com.app.timetable.exception.MyException;
 import com.app.timetable.utils.ResultVoUtil;
 import com.app.timetable.vo.ResultVo;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -42,6 +43,9 @@ public class MyControllerAdvice {
     @ExceptionHandler(value = Exception.class)
     public ResultVo errorHandler(Exception ex) {
         ex.printStackTrace();
+        if(ex instanceof DataIntegrityViolationException) {
+            return ResultVoUtil.error("数据删除失败，该数据真正被引不可删除");
+        }
         return ResultVoUtil.error(ex.getMessage());
     }
 

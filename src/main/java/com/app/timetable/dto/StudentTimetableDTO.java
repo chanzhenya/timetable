@@ -73,4 +73,9 @@ public class StudentTimetableDTO {
      * 课后作业
      */
     private String cousreHomework;
+
+    /**
+     * 请假次数
+     */
+    private Integer leaveNum;
 }

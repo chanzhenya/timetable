@@ -48,22 +48,17 @@ public class StorePictureController {
      */
     @PostMapping("/add")
     public ResultVo add(@RequestParam("images")MultipartFile[] images) {
-        try {
-            List<StorePicture> pictureList = new ArrayList<>();
-            for(MultipartFile img:images) {
-                Picture p = uploadFileService.uploadFile(img);
-                StorePicture picture = new StorePicture();
-                picture.setId(ClassObjectUtils.getUUID());
-                picture.setImgUrl(p.getImgUrl());
-                picture.setCreateTime(LocalDateTime.now());
-                pictureList.add(picture);
-            }
-            pictureService.saveBatch(pictureList);
-            return ResultVoUtil.success("上传成功");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultVoUtil.error(e.getMessage());
+        List<StorePicture> pictureList = new ArrayList<>();
+        for(MultipartFile img:images) {
+            Picture p = uploadFileService.uploadFile(img);
+            StorePicture picture = new StorePicture();
+            picture.setId(ClassObjectUtils.getUUID());
+            picture.setImgUrl(p.getImgUrl());
+            picture.setCreateTime(LocalDateTime.now());
+            pictureList.add(picture);
         }
+        pictureService.saveBatch(pictureList);
+        return ResultVoUtil.success("上传成功");
     }
 
     /**
@@ -75,13 +70,8 @@ public class StorePictureController {
     @PostMapping("/list")
     public ResultVo list(@RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
                          @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
-        try {
-            IPage<StorePicture> storePictureIPage = pictureService.selectByPage(pageNum,pageSize);
-            return ResultVoUtil.success(storePictureIPage);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultVoUtil.error(e.getMessage());
-        }
+        IPage<StorePicture> storePictureIPage = pictureService.selectByPage(pageNum,pageSize);
+        return ResultVoUtil.success(storePictureIPage);
     }
 
     /**
@@ -91,13 +81,8 @@ public class StorePictureController {
      */
     @PostMapping("/delete")
     public ResultVo delete(@RequestParam("pictureId") String pictureId) {
-        try {
-            pictureService.removeById(pictureId);
-            return ResultVoUtil.success("删除成功");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return ResultVoUtil.error(ex.getMessage());
-        }
+        pictureService.removeById(pictureId);
+        return ResultVoUtil.success("删除成功");
     }
 }
 

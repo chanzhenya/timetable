@@ -37,7 +37,7 @@ public class StudentPurchasedCourseServiceImpl extends ServiceImpl<StudentPurcha
     private ISysConfigService configService;
 
     @Override
-    public IPage<PurchasedCourseDTO> selectByPage(int pageNum, int pageSize, StudentPurchasedCourse purchasedCourse) throws Exception {
+    public IPage<PurchasedCourseDTO> selectByPage(int pageNum, int pageSize, StudentPurchasedCourse purchasedCourse) {
         Page<PurchasedCourseDTO> purchasedCourseDTOPage = new Page<>(pageNum,pageSize);
         IPage<PurchasedCourseDTO> dtoiPage = purchasedCourseMapper.selectByPage(purchasedCourseDTOPage,purchasedCourse);
         //计算已购买的课程距离截止日期还有多少天
@@ -58,7 +58,7 @@ public class StudentPurchasedCourseServiceImpl extends ServiceImpl<StudentPurcha
     }
 
     @Override
-    public int leaveAndTruancy(String studentId, TimetableStatus timetableStatus) throws Exception {
+    public int leaveAndTruancy(String studentId, TimetableStatus timetableStatus) {
         StudentPurchasedCourse purchasedCourse = purchasedCourseMapper.selectById(studentId);
         List<SysConfig> sysConfigs = configService.list();
         SysConfig sysConfig = sysConfigs.get(0);
@@ -78,12 +78,12 @@ public class StudentPurchasedCourseServiceImpl extends ServiceImpl<StudentPurcha
     }
 
     @Override
-    public List<StudentPurchasedCourse> query(StudentPurchasedCourse purchasedCourse) throws Exception {
+    public List<StudentPurchasedCourse> query(StudentPurchasedCourse purchasedCourse) {
         return purchasedCourseMapper.query(purchasedCourse);
     }
 
     @Override
-    public void updateWithSchedule() throws Exception {
+    public void updateWithSchedule() {
         purchasedCourseMapper.updateBySchedule();
     }
 }

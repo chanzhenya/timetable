@@ -55,24 +55,19 @@ public class CourseController {
     public ResultVo add(@RequestParam("tagId") String tagId,@RequestParam("price")BigDecimal price, @RequestParam("period") Integer period,
                         @RequestParam("descreption") String descreption, @RequestParam("teacherId") String teacherId,
                         @RequestParam("image") MultipartFile multipartFile) {
-        try {
-            Picture picture = uploadFileService.uploadFile(multipartFile);
-            Course course = new Course();
-            course.setId(ClassObjectUtils.getUUID());
-            course.setTagId(tagId);
-            course.setPeriod(period);
-            course.setPrice(price);
-            course.setDescreption(descreption);
-            course.setTeacherId(teacherId);
-            course.setImgUrl(picture.getImgUrl());
-            course.setStatus(CourseStatus.PUBLISHED.getCode());
-            course.setCreateTime(LocalDateTime.now());
-            courseService.save(course);
-            return ResultVoUtil.success("新增成功");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultVoUtil.error(e.getMessage());
-        }
+        Picture picture = uploadFileService.uploadFile(multipartFile);
+        Course course = new Course();
+        course.setId(ClassObjectUtils.getUUID());
+        course.setTagId(tagId);
+        course.setPeriod(period);
+        course.setPrice(price);
+        course.setDescreption(descreption);
+        course.setTeacherId(teacherId);
+        course.setImgUrl(picture.getImgUrl());
+        course.setStatus(CourseStatus.PUBLISHED.getCode());
+        course.setCreateTime(LocalDateTime.now());
+        courseService.save(course);
+        return ResultVoUtil.success("新增成功");
     }
 
     /**
@@ -91,32 +86,27 @@ public class CourseController {
                          @RequestParam(value = "descreption", required = false) String descreption,
                          @RequestParam("teacherId") String teacherId,  @RequestParam("courseId") String courseId,
                          @RequestParam(value = "image", required = false) MultipartFile multipartFile) {
-        try {
-            Course course = courseService.getById(courseId);
-            if(course != null) {
-                if(multipartFile != null) {
-                    uploadFileService.delete(course.getImgUrl());
-                    Picture picture = uploadFileService.uploadFile(multipartFile);
-                    course.setImgUrl(picture.getImgUrl());
-                }
-                if(period != null) {
-                    course.setPeriod(period);
-                }
-                if(price != null) {
-                    course.setPrice(price);
-                }
-                if(StringUtils.isNotBlank(descreption)) {
-                    course.setDescreption(descreption);
-                }
-                course.setTeacherId(teacherId);
-                courseService.updateById(course);
-                return ResultVoUtil.success("更新成功");
-            } else {
-                return ResultVoUtil.error("课程不存在");
+        Course course = courseService.getById(courseId);
+        if(course != null) {
+            if(multipartFile != null) {
+                uploadFileService.delete(course.getImgUrl());
+                Picture picture = uploadFileService.uploadFile(multipartFile);
+                course.setImgUrl(picture.getImgUrl());
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultVoUtil.error(e.getMessage());
+            if(period != null) {
+                course.setPeriod(period);
+            }
+            if(price != null) {
+                course.setPrice(price);
+            }
+            if(StringUtils.isNotBlank(descreption)) {
+                course.setDescreption(descreption);
+            }
+            course.setTeacherId(teacherId);
+            courseService.updateById(course);
+            return ResultVoUtil.success("更新成功");
+        } else {
+            return ResultVoUtil.error("课程不存在");
         }
     }
 
@@ -132,16 +122,11 @@ public class CourseController {
                          @RequestParam(value = "status", required = false) Integer status,
                          @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
                          @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
-        try {
-            Course course = new Course();
-            course.setStatus(status);
-            course.setTeacherId(teacherId);
-            IPage<CourseDTO> courseIPage = courseService.selectPage(pageNum,pageSize,course);
-            return ResultVoUtil.success(courseIPage);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultVoUtil.error(e.getMessage());
-        }
+        Course course = new Course();
+        course.setStatus(status);
+        course.setTeacherId(teacherId);
+        IPage<CourseDTO> courseIPage = courseService.selectPage(pageNum,pageSize,course);
+        return ResultVoUtil.success(courseIPage);
     }
 
     /**
@@ -151,13 +136,8 @@ public class CourseController {
      */
     @PostMapping("/detail")
     public ResultVo detail(@RequestParam("courseId") String courseId) {
-        try {
-            CourseDTO course = courseService.selectDetailById(courseId);
-            return ResultVoUtil.success(course);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultVoUtil.error(e.getMessage());
-        }
+        CourseDTO course = courseService.selectDetailById(courseId);
+        return ResultVoUtil.success(course);
     }
 
     /**
@@ -167,13 +147,8 @@ public class CourseController {
      */
     @PostMapping("/delete")
     public ResultVo delete(@RequestParam("courseId") String courseId) {
-        try {
-            courseService.removeById(courseId);
-            return ResultVoUtil.success("删除成功");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultVoUtil.error(e.getMessage());
-        }
+        courseService.removeById(courseId);
+        return ResultVoUtil.success("删除成功");
     }
 }
 

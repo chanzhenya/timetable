@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * <p>
@@ -19,13 +20,15 @@ import javax.servlet.http.HttpServletResponse;
  */
 public interface ISysUserService extends IService<SysUser> {
 
-    void register(SysUser sysUser, HttpServletResponse response) throws Exception;
+    void register(SysUser sysUser, HttpServletResponse response);
 
-    IPage<SysUserDTO> selectPage(int pageNum, int pageSize, SysUser user) throws Exception;
+    IPage<SysUserDTO> selectPage(int pageNum, int pageSize, SysUser user);
 
-    JSONObject studetnDetail(String userId) throws Exception;
+    JSONObject studetnDetail(String userId);
 
-    SysUser selectByOpenId(String openId) throws Exception;
+    SysUser selectByOpenId(String openId);
 
-    IPage<SysUserDTO> selectMyStudents(int pageNum, int pageSize, String teacherId) throws Exception;
+    IPage<SysUserDTO> selectMyStudents(int pageNum, int pageSize, String teacherId);
+
+    List<SysUserDTO> teacherOptions(String tagId);
 }

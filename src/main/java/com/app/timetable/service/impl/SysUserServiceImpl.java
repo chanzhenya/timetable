@@ -38,7 +38,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     private StudentPurchasedCourseMapper purchasedCourseMapper;
 
     @Override
-    public void register(SysUser sysUser, HttpServletResponse response) throws Exception {
+    public void register(SysUser sysUser, HttpServletResponse response) {
         if(StringUtils.isNotBlank(sysUser.getId())) {
             userMapper.updateById(sysUser);
         } else {
@@ -50,13 +50,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public IPage<SysUserDTO> selectPage(int pageNum, int pageSize, SysUser user) throws Exception {
+    public IPage<SysUserDTO> selectPage(int pageNum, int pageSize, SysUser user) {
         Page<SysUserDTO> page = new Page<>(pageNum,pageSize);
         return userMapper.selectPage(page,user);
     }
 
     @Override
-    public JSONObject studetnDetail(String userId) throws Exception {
+    public JSONObject studetnDetail(String userId) {
         List<PurchasedCourseDTO> list = purchasedCourseMapper.selectList(userId);
         String teachers = "";
         Integer truancyNum = 0; // 旷课次数
@@ -77,13 +77,18 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public SysUser selectByOpenId(String openId) throws Exception {
+    public SysUser selectByOpenId(String openId) {
         return userMapper.selectByOpenId(openId);
     }
 
     @Override
-    public IPage<SysUserDTO> selectMyStudents(int pageNum, int pageSize, String teacherId) throws Exception {
+    public IPage<SysUserDTO> selectMyStudents(int pageNum, int pageSize, String teacherId) {
         Page<SysUserDTO> page = new Page<>(pageNum,pageSize);
         return userMapper.selectMyStudents(page, teacherId);
+    }
+
+    @Override
+    public List<SysUserDTO> teacherOptions(String tagId) {
+        return userMapper.teacherOptions(tagId);
     }
 }

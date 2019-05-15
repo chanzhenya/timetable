@@ -25,7 +25,7 @@ public class StorePictureServiceImpl extends ServiceImpl<StorePictureMapper, Sto
     private StorePictureMapper storePictureMapper;
 
     @Override
-    public IPage<StorePicture> selectByPage(int pageNum, int pageSize) throws Exception {
+    public IPage<StorePicture> selectByPage(int pageNum, int pageSize) {
         Page<StorePicture> page = new Page<>(pageNum,pageSize);
         QueryWrapper<StorePicture> queryWrapper = new QueryWrapper<>();
         queryWrapper.orderByDesc("create_time");

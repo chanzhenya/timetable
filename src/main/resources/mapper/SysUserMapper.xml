@@ -51,4 +51,10 @@
         LEFT JOIN student_purchased_course spc ON spc.student_id = u.id
         WHERE spc.teacher_id=#{teacherId}
     </select>
+
+    <select id="teacherOptions" parameterType="java.lang.String" resultMap="ListResultMap">
+        SELECT u.* FROM sys_user u
+        LEFT JOIN course c ON c.teacher_id = u.id
+        WHERE c.tag_id = #{tagId}
+    </select>
 </mapper>

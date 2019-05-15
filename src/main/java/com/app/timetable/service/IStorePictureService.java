@@ -14,5 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IStorePictureService extends IService<StorePicture> {
 
-    IPage<StorePicture> selectByPage(int pageNum, int pageSize) throws Exception;
+    IPage<StorePicture> selectByPage(int pageNum, int pageSize);
 }

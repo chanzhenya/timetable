@@ -46,21 +46,16 @@ public class TeacherTimetableController {
     @PostMapping("/add")
     public ResultVo add(@RequestParam("courseId") String courseId, @RequestParam("teacherId") String teacherId,
                         @RequestParam("number") Integer number, @RequestParam("courseTime") long courseTime) {
-        try {
-            TeacherTimetable timetable = new TeacherTimetable();
-            timetable.setId(ClassObjectUtils.getUUID());
-            timetable.setTeacherId(teacherId);
-            timetable.setCourseId(courseId);
-            timetable.setNumber(number);
-            timetable.setCourseTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(courseTime), ZoneId.of("Asia/Shanghai")));
-            timetable.setCreateTime(LocalDateTime.now());
-            timetable.setStatus(TimetableStatus.VALID.getCode());
-            teacherTimetableService.save(timetable);
-            return ResultVoUtil.success("添加成功");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultVoUtil.error(e.getMessage());
-        }
+        TeacherTimetable timetable = new TeacherTimetable();
+        timetable.setId(ClassObjectUtils.getUUID());
+        timetable.setTeacherId(teacherId);
+        timetable.setCourseId(courseId);
+        timetable.setNumber(number);
+        timetable.setCourseTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(courseTime), ZoneId.of("Asia/Shanghai")));
+        timetable.setCreateTime(LocalDateTime.now());
+        timetable.setStatus(TimetableStatus.VALID.getCode());
+        teacherTimetableService.save(timetable);
+        return ResultVoUtil.success("添加成功");
     }
 
     /**
@@ -73,18 +68,14 @@ public class TeacherTimetableController {
     @PostMapping("/list")
     public ResultVo list(@RequestParam(value = "teacherId", required = false) String teacherId,
                          @RequestParam(value = "courseId", required = false) String courseId,
+                         @RequestParam(value = "tagId", required = false) String tagId,
                          @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
                          @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
-        try {
-            TeacherTimetable timetable = new TeacherTimetable();
-            timetable.setTeacherId(teacherId);
-            timetable.setCourseId(courseId);
-            IPage<TeacherTimetableDTO> teacherTimetableIPage = teacherTimetableService.selectByPage(pageNum,pageSize,timetable);
-            return ResultVoUtil.success(teacherTimetableIPage);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultVoUtil.error(e.getMessage());
-        }
+        TeacherTimetable timetable = new TeacherTimetable();
+        timetable.setTeacherId(teacherId);
+        timetable.setCourseId(courseId);
+        IPage<TeacherTimetableDTO> teacherTimetableIPage = teacherTimetableService.selectByPage(pageNum,pageSize,timetable,tagId);
+        return ResultVoUtil.success(teacherTimetableIPage);
     }
 
     /**
@@ -94,13 +85,8 @@ public class TeacherTimetableController {
      */
     @PostMapping("/detail")
     public ResultVo detail(@RequestParam("timetableId") String timetableId) {
-        try {
-            TeacherTimetableDTO dto = teacherTimetableService.selectDetailById(timetableId);
-            return ResultVoUtil.success(dto);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultVoUtil.error(e.getMessage());
-        }
+        TeacherTimetableDTO dto = teacherTimetableService.selectDetailById(timetableId);
+        return ResultVoUtil.success(dto);
     }
 
     /**
@@ -112,16 +98,11 @@ public class TeacherTimetableController {
     @PostMapping("/edit")
     public ResultVo edit(@RequestParam("timetableId") String timetableId,
                          @RequestParam(value = "homework", required = false) String homework) {
-        try {
-            TeacherTimetable timetable = new TeacherTimetable();
-            timetable.setId(timetableId);
-            timetable.setHomework(homework);
-            teacherTimetableService.update(timetable);
-            return ResultVoUtil.success("更新成功");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultVoUtil.error(e.getMessage());
-        }
+        TeacherTimetable timetable = new TeacherTimetable();
+        timetable.setId(timetableId);
+        timetable.setHomework(homework);
+        teacherTimetableService.update(timetable);
+        return ResultVoUtil.success("更新成功");
     }
 }
 

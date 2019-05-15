@@ -43,20 +43,15 @@ public class TeacherEvaluationController {
     @PostMapping("/add")
     public ResultVo add(@RequestParam("studentId") String studentId, @RequestParam("teacherId") String teacherId,
                         @RequestParam(value = "score", required = false) double score, @RequestParam(value = "content", required = false) String content) {
-        try {
-            TeacherEvaluation evaluation = new TeacherEvaluation();
-            evaluation.setId(ClassObjectUtils.getUUID());
-            evaluation.setStudentId(studentId);
-            evaluation.setTeacherId(teacherId);
-            evaluation.setScore(score);
-            evaluation.setContent(content);
-            evaluation.setCreateTime(LocalDateTime.now());
-            teacherEvaluationService.save(evaluation);
-            return ResultVoUtil.success("提交成功");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultVoUtil.error(e.getMessage());
-        }
+        TeacherEvaluation evaluation = new TeacherEvaluation();
+        evaluation.setId(ClassObjectUtils.getUUID());
+        evaluation.setStudentId(studentId);
+        evaluation.setTeacherId(teacherId);
+        evaluation.setScore(score);
+        evaluation.setContent(content);
+        evaluation.setCreateTime(LocalDateTime.now());
+        teacherEvaluationService.save(evaluation);
+        return ResultVoUtil.success("提交成功");
     }
 
     /**
@@ -72,16 +67,11 @@ public class TeacherEvaluationController {
                          @RequestParam(value = "studentId", required = false) String studentId,
                          @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
                          @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
-        try {
-            TeacherEvaluation evaluation = new TeacherEvaluation();
-            evaluation.setTeacherId(teacherId);
-            evaluation.setStudentId(studentId);
-            IPage<TeacherEvaluationDTO> evaluationDTOIPage = teacherEvaluationService.selectByPage(pageNum,pageSize,evaluation);
-            return ResultVoUtil.success(evaluationDTOIPage);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultVoUtil.error(e.getMessage());
-        }
+        TeacherEvaluation evaluation = new TeacherEvaluation();
+        evaluation.setTeacherId(teacherId);
+        evaluation.setStudentId(studentId);
+        IPage<TeacherEvaluationDTO> evaluationDTOIPage = teacherEvaluationService.selectByPage(pageNum,pageSize,evaluation);
+        return ResultVoUtil.success(evaluationDTOIPage);
     }
 
     /**
@@ -91,13 +81,8 @@ public class TeacherEvaluationController {
      */
     @PostMapping("/delete")
     public ResultVo delete(@RequestParam("id") String id) {
-        try {
-            teacherEvaluationService.removeById(id);
-            return ResultVoUtil.success("删除成功");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultVoUtil.error(e.getMessage());
-        }
+        teacherEvaluationService.removeById(id);
+        return ResultVoUtil.success("删除成功");
     }
 }
 

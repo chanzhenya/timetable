@@ -15,9 +15,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ITeacherTimetableService extends IService<TeacherTimetable> {
 
-    IPage<TeacherTimetableDTO> selectByPage(int pageNum, int pageSize, TeacherTimetable timetable) throws Exception;
+    IPage<TeacherTimetableDTO> selectByPage(int pageNum, int pageSize, TeacherTimetable timetable, String tagId);
 
-    TeacherTimetableDTO selectDetailById(String id) throws Exception;
+    TeacherTimetableDTO selectDetailById(String id);
 
-    void update(TeacherTimetable timetable) throws Exception;
+    void update(TeacherTimetable timetable);
 }

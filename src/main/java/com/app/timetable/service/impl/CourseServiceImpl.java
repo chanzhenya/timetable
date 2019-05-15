@@ -28,13 +28,13 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     private CourseMapper courseMapper;
 
     @Override
-    public IPage<CourseDTO> selectPage(int pageNum, int pageSize, Course course) throws Exception {
+    public IPage<CourseDTO> selectPage(int pageNum, int pageSize, Course course) {
         Page<CourseDTO> page = new Page<>(pageNum,pageSize);
         return courseMapper.selectByPage(page,course);
     }
 
     @Override
-    public CourseDTO selectDetailById(String courseId) throws Exception {
+    public CourseDTO selectDetailById(String courseId) {
         return courseMapper.selectDetailById(courseId);
     }
 }

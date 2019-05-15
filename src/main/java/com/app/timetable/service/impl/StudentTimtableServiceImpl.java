@@ -58,7 +58,7 @@ public class StudentTimtableServiceImpl extends ServiceImpl<StudentTimtableMappe
     private ISysConfigService sysConfigService;
 
     @Override
-    public  List<StudentTimetableDTO> add(List<String> teacherTimetableIds, String studentId) throws Exception {
+    public  List<StudentTimetableDTO> add(List<String> teacherTimetableIds, String studentId) {
         //获取预约课的详情
         List<TeacherTimetable> teacherTimetables = teacherTimetableMapper.selectBatchIds(teacherTimetableIds);
         List<String> courseIds = new ArrayList<>();
@@ -140,7 +140,9 @@ public class StudentTimtableServiceImpl extends ServiceImpl<StudentTimtableMappe
 
         studentTimtableMapper.insertByBatch(newStudentTimtables);
         auditionLogService.saveBatch(auditionLogList);
-        studentPurchasedCourseService.updateBatchById(purchasedCourseList);
+        if(!purchasedCourseList.isEmpty()) {
+            studentPurchasedCourseService.updateBatchById(purchasedCourseList);
+        }
         return studentTimtableMapper.selectByIds(ids);
     }
 
@@ -151,7 +153,7 @@ public class StudentTimtableServiceImpl extends ServiceImpl<StudentTimtableMappe
     }
 
     @Override
-    public void signIn(StudentTimtable studentTimtable, String teacherTimetableId) throws Exception {
+    public void signIn(StudentTimtable studentTimtable, String teacherTimetableId) {
         update(studentTimtable);
 
         //更新教师课表，教师已上课
@@ -163,7 +165,7 @@ public class StudentTimtableServiceImpl extends ServiceImpl<StudentTimtableMappe
     }
 
     @Override
-    public void publishHomework(String id, String homework) throws Exception {
+    public void publishHomework(String id, String homework) {
         StudentTimtable studentTimtable = new StudentTimtable();
         studentTimtable.setId(id);
         studentTimtable.setHomework(homework);
@@ -171,7 +173,7 @@ public class StudentTimtableServiceImpl extends ServiceImpl<StudentTimtableMappe
     }
 
     @Override
-    public int leaveAndTruancy(StudentTimtable studentTimtable) throws Exception {
+    public int leaveAndTruancy(StudentTimtable studentTimtable) {
         StudentTimtable timtable = studentTimtableMapper.selectById(studentTimtable.getId());
         //获取该已购买课程信息
         StudentPurchasedCourse res = new StudentPurchasedCourse();

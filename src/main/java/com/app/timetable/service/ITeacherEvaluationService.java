@@ -15,5 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ITeacherEvaluationService extends IService<TeacherEvaluation> {
 
-    IPage<TeacherEvaluationDTO> selectByPage(int pageNum, int pageSize, TeacherEvaluation evaluation) throws Exception;
+    IPage<TeacherEvaluationDTO> selectByPage(int pageNum, int pageSize, TeacherEvaluation evaluation);
 }

@@ -13,7 +13,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ISysConfigService extends IService<SysConfig> {
 
-    void config(int number) throws Exception;
+    void config(int number);
 
-    SysConfig getConfig() throws Exception;
+    SysConfig getConfig();
 }

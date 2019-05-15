@@ -28,7 +28,7 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
     private SysConfigMapper sysConfigMapper;
 
     @Override
-    public void config(int number) throws Exception {
+    public void config(int number) {
         sysConfigMapper.deleteAll();
         SysConfig sysConfig = new SysConfig();
         sysConfig.setId(ClassObjectUtils.getUUID());
@@ -39,7 +39,7 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
     }
 
     @Override
-    public SysConfig getConfig() throws Exception {
+    public SysConfig getConfig() {
         List<SysConfig> sysConfigs = sysConfigMapper.selectAll();
         return sysConfigs.size() > 0 ? sysConfigs.get(0) : null;
     }

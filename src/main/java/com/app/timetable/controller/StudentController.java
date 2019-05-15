@@ -43,19 +43,14 @@ public class StudentController {
      */
     @PostMapping("/detail")
     public ResultVo detail(@RequestParam("studentId") String studentId) {
-        try {
-            JSONObject result = new JSONObject();
-            SysUser sysUser = userService.getById(studentId);
-            StudentPurchasedCourse purchasedCourse = new StudentPurchasedCourse();
-            purchasedCourse.setStudentId(sysUser.getId());
-            IPage<PurchasedCourseDTO> courseDTOIPage = purchasedCourseService.selectByPage(1,10,purchasedCourse);
-            List<PurchasedCourseDTO> purchasedCourses = courseDTOIPage.getRecords();
-            result.put("purchasedCourses",purchasedCourses);
-            result.put("student", sysUser);
-            return ResultVoUtil.success(result);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultVoUtil.error(e.getMessage());
-        }
+        JSONObject result = new JSONObject();
+        SysUser sysUser = userService.getById(studentId);
+        StudentPurchasedCourse purchasedCourse = new StudentPurchasedCourse();
+        purchasedCourse.setStudentId(sysUser.getId());
+        IPage<PurchasedCourseDTO> courseDTOIPage = purchasedCourseService.selectByPage(1,10,purchasedCourse);
+        List<PurchasedCourseDTO> purchasedCourses = courseDTOIPage.getRecords();
+        result.put("purchasedCourses",purchasedCourses);
+        result.put("student", sysUser);
+        return ResultVoUtil.success(result);
     }
 }

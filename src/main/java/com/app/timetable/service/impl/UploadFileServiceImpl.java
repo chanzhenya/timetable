@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,7 +27,7 @@ public class UploadFileServiceImpl implements UploadFileService {
     private PictureMapper pictureMapper;
 
     @Override
-    public Picture uploadFile(MultipartFile multipartFile) throws Exception {
+    public Picture uploadFile(MultipartFile multipartFile) {
         if(multipartFile == null) {
             return new Picture();
         }
@@ -50,15 +51,19 @@ public class UploadFileServiceImpl implements UploadFileService {
         }
 
         //将文件写到服务器上指定的文件中
-        multipartFile.transferTo(dest);
-        picture.setImgPath(CommonContent.FILE_PATH+filename);
-        picture.setImgUrl(CommonContent.IMAGE_URL+filename);
-        pictureMapper.insert(picture);
+        try {
+            multipartFile.transferTo(dest);
+            picture.setImgPath(CommonContent.FILE_PATH + filename);
+            picture.setImgUrl(CommonContent.IMAGE_URL + filename);
+            pictureMapper.insert(picture);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return picture;
     }
 
     @Override
-    public void delete(String imgUrl) throws Exception {
+    public void delete(String imgUrl) {
         QueryWrapper<Picture> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("img_url",imgUrl);
         List<Picture> pictures = pictureMapper.selectList(queryWrapper);

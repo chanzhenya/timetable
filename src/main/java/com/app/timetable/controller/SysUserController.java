@@ -57,16 +57,11 @@ public class SysUserController {
     @PostMapping("/uploadFile")
     public ResultVo uploadFile(@RequestParam(value = "img")MultipartFile multipartFile,
                                @RequestParam(value = "photoUrl", required = false) String photoUrl) {
-        try {
-            if(StringUtils.isNotBlank(photoUrl)) {
-                uploadFileService.delete(photoUrl);
-            }
-            Picture picture = uploadFileService.uploadFile(multipartFile);
-            return ResultVoUtil.success(picture.getImgUrl());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultVoUtil.error(e.getMessage());
+        if(StringUtils.isNotBlank(photoUrl)) {
+            uploadFileService.delete(photoUrl);
         }
+        Picture picture = uploadFileService.uploadFile(multipartFile);
+        return ResultVoUtil.success(picture.getImgUrl());
     }
 
     /**
@@ -89,28 +84,23 @@ public class SysUserController {
                              @RequestParam(value = "name", required = false) String name, @RequestParam("phone") String phone,
                              @RequestParam(value = "gender",required = false) Integer gender, @RequestParam(value = "description", required = false)  String description,
                              @RequestParam("userType") Integer userType, HttpServletResponse response) {
-        try {
-            SysUser sysUser = userService.selectByOpenId(openId);
-            if(sysUser == null) {
-                sysUser = new SysUser();
-            }
-            sysUser.setAccount(username);
-            sysUser.setImgUrl(imgUrl);
-            sysUser.setOpenId(openId);
-            sysUser.setGender(gender);
-            sysUser.setUsername(username);
-            sysUser.setName(name);
-            sysUser.setPhone(phone);
-            sysUser.setDescription(description);
-            sysUser.setUserType(userType);
-            sysUser.setPhotoUrl(photoUrl);
-            sysUser.setCreateTime(LocalDateTime.now());
-            userService.register(sysUser, response);
-            return ResultVoUtil.success("注册成功");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultVoUtil.error(e.getMessage());
+        SysUser sysUser = userService.selectByOpenId(openId);
+        if(sysUser == null) {
+            sysUser = new SysUser();
         }
+        sysUser.setAccount(username);
+        sysUser.setImgUrl(imgUrl);
+        sysUser.setOpenId(openId);
+        sysUser.setGender(gender);
+        sysUser.setUsername(username);
+        sysUser.setName(name);
+        sysUser.setPhone(phone);
+        sysUser.setDescription(description);
+        sysUser.setUserType(userType);
+        sysUser.setPhotoUrl(photoUrl);
+        sysUser.setCreateTime(LocalDateTime.now());
+        userService.register(sysUser, response);
+        return ResultVoUtil.success("注册成功");
     }
 
     /**
@@ -124,15 +114,10 @@ public class SysUserController {
     public ResultVo list(@RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
                          @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
                          @RequestParam(value = "userType", required = false) Integer userType) {
-        try {
-            SysUser sysUser = new SysUser();
-            sysUser.setUserType(userType);
-            IPage<SysUserDTO> page = userService.selectPage(pageNum,pageSize,sysUser);
-            return ResultVoUtil.success(page);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultVoUtil.error(e.getMessage());
-        }
+        SysUser sysUser = new SysUser();
+        sysUser.setUserType(userType);
+        IPage<SysUserDTO> page = userService.selectPage(pageNum,pageSize,sysUser);
+        return ResultVoUtil.success(page);
     }
 
     /**
@@ -142,21 +127,44 @@ public class SysUserController {
      */
     @PostMapping("/detail")
     public ResultVo detail(@RequestParam("userId") String userId) {
-        try {
-            JSONObject result = new JSONObject();
-            SysUser sysUser = userService.getById(userId);
-            JSONObject extendObj = new JSONObject();
+        JSONObject result = new JSONObject();
+        SysUser sysUser = userService.getById(userId);
+        JSONObject extendObj = new JSONObject();
 
-            if(UserType.STUDENT.getCode().equals(sysUser.getUserType())) {
-                extendObj = userService.studetnDetail(userId);
-            }
-            result.put("userInfo",sysUser);
-            result.put("extendData",extendObj);
-            return ResultVoUtil.success(result);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultVoUtil.error(e.getMessage());
+        if(UserType.STUDENT.getCode().equals(sysUser.getUserType())) {
+            extendObj = userService.studetnDetail(userId);
         }
+        result.put("userInfo",sysUser);
+        result.put("extendData",extendObj);
+        return ResultVoUtil.success(result);
+    }
+
+    /**
+     * 修改用户个人信息
+     * @param userId
+     * @param userType
+     * @param name
+     * @param phone
+     * @param photoUrl
+     * @param description
+     * @return
+     */
+    @PostMapping("/update")
+    public ResultVo update(@RequestParam("userId") String userId,
+                           @RequestParam(value = "userType", required = false) int userType,
+                           @RequestParam(value = "name", required = false) String name,
+                           @RequestParam(value = "phone", required = false) String phone,
+                           @RequestParam(value = "photoUrl", required = false) String photoUrl,
+                           @RequestParam(value = "description", required = false) String description) {
+        SysUser sysUser = new SysUser();
+        sysUser.setId(userId);
+        sysUser.setUserType(userType);
+        sysUser.setName(name);
+        sysUser.setPhotoUrl(photoUrl);
+        sysUser.setPhone(phone);
+        sysUser.setDescription(description);
+        userService.updateById(sysUser);
+        return ResultVoUtil.success("更新成功");
     }
 }
 

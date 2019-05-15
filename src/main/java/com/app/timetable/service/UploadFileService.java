@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
  **/
 public interface UploadFileService {
 
-    Picture uploadFile(MultipartFile multipartFile) throws Exception;
+    Picture uploadFile(MultipartFile multipartFile);
 
-    void delete(String imgUrl) throws Exception;
+    void delete(String imgUrl);
 }

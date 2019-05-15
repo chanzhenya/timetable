@@ -38,32 +38,23 @@ public class LoginController {
      */
     @PostMapping("/login")
     public ResultVo login(@RequestParam("code") String code) {
-        try {
-            Map<String,String> params = new HashMap<>();
-            params.put("appid", CommonContent.APP_ID);
-            params.put("secret",CommonContent.APP_SECRET);
-            params.put("js_code",code);
-            params.put("grant_type","authorization_code");
-            String result = restTemplate.getForObject(CommonContent.WX_LOGIN_URL,String.class,params);
-            JSONObject jsonObject = JSONObject.parseObject(result);
-            String openId = jsonObject.getString("openid");
-            String session_key = jsonObject.getString("session_key");
-            String unionid = jsonObject.getString("unionid");
-            SysUser sysUser = userService.selectByOpenId(openId);
-            if(sysUser == null) {
-                sysUser = new SysUser();
-                sysUser.setId(ClassObjectUtils.getUUID());
-                sysUser.setOpenId(openId);
-                sysUser.setUnionId(unionid);
-                sysUser.setUserType(UserType.TOURIST.getCode());
-                userService.save(sysUser);
-            }
-            String token = ApiAuthUtil.getToken(sysUser,session_key);
-            return ResultVoUtil.success(sysUser, token, "登录成功");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultVoUtil.error(e.getMessage());
+        String uri = String.format(CommonContent.WX_LOGIN_URL, CommonContent.APP_ID, CommonContent.APP_SECRET, code);
+        String result = restTemplate.getForObject(uri,String.class);
+        JSONObject jsonObject = JSONObject.parseObject(result);
+        String openId = jsonObject.getString("openid");
+        String session_key = jsonObject.getString("session_key");
+        String unionid = jsonObject.getString("unionid");
+        SysUser sysUser = userService.selectByOpenId(openId);
+        if(sysUser == null) {
+            sysUser = new SysUser();
+            sysUser.setId(ClassObjectUtils.getUUID());
+            sysUser.setOpenId(openId);
+            sysUser.setUnionId(unionid);
+            sysUser.setUserType(UserType.TOURIST.getCode());
+            userService.save(sysUser);
         }
+        String token = ApiAuthUtil.getToken(sysUser,session_key);
+        return ResultVoUtil.success(sysUser, token, "登录成功");
     }
 
     @UserLoginToken

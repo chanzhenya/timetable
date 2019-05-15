@@ -32,49 +32,29 @@ public class TagController {
 
     @PostMapping("/add")
     public ResultVo add(@RequestParam("tagName") String tagName) {
-        try {
-            Tag tag = new Tag(ClassObjectUtils.getUUID(),tagName);
-            tagService.save(tag);
-            return ResultVoUtil.success("新增成功");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultVoUtil.error(e.getMessage());
-        }
+        Tag tag = new Tag(ClassObjectUtils.getUUID(),tagName);
+        tagService.save(tag);
+        return ResultVoUtil.success("新增成功");
     }
 
     @PostMapping("/edit")
     public ResultVo edit(@RequestParam("tagId") String tagId, @RequestParam("tagName") String tagName) {
-        try {
-            Tag tag = new Tag(tagId,tagName);
-            tagService.updateById(tag);
-            return ResultVoUtil.success("修改成功");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultVoUtil.error(e.getMessage());
-        }
+        Tag tag = new Tag(tagId,tagName);
+        tagService.updateById(tag);
+        return ResultVoUtil.success("修改成功");
     }
 
     @PostMapping("/delete")
     public ResultVo delete(@RequestParam("tagId") String tagId) {
-        try {
-            tagService.removeById(tagId);
-            return ResultVoUtil.success("删除成功");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultVoUtil.error(e.getMessage());
-        }
+        tagService.removeById(tagId);
+        return ResultVoUtil.success("删除成功");
     }
 
     @PostMapping("/list")
     public ResultVo list(@RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
                          @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
-        try {
-            IPage<Tag> tagIPage = tagService.selectPage(pageNum,pageSize);
-            return ResultVoUtil.success(tagIPage);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultVoUtil.error(e.getMessage());
-        }
+        IPage<Tag> tagIPage = tagService.selectPage(pageNum,pageSize);
+        return ResultVoUtil.success(tagIPage);
     }
 }
 
