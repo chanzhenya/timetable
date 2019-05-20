@@ -24,17 +24,27 @@ public interface IStudentTimtableService extends IService<StudentTimtable> {
      */
     List<StudentTimetableDTO> add(List<String> teacherTimetableIds, String studentId);
 
-    IPage<StudentTimetableDTO> selectBuPage(int pageNum, int pageSize, StudentTimtable timtable);
+    IPage<StudentTimetableDTO> selectByPage(int pageNum, int pageSize, StudentTimtable timtable);
 
+    /**
+     * 签到及旷课登记
+     * @param studentTimtable
+     * @param teacherTimetableId
+     */
     void signIn(StudentTimtable studentTimtable, String teacherTimetableId);
 
+    /**
+     * 发布学生个人作业
+     * @param id
+     * @param homework
+     */
     void publishHomework(String id, String homework);
 
     /**
-     * 学生请假和旷课处理
+     * 学生请假处理
      * @param studentTimtable
      * @return
      * @throws Exception
      */
-    int leaveAndTruancy(StudentTimtable studentTimtable);
+    int leave(StudentTimtable studentTimtable);
 }

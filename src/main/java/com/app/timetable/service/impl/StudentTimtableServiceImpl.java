@@ -147,14 +147,29 @@ public class StudentTimtableServiceImpl extends ServiceImpl<StudentTimtableMappe
     }
 
     @Override
-    public IPage<StudentTimetableDTO> selectBuPage(int pageNum, int pageSize, StudentTimtable timtable) {
+    public IPage<StudentTimetableDTO> selectByPage(int pageNum, int pageSize, StudentTimtable timtable) {
         Page<StudentTimetableDTO> page = new Page<>(pageNum,pageSize);
         return studentTimtableMapper.selectDetailList(page,timtable);
     }
 
     @Override
-    public void signIn(StudentTimtable studentTimtable, String teacherTimetableId) {
-        update(studentTimtable);
+    public void signIn(StudentTimtable st, String teacherTimetableId) {
+        StudentTimtable studentTimtable = studentTimtableMapper.selectById(st.getId());
+        studentTimtable.setStatus(st.getStatus());
+        studentTimtableMapper.updateById(studentTimtable);
+
+        //学生旷课，登记学生旷课次数
+        if(TimetableStatus.TRUANCY.getCode().equals(studentTimtable.getStatus())) {
+            StudentPurchasedCourse res = new StudentPurchasedCourse();
+            res.setStudentId(studentTimtable.getStudentId());
+            res.setCourseId(studentTimtable.getCourseId());
+            List<StudentPurchasedCourse> list = studentPurchasedCourseService.query(res);
+            StudentPurchasedCourse purchasedCourse = list.get(0);
+            int truancyNum = purchasedCourse.getTruancyNum();
+            truancyNum++;
+            purchasedCourse.setTruancyNum(truancyNum);
+            studentPurchasedCourseService.updateById(purchasedCourse);
+        }
 
         //更新教师课表，教师已上课
         TeacherTimetable teacherTimetable = teacherTimetableMapper.selectById(teacherTimetableId);
@@ -166,61 +181,36 @@ public class StudentTimtableServiceImpl extends ServiceImpl<StudentTimtableMappe
 
     @Override
     public void publishHomework(String id, String homework) {
-        StudentTimtable studentTimtable = new StudentTimtable();
-        studentTimtable.setId(id);
+        StudentTimtable studentTimtable = studentTimtableMapper.selectById(id);
         studentTimtable.setHomework(homework);
-        update(studentTimtable);
+        studentTimtableMapper.updateById(studentTimtable);
     }
 
     @Override
-    public int leaveAndTruancy(StudentTimtable studentTimtable) {
+    public int leave(StudentTimtable studentTimtable) {
         StudentTimtable timtable = studentTimtableMapper.selectById(studentTimtable.getId());
+        timtable.setStatus(studentTimtable.getStatus());
+        studentTimtableMapper.updateById(timtable);
         //获取该已购买课程信息
         StudentPurchasedCourse res = new StudentPurchasedCourse();
         res.setStudentId(timtable.getStudentId());
         res.setCourseId(timtable.getCourseId());
         List<StudentPurchasedCourse> list = studentPurchasedCourseService.query(res);
 
-        //取消/旷课试听课程
+        //取消试听课程
         if(list.isEmpty() && CourseType.AUDITION.getCode().equals(timtable.getCourseType())) {
-            update(studentTimtable);
-            return -1;
+            return 0;
         }
 
         StudentPurchasedCourse purchasedCourse = list.get(0);
-        if(TimetableStatus.LEAVE.getCode().equals(studentTimtable.getStatus()))  { //请假、取消课程
-            SysConfig sysConfig = sysConfigService.getConfig();
-            int leaveNum = purchasedCourse.getLeaveNum();
-            if(leaveNum >= sysConfig.getNumber()) {
-                throw new MyException(ErrorMessage.ERROR_MSG_1.getCode(),ErrorMessage.ERROR_MSG_1.getMessage());
-            }
+        int leaveNum = purchasedCourse.getLeaveNum();
+        int remainNum = purchasedCourse.getRemainNum();
 
-            leaveNum+=1;
-            purchasedCourse.setLeaveNum(leaveNum);
-            //更新课表状态、已购课程请假次数
-            update(studentTimtable);
-            studentPurchasedCourseService.updateById(purchasedCourse);
-            return sysConfig.getNumber()-leaveNum;
-        } else if(TimetableStatus.TRUANCY.getCode().equals(studentTimtable.getStatus())) { //旷课
-            int truancyNum = purchasedCourse.getTruancyNum();
-            truancyNum += 1;
-            purchasedCourse.setTruancyNum(truancyNum);
-            studentPurchasedCourseService.updateById(purchasedCourse);
-            update(studentTimtable);
-            return -1;
-        }
-        return -1;
-    }
-
-    private void update(StudentTimtable studentTimtable) {
-        UpdateWrapper<StudentTimtable> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("id",studentTimtable.getId());
-        if(StringUtils.isNotBlank(studentTimtable.getHomework())) {
-            updateWrapper.set("homework",studentTimtable.getHomework());
-        }
-        if(studentTimtable.getStatus() != null) {
-            updateWrapper.set("status",studentTimtable.getStatus());
-        }
-        studentTimtableMapper.update(studentTimtable,updateWrapper);
+        leaveNum++;
+        remainNum--;
+        purchasedCourse.setLeaveNum(leaveNum);
+        purchasedCourse.setRemainNum(remainNum);
+        studentPurchasedCourseService.updateById(purchasedCourse);
+        return remainNum;
     }
 }

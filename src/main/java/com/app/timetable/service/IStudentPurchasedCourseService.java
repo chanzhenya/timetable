@@ -26,4 +26,6 @@ public interface IStudentPurchasedCourseService extends IService<StudentPurchase
     List<StudentPurchasedCourse> query(StudentPurchasedCourse purchasedCourse);
 
     void updateWithSchedule();
+
+    void insert(StudentPurchasedCourse purchasedCourse);
 }

@@ -13,6 +13,7 @@
         <result column="create_time" property="createTime" />
         <result column="truancy_num" property="truancyNum" />
         <result column="leave_num" property="leaveNum" />
+        <result column="remain_num" property="remainNum"/>
     </resultMap>
 
     <resultMap id="DetailResultMap" type="com.app.timetable.dto.PurchasedCourseDTO">
@@ -28,6 +29,7 @@
         <result column="create_time" property="createTime" />
         <result column="truancy_num" property="truancyNum" />
         <result column="leave_num" property="leaveNum" />
+        <result column="remain_num" property="remainNum"/>
     </resultMap>
 
     <select id="selectByPage" resultMap="DetailResultMap" parameterType="com.app.timetable.entity.StudentPurchasedCourse">

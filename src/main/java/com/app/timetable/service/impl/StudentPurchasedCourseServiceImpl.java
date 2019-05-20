@@ -86,4 +86,14 @@ public class StudentPurchasedCourseServiceImpl extends ServiceImpl<StudentPurcha
     public void updateWithSchedule() {
         purchasedCourseMapper.updateBySchedule();
     }
+
+    @Override
+    public void insert(StudentPurchasedCourse purchasedCourse) {
+        SysConfig sysConfig = configService.getConfig();
+        //初始化请假/旷课次数
+        purchasedCourse.setLeaveNum(0);
+        purchasedCourse.setTruancyNum(0);
+        purchasedCourse.setRemainNum(sysConfig.getNumber());
+        purchasedCourseMapper.insert(purchasedCourse);
+    }
 }

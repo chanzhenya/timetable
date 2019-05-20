@@ -28,11 +28,15 @@
         <result column="status" property="status" />
         <result column="homework" property="homework" />
         <result column="course_homework" property="cousreHomework" />
+        <result column="truancy_num" property="truancyNum" />
         <result column="leave_num" property="leaveNum" />
+        <result column="remain_num" property="remainNum"/>
     </resultMap>
 
     <select id="selectDetailList" resultMap="DetailResultMap" parameterType="com.app.timetable.entity.StudentTimtable">
-        SELECT t.*, u.name student_name, u.img_url, tag.name course_name, tt.homework course_homework, spc.leave_num FROM `student_timtable` t
+        SELECT t.*, u.name student_name, u.img_url, tag.name course_name, tt.homework course_homework,
+        spc.leave_num, spc.remain_num, spc.truancy_num
+        FROM `student_timtable` t
         LEFT JOIN `sys_user` u ON u.id = t.student_id
         LEFT JOIN `course` c ON c.id = t.course_id
         LEFT JOIN `tag` ON tag.id = c.tag_id

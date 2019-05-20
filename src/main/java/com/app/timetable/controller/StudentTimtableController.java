@@ -69,7 +69,7 @@ public class StudentTimtableController {
                          @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
         StudentTimtable timtable = new StudentTimtable();
         timtable.setStudentId(studentId);
-        IPage<StudentTimetableDTO> dtoiPage = studentTimtableService.selectBuPage(pageNum,pageSize,timtable);
+        IPage<StudentTimetableDTO> dtoiPage = studentTimtableService.selectByPage(pageNum,pageSize,timtable);
         return ResultVoUtil.success(dtoiPage);
     }
 
@@ -86,7 +86,7 @@ public class StudentTimtableController {
         timtable.setId(id);
         timtable.setStatus(status);
         studentTimtableService.signIn(timtable,teacherTimetableId);
-        return ResultVoUtil.success("签到成功");
+        return ResultVoUtil.success("操作成功");
     }
 
     /**
@@ -111,7 +111,7 @@ public class StudentTimtableController {
         StudentTimtable timtable = new StudentTimtable();
         timtable.setId(id);
         timtable.setStatus(TimetableStatus.LEAVE.getCode());
-        int result = studentTimtableService.leaveAndTruancy(timtable);
+        int result = studentTimtableService.leave(timtable);
         return ResultVoUtil.success(result);
     }
 }

@@ -46,6 +46,11 @@ public class StudentPurchasedCourse implements Serializable {
     private Integer leaveNum;
 
     /**
+     * 剩余请假次数
+     */
+    private Integer remainNum;
+
+    /**
      * 课时余量
      */
     private Integer remain;
@@ -112,6 +117,14 @@ public class StudentPurchasedCourse implements Serializable {
 
     public void setLeaveNum(Integer leaveNum) {
         this.leaveNum = leaveNum;
+    }
+
+    public Integer getRemainNum() {
+        return remainNum;
+    }
+
+    public void setRemainNum(Integer remainNum) {
+        this.remainNum = remainNum;
     }
 
     public Integer getRemain() {

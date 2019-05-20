@@ -47,4 +47,9 @@ public class PurchasedCourseDTO {
      * 请假次数
      */
     private Integer leaveNum;
+
+    /**
+     * 剩余可请假次数
+     */
+    private Integer remainNum;
 }

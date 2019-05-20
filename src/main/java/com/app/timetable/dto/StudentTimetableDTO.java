@@ -75,7 +75,17 @@ public class StudentTimetableDTO {
     private String cousreHomework;
 
     /**
+     * 旷课次数
+     */
+    private Integer truancyNum;
+
+    /**
      * 请假次数
      */
     private Integer leaveNum;
+
+    /**
+     * 剩余请假次数
+     */
+    private Integer remainNum;
 }
