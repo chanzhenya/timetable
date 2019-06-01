@@ -70,7 +70,7 @@ public class TeacherTimetableController {
                          @RequestParam(value = "courseId", required = false) String courseId,
                          @RequestParam(value = "tagId", required = false) String tagId,
                          @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
-                         @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+                         @RequestParam(value = "pageSize", required = false, defaultValue = "8000") int pageSize) {
         TeacherTimetable timetable = new TeacherTimetable();
         timetable.setTeacherId(teacherId);
         timetable.setCourseId(courseId);

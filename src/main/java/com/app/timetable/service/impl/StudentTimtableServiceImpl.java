@@ -1,33 +1,25 @@
 package com.app.timetable.service.impl;
 
-import com.app.timetable.dto.PurchasedCourseDTO;
 import com.app.timetable.dto.StudentTimetableDTO;
 import com.app.timetable.entity.*;
 import com.app.timetable.enums.CourseType;
-import com.app.timetable.enums.ErrorMessage;
 import com.app.timetable.enums.TimetableStatus;
-import com.app.timetable.exception.MyException;
-import com.app.timetable.mapper.StudentPurchasedCourseMapper;
 import com.app.timetable.mapper.StudentTimtableMapper;
 import com.app.timetable.mapper.TeacherTimetableMapper;
 import com.app.timetable.service.IAuditionLogService;
 import com.app.timetable.service.IStudentPurchasedCourseService;
 import com.app.timetable.service.IStudentTimtableService;
-import com.app.timetable.service.ISysConfigService;
 import com.app.timetable.utils.ClassObjectUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -53,9 +45,6 @@ public class StudentTimtableServiceImpl extends ServiceImpl<StudentTimtableMappe
 
     @Autowired
     private IStudentPurchasedCourseService studentPurchasedCourseService;
-
-    @Autowired
-    private ISysConfigService sysConfigService;
 
     @Override
     public  List<StudentTimetableDTO> add(List<String> teacherTimetableIds, String studentId) {
@@ -205,11 +194,14 @@ public class StudentTimtableServiceImpl extends ServiceImpl<StudentTimtableMappe
         StudentPurchasedCourse purchasedCourse = list.get(0);
         int leaveNum = purchasedCourse.getLeaveNum();
         int remainNum = purchasedCourse.getRemainNum();
+        int remain = purchasedCourse.getRemain();
 
         leaveNum++;
         remainNum--;
+        remain++;
         purchasedCourse.setLeaveNum(leaveNum);
         purchasedCourse.setRemainNum(remainNum);
+        purchasedCourse.setRemain(remain);
         studentPurchasedCourseService.updateById(purchasedCourse);
         return remainNum;
     }

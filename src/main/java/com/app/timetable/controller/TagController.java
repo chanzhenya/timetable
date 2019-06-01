@@ -52,7 +52,7 @@ public class TagController {
 
     @PostMapping("/list")
     public ResultVo list(@RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
-                         @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+                         @RequestParam(value = "pageSize", required = false, defaultValue = "8000") int pageSize) {
         IPage<Tag> tagIPage = tagService.selectPage(pageNum,pageSize);
         return ResultVoUtil.success(tagIPage);
     }

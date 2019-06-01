@@ -66,7 +66,7 @@ public class StudentTimtableController {
     @PostMapping("/list")
     public ResultVo list(@RequestParam(value = "studentId", required = false) String studentId,
                          @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
-                         @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+                         @RequestParam(value = "pageSize", required = false, defaultValue = "8000") int pageSize) {
         StudentTimtable timtable = new StudentTimtable();
         timtable.setStudentId(studentId);
         IPage<StudentTimetableDTO> dtoiPage = studentTimtableService.selectByPage(pageNum,pageSize,timtable);

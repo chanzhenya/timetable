@@ -69,7 +69,7 @@ public class StudentPurchasedCourseController {
         purchasedCourse.setStatus(PurchasedCourseStatus.VALID.getCode());
         purchasedCourse.setDueTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(dueTime), ZoneId.of("Asia/Shanghai")));
         purchasedCourse.setCreateTime(LocalDateTime.now());
-        purchasedCourseService.save(purchasedCourse);
+        purchasedCourseService.insert(purchasedCourse);
         return ResultVoUtil.success("新增成功");
     }
 
@@ -83,7 +83,7 @@ public class StudentPurchasedCourseController {
      */
     @PostMapping("/list")
     public ResultVo list(@RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
-                         @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
+                         @RequestParam(value = "pageSize", required = false, defaultValue = "8000") int pageSize,
                          @RequestParam(value = "studentId", required = false) String studentId) {
         StudentPurchasedCourse purchasedCourse = new StudentPurchasedCourse();
         purchasedCourse.setStudentId(studentId);

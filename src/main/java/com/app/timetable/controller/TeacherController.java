@@ -75,7 +75,7 @@ public class TeacherController {
     @PostMapping("/myStudents")
     public ResultVo myStudents(@RequestParam("teacherId") String teacherId,
                                @RequestParam(value = "pageNum", required = false,defaultValue = "1") int pageNum,
-                               @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+                               @RequestParam(value = "pageSize", required = false, defaultValue = "8000") int pageSize) {
         IPage<SysUserDTO> sysUserDTOIPage = userService.selectMyStudents(pageNum,pageSize,teacherId);
         return ResultVoUtil.success(sysUserDTOIPage);
     }

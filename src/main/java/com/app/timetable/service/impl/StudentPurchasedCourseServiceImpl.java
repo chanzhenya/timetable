@@ -8,6 +8,7 @@ import com.app.timetable.enums.TimetableStatus;
 import com.app.timetable.mapper.StudentPurchasedCourseMapper;
 import com.app.timetable.service.IStudentPurchasedCourseService;
 import com.app.timetable.service.ISysConfigService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -89,11 +90,26 @@ public class StudentPurchasedCourseServiceImpl extends ServiceImpl<StudentPurcha
 
     @Override
     public void insert(StudentPurchasedCourse purchasedCourse) {
-        SysConfig sysConfig = configService.getConfig();
-        //初始化请假/旷课次数
-        purchasedCourse.setLeaveNum(0);
-        purchasedCourse.setTruancyNum(0);
-        purchasedCourse.setRemainNum(sysConfig.getNumber());
-        purchasedCourseMapper.insert(purchasedCourse);
+        QueryWrapper<StudentPurchasedCourse> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("student_id", purchasedCourse.getStudentId());
+        queryWrapper.eq("course_id", purchasedCourse.getCourseId());
+        queryWrapper.eq("teacher_id", purchasedCourse.getTeacherId());
+        queryWrapper.eq("status",1);
+        StudentPurchasedCourse spc = purchasedCourseMapper.selectOne(queryWrapper);
+        if(spc != null) {
+            int remain = spc.getRemain()+purchasedCourse.getRemain();
+            spc.setRemain(remain);
+            if(purchasedCourse.getDueTime()!=null && purchasedCourse.getDueTime().isAfter(spc.getDueTime())) {
+                spc.setDueTime(purchasedCourse.getDueTime());
+            }
+            purchasedCourseMapper.updateById(spc);
+        } else {
+            SysConfig sysConfig = configService.getConfig();
+            //初始化请假/旷课次数
+            purchasedCourse.setLeaveNum(0);
+            purchasedCourse.setTruancyNum(0);
+            purchasedCourse.setRemainNum(sysConfig.getNumber());
+            purchasedCourseMapper.insert(purchasedCourse);
+        }
     }
 }

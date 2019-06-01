@@ -121,7 +121,7 @@ public class CourseController {
     public ResultVo list(@RequestParam(value = "teacherId",required = false) String teacherId,
                          @RequestParam(value = "status", required = false) Integer status,
                          @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
-                         @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+                         @RequestParam(value = "pageSize", required = false, defaultValue = "8000") int pageSize) {
         Course course = new Course();
         course.setStatus(status);
         course.setTeacherId(teacherId);

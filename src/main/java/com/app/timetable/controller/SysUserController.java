@@ -112,7 +112,7 @@ public class SysUserController {
      */
     @PostMapping("/list")
     public ResultVo list(@RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
-                         @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
+                         @RequestParam(value = "pageSize", required = false, defaultValue = "8000") int pageSize,
                          @RequestParam(value = "userType", required = false) Integer userType) {
         SysUser sysUser = new SysUser();
         sysUser.setUserType(userType);
