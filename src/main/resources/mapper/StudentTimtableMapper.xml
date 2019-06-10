@@ -34,7 +34,7 @@
     </resultMap>
 
     <select id="selectDetailList" resultMap="DetailResultMap" parameterType="com.app.timetable.entity.StudentTimtable">
-        SELECT t.*, u.name student_name, u.img_url, tag.name course_name, tt.homework course_homework,
+        SELECT DISTINCT t.*, u.name student_name, u.img_url, tag.name course_name, tt.homework course_homework,
         spc.leave_num, spc.remain_num, spc.truancy_num
         FROM `student_timtable` t
         LEFT JOIN `sys_user` u ON u.id = t.student_id

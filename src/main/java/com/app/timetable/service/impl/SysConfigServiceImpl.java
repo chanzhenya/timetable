@@ -27,20 +27,22 @@ import java.util.List;
 public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig> implements ISysConfigService {
 
     @Autowired
-    private SysConfigMapper sysConfigMapper;
-
-    @Autowired
     private IStudentPurchasedCourseService studentPurchasedCourseService;
 
     @Override
     public void config(int number) {
-        sysConfigMapper.deleteAll();
-        SysConfig sysConfig = new SysConfig();
-        sysConfig.setId(ClassObjectUtils.getUUID());
+        List<SysConfig> sysConfigs = list();
+        SysConfig sysConfig = null;
+        if(sysConfigs.isEmpty()) {
+            sysConfig = new SysConfig();
+            sysConfig.setId(ClassObjectUtils.getUUID());
+            sysConfig.setCreateTime(LocalDateTime.now());
+        } else {
+            sysConfig = sysConfigs.get(0);
+        }
         sysConfig.setNumber(number);
         sysConfig.setDescription("可请假次数");
-        sysConfig.setCreateTime(LocalDateTime.now());
-        sysConfigMapper.insert(sysConfig);
+        saveOrUpdate(sysConfig);
 
         //同步更新学生已购买课程剩余请假次数
         List<StudentPurchasedCourse> list = studentPurchasedCourseService.list();
@@ -53,7 +55,7 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
 
     @Override
     public SysConfig getConfig() {
-        List<SysConfig> sysConfigs = sysConfigMapper.selectAll();
+        List<SysConfig> sysConfigs = list();
         return sysConfigs.size() > 0 ? sysConfigs.get(0) : null;
     }
 }

@@ -48,6 +48,7 @@
                 AND tag.id = #{tagId}
             </if>
         </where>
+        ORDER BY t.course_time ASC
     </select>
     
     <select id="selectDetailById" resultMap="ExtendDetailResultMap" parameterType="java.lang.String">

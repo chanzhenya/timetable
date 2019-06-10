@@ -104,6 +104,17 @@ public class TeacherTimetableController {
         teacherTimetableService.update(timetable);
         return ResultVoUtil.success("更新成功");
     }
+
+    /**
+     * 删除排课信息
+     * @param timetableId
+     * @return
+     */
+    @PostMapping("/delete")
+    public ResultVo delete(@RequestParam("timetableId") String timetableId) {
+        teacherTimetableService.removeById(timetableId);
+        return ResultVoUtil.success("删除成功");
+    }
 }
 
 

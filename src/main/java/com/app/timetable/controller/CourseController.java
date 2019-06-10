@@ -4,12 +4,17 @@ package com.app.timetable.controller;
 import com.app.timetable.dto.CourseDTO;
 import com.app.timetable.entity.Course;
 import com.app.timetable.entity.Picture;
+import com.app.timetable.entity.SysUser;
+import com.app.timetable.entity.Tag;
 import com.app.timetable.enums.CourseStatus;
 import com.app.timetable.service.ICourseService;
+import com.app.timetable.service.ISysUserService;
+import com.app.timetable.service.ITagService;
 import com.app.timetable.service.UploadFileService;
 import com.app.timetable.utils.ClassObjectUtils;
 import com.app.timetable.utils.ResultVoUtil;
 import com.app.timetable.vo.ResultVo;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -41,33 +47,48 @@ public class CourseController {
     @Autowired
     private UploadFileService uploadFileService;
 
+    @Autowired
+    private ITagService tagService;
+
+    @Autowired
+    private ISysUserService sysUserService;
+
     /**
      * 新增课程
      * @param tagId
-     * @param price
-     * @param period
      * @param descreption
      * @param teacherId
      * @param multipartFile
      * @return
      */
     @PostMapping("/add")
-    public ResultVo add(@RequestParam("tagId") String tagId,@RequestParam("price")BigDecimal price, @RequestParam("period") Integer period,
+    public ResultVo add(@RequestParam("tagId") String tagId,
                         @RequestParam("descreption") String descreption, @RequestParam("teacherId") String teacherId,
-                        @RequestParam("image") MultipartFile multipartFile) {
-        Picture picture = uploadFileService.uploadFile(multipartFile);
-        Course course = new Course();
-        course.setId(ClassObjectUtils.getUUID());
-        course.setTagId(tagId);
-        course.setPeriod(period);
-        course.setPrice(price);
-        course.setDescreption(descreption);
-        course.setTeacherId(teacherId);
-        course.setImgUrl(picture.getImgUrl());
-        course.setStatus(CourseStatus.PUBLISHED.getCode());
-        course.setCreateTime(LocalDateTime.now());
-        courseService.save(course);
-        return ResultVoUtil.success("新增成功");
+                        @RequestParam(value = "image",required = false) MultipartFile multipartFile) {
+        QueryWrapper<Course> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("tag_id",tagId);
+        queryWrapper.eq("teacher_id",teacherId);
+        List<Course> courseList = courseService.list(queryWrapper);
+        if(courseList.isEmpty()) {
+
+            Course course = new Course();
+            if(multipartFile != null) {
+                Picture picture = uploadFileService.uploadFile(multipartFile);
+                course.setImgUrl(picture.getImgUrl());
+            }
+            course.setId(ClassObjectUtils.getUUID());
+            course.setTagId(tagId);
+            course.setDescreption(descreption);
+            course.setTeacherId(teacherId);
+            course.setStatus(CourseStatus.PUBLISHED.getCode());
+            course.setCreateTime(LocalDateTime.now());
+            courseService.save(course);
+            return ResultVoUtil.success("新增成功");
+        } else {
+            SysUser sysUser = sysUserService.getById(teacherId);
+            Tag tag = tagService.getById(tagId);
+            return ResultVoUtil.error(sysUser.getName()+"老师已经在任教"+tag.getName()+"，无需再添加课程");
+        }
     }
 
     /**
