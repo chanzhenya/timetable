@@ -50,6 +50,7 @@
             <if test="timetable.studentId != null and timetable.studentId != ''">
                 AND t.student_id = #{timetable.studentId}
             </if>
+            ORDER BY t.course_time
         </where>
     </select>
 
