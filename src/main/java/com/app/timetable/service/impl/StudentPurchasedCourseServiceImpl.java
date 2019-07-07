@@ -4,14 +4,16 @@ import com.app.timetable.dto.PurchasedCourseDTO;
 import com.app.timetable.entity.StudentPurchasedCourse;
 import com.app.timetable.entity.SysConfig;
 import com.app.timetable.enums.PurchasedCourseStatus;
+import com.app.timetable.enums.SysConfigType;
 import com.app.timetable.enums.TimetableStatus;
 import com.app.timetable.mapper.StudentPurchasedCourseMapper;
 import com.app.timetable.service.IStudentPurchasedCourseService;
-import com.app.timetable.service.ISysConfigService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.redisson.api.RMap;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +37,7 @@ public class StudentPurchasedCourseServiceImpl extends ServiceImpl<StudentPurcha
     private StudentPurchasedCourseMapper purchasedCourseMapper;
 
     @Autowired
-    private ISysConfigService configService;
+    private RedissonClient redissonClient;
 
     @Override
     public IPage<PurchasedCourseDTO> selectByPage(int pageNum, int pageSize, StudentPurchasedCourse purchasedCourse) {
@@ -61,14 +63,17 @@ public class StudentPurchasedCourseServiceImpl extends ServiceImpl<StudentPurcha
     @Override
     public int leaveAndTruancy(String studentId, TimetableStatus timetableStatus) {
         StudentPurchasedCourse purchasedCourse = purchasedCourseMapper.selectById(studentId);
-        List<SysConfig> sysConfigs = configService.list();
-        SysConfig sysConfig = sysConfigs.get(0);
+        RMap<String,Object> map = redissonClient.getMap("sys:config");
+        int number = 0;
+        if(map.containsKey(SysConfigType.LEAVE_NUMBER.getKey())) {
+            number = Integer.parseInt(map.get(SysConfigType.LEAVE_NUMBER.getKey()).toString());
+        }
         int res = 0;
         if(TimetableStatus.LEAVE.equals(timetableStatus)) {
             int leaveNum = purchasedCourse.getLeaveNum();
             leaveNum += 1;
             purchasedCourse.setLeaveNum(leaveNum);
-            res = Math.max(sysConfig.getNumber()-leaveNum,0);
+            res = Math.max(number-leaveNum,0);
         } else if(TimetableStatus.TRUANCY.equals(timetableStatus)) {
             int truancyNum = purchasedCourse.getTruancyNum();
             truancyNum+=1;
@@ -104,11 +109,15 @@ public class StudentPurchasedCourseServiceImpl extends ServiceImpl<StudentPurcha
             }
             purchasedCourseMapper.updateById(spc);
         } else {
-            SysConfig sysConfig = configService.getConfig();
+            RMap<String,Object> map = redissonClient.getMap("sys:config");
+            int number = 0;
+            if(map.containsKey(SysConfigType.LEAVE_NUMBER.getKey())) {
+                number = Integer.parseInt(map.get(SysConfigType.LEAVE_NUMBER.getKey()).toString());
+            }
             //初始化请假/旷课次数
             purchasedCourse.setLeaveNum(0);
             purchasedCourse.setTruancyNum(0);
-            purchasedCourse.setRemainNum(sysConfig.getNumber());
+            purchasedCourse.setRemainNum(number);
             purchasedCourseMapper.insert(purchasedCourse);
         }
     }

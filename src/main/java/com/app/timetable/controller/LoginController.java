@@ -5,7 +5,6 @@ import com.app.timetable.annotation.UserLoginToken;
 import com.app.timetable.entity.SysUser;
 import com.app.timetable.enums.UserType;
 import com.app.timetable.service.ISysUserService;
-import com.app.timetable.utils.ApiAuthUtil;
 import com.app.timetable.utils.ClassObjectUtils;
 import com.app.timetable.utils.CommonContent;
 import com.app.timetable.utils.ResultVoUtil;
@@ -13,9 +12,6 @@ import com.app.timetable.vo.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Judith
@@ -53,8 +49,7 @@ public class LoginController {
             sysUser.setUserType(UserType.TOURIST.getCode());
             userService.save(sysUser);
         }
-        String token = ApiAuthUtil.getToken(sysUser,session_key);
-        return ResultVoUtil.success(sysUser, token, "登录成功");
+        return ResultVoUtil.success(sysUser,null, "登录成功");
     }
 
     @UserLoginToken

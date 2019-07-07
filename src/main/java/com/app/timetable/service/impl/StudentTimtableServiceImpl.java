@@ -9,6 +9,7 @@ import com.app.timetable.mapper.TeacherTimetableMapper;
 import com.app.timetable.service.IAuditionLogService;
 import com.app.timetable.service.IStudentPurchasedCourseService;
 import com.app.timetable.service.IStudentTimtableService;
+import com.app.timetable.service.ISysUserService;
 import com.app.timetable.utils.ClassObjectUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -45,6 +47,9 @@ public class StudentTimtableServiceImpl extends ServiceImpl<StudentTimtableMappe
 
     @Autowired
     private IStudentPurchasedCourseService studentPurchasedCourseService;
+
+    @Autowired
+    private ISysUserService sysUserService;
 
     @Override
     public  List<StudentTimetableDTO> add(List<String> teacherTimetableIds, String studentId) {
@@ -147,6 +152,9 @@ public class StudentTimtableServiceImpl extends ServiceImpl<StudentTimtableMappe
         studentTimtable.setStatus(st.getStatus());
         studentTimtableMapper.updateById(studentTimtable);
 
+        SysUser student = sysUserService.getById(studentTimtable.getStudentId());
+        SysUser teacher = sysUserService.getById(studentTimtable.getTeacherId());
+
         //学生旷课，登记学生旷课次数
         if(TimetableStatus.TRUANCY.getCode().equals(studentTimtable.getStatus())) {
             StudentPurchasedCourse res = new StudentPurchasedCourse();
@@ -154,11 +162,16 @@ public class StudentTimtableServiceImpl extends ServiceImpl<StudentTimtableMappe
             res.setCourseId(studentTimtable.getCourseId());
             List<StudentPurchasedCourse> list = studentPurchasedCourseService.query(res);
             StudentPurchasedCourse purchasedCourse = list.get(0);
-            int truancyNum = purchasedCourse.getTruancyNum();
-            truancyNum++;
-            purchasedCourse.setTruancyNum(truancyNum);
+            purchasedCourse.setTruancyNum(purchasedCourse.getTruancyNum()+1);
             studentPurchasedCourseService.updateById(purchasedCourse);
+
+            student.setTruancy(student.getTruancy()+1);
+            teacher.setTruancy(teacher.getTruancy()+1);
+        } else if(TimetableStatus.INVALID.getCode().equals(studentTimtable.getStatus())) {
+            student.setPeriod(student.getPeriod()+1);
+            teacher.setPeriod(teacher.getPeriod()+1);
         }
+        sysUserService.updateBatchById(Arrays.asList(student,teacher));
 
         //更新教师课表，教师已上课
         TeacherTimetable teacherTimetable = teacherTimetableMapper.selectById(teacherTimetableId);
