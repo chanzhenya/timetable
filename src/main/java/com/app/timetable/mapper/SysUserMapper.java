@@ -1,6 +1,7 @@
 package com.app.timetable.mapper;
 
 import com.app.timetable.dto.SysUserDTO;
+import com.app.timetable.entity.StudentPurchasedCourse;
 import com.app.timetable.entity.SysUser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -23,7 +24,7 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
 
     SysUser selectByOpenId(@Param("openId") String openId);
 
-    IPage<SysUserDTO> selectMyStudents(Page<SysUserDTO> page, @Param("teacherId") String teacherId);
+    IPage<SysUserDTO> selectMyStudents(Page<SysUserDTO> page, @Param("purchasedCourse") StudentPurchasedCourse purchasedCourse);
 
     List<SysUserDTO> teacherOptions(@Param("tagId") String tagId);
 }

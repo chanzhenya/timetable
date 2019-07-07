@@ -3,6 +3,7 @@ package com.app.timetable.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.app.timetable.dto.PurchasedCourseDTO;
 import com.app.timetable.dto.SysUserDTO;
+import com.app.timetable.entity.StudentPurchasedCourse;
 import com.app.timetable.entity.SysUser;
 import com.app.timetable.mapper.StudentPurchasedCourseMapper;
 import com.app.timetable.mapper.SysUserMapper;
@@ -82,9 +83,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public IPage<SysUserDTO> selectMyStudents(int pageNum, int pageSize, String teacherId) {
+    public IPage<SysUserDTO> selectMyStudents(int pageNum, int pageSize, StudentPurchasedCourse purchasedCourse) {
         Page<SysUserDTO> page = new Page<>(pageNum,pageSize);
-        return userMapper.selectMyStudents(page, teacherId);
+        return userMapper.selectMyStudents(page, purchasedCourse);
     }
 
     @Override

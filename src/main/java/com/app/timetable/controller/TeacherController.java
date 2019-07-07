@@ -6,6 +6,7 @@ import com.app.timetable.dto.PurchasedCourseDTO;
 import com.app.timetable.dto.SysUserDTO;
 import com.app.timetable.dto.TeacherEvaluationDTO;
 import com.app.timetable.entity.Course;
+import com.app.timetable.entity.StudentPurchasedCourse;
 import com.app.timetable.entity.SysUser;
 import com.app.timetable.entity.TeacherEvaluation;
 import com.app.timetable.enums.UserType;
@@ -74,9 +75,13 @@ public class TeacherController {
      */
     @PostMapping("/myStudents")
     public ResultVo myStudents(@RequestParam("teacherId") String teacherId,
+                               @RequestParam(value = "courseId", required = false) String courseId,
                                @RequestParam(value = "pageNum", required = false,defaultValue = "1") int pageNum,
                                @RequestParam(value = "pageSize", required = false, defaultValue = "8000") int pageSize) {
-        IPage<SysUserDTO> sysUserDTOIPage = userService.selectMyStudents(pageNum,pageSize,teacherId);
+        StudentPurchasedCourse purchasedCourse = new StudentPurchasedCourse();
+        purchasedCourse.setTeacherId(teacherId);
+        purchasedCourse.setCourseId(courseId);
+        IPage<SysUserDTO> sysUserDTOIPage = userService.selectMyStudents(pageNum,pageSize,purchasedCourse);
         return ResultVoUtil.success(sysUserDTOIPage);
     }
 

@@ -133,6 +133,8 @@ public class SysUserController {
 
         if(UserType.STUDENT.getCode().equals(sysUser.getUserType())) {
             extendObj = userService.studetnDetail(userId);
+        } else if(UserType.TEACHER.getCode().equals(sysUser.getUserType())) {
+
         }
         result.put("userInfo",sysUser);
         result.put("extendData",extendObj);

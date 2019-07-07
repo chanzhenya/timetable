@@ -2,6 +2,7 @@ package com.app.timetable.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.app.timetable.dto.SysUserDTO;
+import com.app.timetable.entity.StudentPurchasedCourse;
 import com.app.timetable.entity.SysUser;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -28,7 +29,7 @@ public interface ISysUserService extends IService<SysUser> {
 
     SysUser selectByOpenId(String openId);
 
-    IPage<SysUserDTO> selectMyStudents(int pageNum, int pageSize, String teacherId);
+    IPage<SysUserDTO> selectMyStudents(int pageNum, int pageSize, StudentPurchasedCourse purchasedCourse);
 
     List<SysUserDTO> teacherOptions(String tagId);
 }

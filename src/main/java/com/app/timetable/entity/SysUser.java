@@ -87,6 +87,21 @@ public class SysUser implements Serializable {
      */
     private String description;
 
+    /**
+     * 已上课课时
+     */
+    private int period;
+
+    /**
+     * 旷课课时
+     */
+    private int truancy;
+
+    /**
+     * 请假次数
+     */
+    private int leaveNum;
+
 
     public String getId() {
         return id;
@@ -208,22 +223,27 @@ public class SysUser implements Serializable {
         this.score = score;
     }
 
-    @Override
-    public String toString() {
-        return "SysUser{" +
-        "id=" + id +
-        ", username=" + username +
-        ", name=" + name +
-        ", account=" + account +
-        ", openId=" + openId +
-        ", phone=" + phone +
-        ", imgUrl=" + imgUrl +
-        ", photoUrl=" + photoUrl +
-        ", gender=" + gender +
-        ", accessToken=" + accessToken +
-        ", userType=" + userType +
-        ", createTime=" + createTime +
-        ", description=" + description +
-        "}";
+    public int getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(int period) {
+        this.period = period;
+    }
+
+    public int getTruancy() {
+        return truancy;
+    }
+
+    public void setTruancy(int truancy) {
+        this.truancy = truancy;
+    }
+
+    public int getLeaveNum() {
+        return leaveNum;
+    }
+
+    public void setLeaveNum(int leaveNum) {
+        this.leaveNum = leaveNum;
     }
 }

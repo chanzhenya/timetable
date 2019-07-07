@@ -18,6 +18,9 @@
         <result column="create_time" property="createTime" />
         <result column="description" property="description" />
         <result column="score" property="score"/>
+        <result column="period" property=" period"/>
+        <result column="truancy" property="truancy" />
+        <result column="leaveNum" property="leaveNum" />
     </resultMap>
 
     <resultMap id="ListResultMap" type="com.app.timetable.dto.SysUserDTO">
@@ -46,10 +49,18 @@
         SELECT * FROM sys_user WHERE open_id = #{openId}
     </select>
 
-    <select id="selectMyStudents" resultMap="ListResultMap" parameterType="java.lang.String">
+    <select id="selectMyStudents" resultMap="ListResultMap" parameterType="com.app.timetable.entity.StudentPurchasedCourse">
         SELECT DISTINCT u.* FROM sys_user u
         LEFT JOIN student_purchased_course spc ON spc.student_id = u.id
-        WHERE spc.teacher_id=#{teacherId}
+        <where>
+            1=1
+            <if test="purchasedCourse.teacherId != null">
+                AND spc.teacher_id=#{purchasedCourse.teacherId}
+            </if>
+            <if test="purchasedCourse.courseId != null">
+              AND spc.course_id=#{purchasedCourse.courseId}
+            </if>
+        </where>
     </select>
 
     <select id="teacherOptions" parameterType="java.lang.String" resultMap="ListResultMap">

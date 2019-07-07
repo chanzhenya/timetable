@@ -53,4 +53,5 @@ public class StudentController {
         result.put("student", sysUser);
         return ResultVoUtil.success(result);
     }
+
 }
