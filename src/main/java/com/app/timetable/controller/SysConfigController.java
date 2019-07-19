@@ -38,10 +38,14 @@ public class SysConfigController {
     public ResultVo config(@RequestParam Map<String,Object> params) {
         BaseUtils.checkParams(params,new String[]{"configType","number"});
         String configType = params.get("configType").toString();
-        int number = Integer.parseInt(params.get("number").toString());
-        RMap<String, Object> map = redissonClient.getMap("sys:config");
-        map.put(configType, number);
-        return ResultVoUtil.success("设置成功");
+        if("LEAVE_NUMBER".equals(configType) || "BEFORE_COURSE_DUE_TIME".equals(configType)) {
+            int number = Integer.parseInt(params.get("number").toString());
+            RMap<String, Object> map = redissonClient.getMap("sys:config");
+            map.put(configType, number);
+            return ResultVoUtil.success("设置成功");
+        } else {
+            return ResultVoUtil.error("设置失败,configType参数有误");
+        }
     }
 
     @GetMapping("/configInfo")
