@@ -65,7 +65,7 @@ public class SysUser implements Serializable {
     /**
      * 学生积分/教师综合评分
      */
-    private double score;
+    private Double score;
 
     /**
      * 用户token
@@ -90,18 +90,17 @@ public class SysUser implements Serializable {
     /**
      * 已上课课时
      */
-    private int period;
+    private Integer period;
 
     /**
      * 旷课课时
      */
-    private int truancy;
+    private Integer truancy;
 
     /**
      * 请假次数
      */
-    private int leaveNum;
-
+    private Integer leaveNum;
 
     public String getId() {
         return id;
@@ -183,6 +182,14 @@ public class SysUser implements Serializable {
         this.gender = gender;
     }
 
+    public Double getScore() {
+        return score != null ? score : 0;
+    }
+
+    public void setScore(Double score) {
+        this.score = score;
+    }
+
     public String getAccessToken() {
         return accessToken;
     }
@@ -215,35 +222,27 @@ public class SysUser implements Serializable {
         this.description = description;
     }
 
-    public double getScore() {
-        return score;
+    public Integer getPeriod() {
+        return period != null ? period : 0;
     }
 
-    public void setScore(double score) {
-        this.score = score;
-    }
-
-    public int getPeriod() {
-        return period;
-    }
-
-    public void setPeriod(int period) {
+    public void setPeriod(Integer period) {
         this.period = period;
     }
 
-    public int getTruancy() {
-        return truancy;
+    public Integer getTruancy() {
+        return truancy != null ? truancy : 0;
     }
 
-    public void setTruancy(int truancy) {
+    public void setTruancy(Integer truancy) {
         this.truancy = truancy;
     }
 
-    public int getLeaveNum() {
-        return leaveNum;
+    public Integer getLeaveNum() {
+        return leaveNum != null ? leaveNum : 0;
     }
 
-    public void setLeaveNum(int leaveNum) {
+    public void setLeaveNum(Integer leaveNum) {
         this.leaveNum = leaveNum;
     }
 }

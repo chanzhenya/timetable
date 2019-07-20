@@ -18,7 +18,7 @@
         <result column="create_time" property="createTime" />
         <result column="description" property="description" />
         <result column="score" property="score"/>
-        <result column="period" property=" period"/>
+        <result column="period" property="period"/>
         <result column="truancy" property="truancy" />
         <result column="leaveNum" property="leaveNum" />
     </resultMap>
