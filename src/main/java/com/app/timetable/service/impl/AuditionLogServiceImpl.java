@@ -1,6 +1,6 @@
 package com.app.timetable.service.impl;
 
-import com.app.timetable.entity.AuditionLog;
+import com.app.timetable.model.entity.AuditionLog;
 import com.app.timetable.mapper.AuditionLogMapper;
 import com.app.timetable.service.IAuditionLogService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

@@ -1,6 +1,5 @@
 package com.app.timetable.mapper;
 
-import com.app.timetable.entity.SysConfig;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 import java.util.List;

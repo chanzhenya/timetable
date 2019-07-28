@@ -1,7 +1,7 @@
 package com.app.timetable.service;
 
-import com.app.timetable.dto.TeacherTimetableDTO;
-import com.app.timetable.entity.TeacherTimetable;
+import com.app.timetable.model.dto.TeacherTimetableDTO;
+import com.app.timetable.model.entity.TeacherTimetable;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -15,7 +15,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ITeacherTimetableService extends IService<TeacherTimetable> {
 
-    IPage<TeacherTimetableDTO> selectByPage(int pageNum, int pageSize, TeacherTimetable timetable, String tagId);
+    IPage<TeacherTimetableDTO> selectByPage(int pageNum, int pageSize, TeacherTimetable timetable, Long tagId);
 
     TeacherTimetableDTO selectDetailById(String id);
 

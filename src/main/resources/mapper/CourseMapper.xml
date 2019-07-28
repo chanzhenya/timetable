@@ -3,7 +3,7 @@
 <mapper namespace="com.app.timetable.mapper.CourseMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.app.timetable.entity.Course">
+    <resultMap id="BaseResultMap" type="com.app.timetable.model.entity.Course">
         <id column="id" property="id" />
         <result column="tag_id" property="tagId" />
         <result column="descreption" property="descreption" />
@@ -12,10 +12,12 @@
         <result column="teacher_id" property="teacherId" />
         <result column="status" property="status" />
         <result column="img_url" property="imgUrl" />
+        <result column="enable" property="enable" />
         <result column="create_time" property="createTime"/>
+        <result column="update_time" property="update_time"/>
     </resultMap>
 
-    <resultMap id="DetailResultMap" type="com.app.timetable.dto.CourseDTO">
+    <resultMap id="DetailResultMap" type="com.app.timetable.model.dto.CourseDTO">
         <id column="id" property="id" />
         <result column="tag_id" property="tagId" />
         <result column="tag_name" property="tagName" />
@@ -36,12 +38,12 @@
         WHERE c.id = #{courseId}
     </select>
 
-    <select id="selectByPage" resultMap="DetailResultMap" parameterType="com.app.timetable.entity.Course">
+    <select id="selectByPage" resultMap="DetailResultMap" parameterType="com.app.timetable.model.entity.Course">
         SELECT c.*, u.name teacher_name, t.name tag_name FROM course c
         LEFT JOIN sys_user u ON u.id = c.teacher_id
         LEFT JOIN tag t ON t.id = c.tag_id
         <where>
-            1=1
+            c.enable=1
             <if test="course.status != null">
                 AND c.status = #{course.status}
             </if>

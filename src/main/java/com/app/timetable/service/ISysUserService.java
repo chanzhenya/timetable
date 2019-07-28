@@ -1,11 +1,10 @@
 package com.app.timetable.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.app.timetable.dto.SysUserDTO;
-import com.app.timetable.entity.StudentPurchasedCourse;
-import com.app.timetable.entity.SysUser;
+import com.app.timetable.model.dto.SysUserDTO;
+import com.app.timetable.model.entity.StudentPurchasedCourse;
+import com.app.timetable.model.entity.SysUser;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import javax.servlet.http.HttpServletResponse;

@@ -3,7 +3,7 @@
 <mapper namespace="com.app.timetable.mapper.SysUserMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.app.timetable.entity.SysUser">
+    <resultMap id="BaseResultMap" type="com.app.timetable.model.entity.SysUser">
         <id column="id" property="id" />
         <result column="username" property="username" />
         <result column="name" property="name" />
@@ -15,7 +15,9 @@
         <result column="gender" property="gender" />
         <result column="access_token" property="accessToken" />
         <result column="user_type" property="userType" />
-        <result column="create_time" property="createTime" />
+        <result column="enable" property="enable" />
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="update_time"/>
         <result column="description" property="description" />
         <result column="score" property="score"/>
         <result column="period" property="period"/>
@@ -23,7 +25,7 @@
         <result column="leaveNum" property="leaveNum" />
     </resultMap>
 
-    <resultMap id="ListResultMap" type="com.app.timetable.dto.SysUserDTO">
+    <resultMap id="ListResultMap" type="com.app.timetable.model.dto.SysUserDTO">
         <id column="id" property="id" />
         <result column="account" property="account" />
         <result column="username" property="username" />
@@ -34,7 +36,7 @@
         <result column="user_type" property="userType" />
     </resultMap>
 
-    <select id="selectPage" resultMap="ListResultMap" parameterType="com.app.timetable.entity.SysUser">
+    <select id="selectPage" resultMap="ListResultMap" parameterType="com.app.timetable.model.entity.SysUser">
         SELECT * FROM sys_user
         <where>
             1=1
@@ -49,7 +51,7 @@
         SELECT * FROM sys_user WHERE open_id = #{openId}
     </select>
 
-    <select id="selectMyStudents" resultMap="ListResultMap" parameterType="com.app.timetable.entity.StudentPurchasedCourse">
+    <select id="selectMyStudents" resultMap="ListResultMap" parameterType="com.app.timetable.model.entity.StudentPurchasedCourse">
         SELECT DISTINCT u.* FROM sys_user u
         LEFT JOIN student_purchased_course spc ON spc.student_id = u.id
         <where>

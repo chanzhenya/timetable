@@ -3,11 +3,14 @@
 <mapper namespace="com.app.timetable.mapper.AuditionLogMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.app.timetable.entity.AuditionLog">
+    <resultMap id="BaseResultMap" type="com.app.timetable.model.entity.AuditionLog">
         <id column="id" property="id" />
         <result column="course_id" property="courseId" />
         <result column="teacher_id" property="teacherId" />
         <result column="student_id" property="studentId" />
+        <result column="enable" property="enable" />
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="update_time"/>
     </resultMap>
 
 </mapper>

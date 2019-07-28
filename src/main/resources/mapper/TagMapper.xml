@@ -3,9 +3,12 @@
 <mapper namespace="com.app.timetable.mapper.TagMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.app.timetable.entity.Tag">
+    <resultMap id="BaseResultMap" type="com.app.timetable.model.entity.Tag">
         <id column="id" property="id" />
         <result column="name" property="name" />
+        <result column="enable" property="enable" />
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="update_time"/>
     </resultMap>
 
 </mapper>

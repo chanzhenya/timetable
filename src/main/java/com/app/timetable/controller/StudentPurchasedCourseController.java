@@ -1,16 +1,17 @@
 package com.app.timetable.controller;
 
 
-import com.app.timetable.dto.PurchasedCourseDTO;
-import com.app.timetable.entity.Course;
-import com.app.timetable.entity.StudentPurchasedCourse;
-import com.app.timetable.enums.PurchasedCourseStatus;
+import cn.hutool.core.date.DateUtil;
+import com.app.timetable.common.utils.RobotAssert;
+import com.app.timetable.model.dto.PurchasedCourseDTO;
+import com.app.timetable.model.entity.Course;
+import com.app.timetable.model.entity.StudentPurchasedCourse;
+import com.app.timetable.model.enums.PurchasedCourseStatus;
 import com.app.timetable.service.ICourseService;
 import com.app.timetable.service.IStudentPurchasedCourseService;
-import com.app.timetable.service.ITagService;
 import com.app.timetable.utils.ClassObjectUtils;
 import com.app.timetable.utils.ResultVoUtil;
-import com.app.timetable.vo.ResultVo;
+import com.app.timetable.model.vo.ResultVo;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,28 +48,26 @@ public class StudentPurchasedCourseController {
      * @param tagId 课程分类id
      * @param studentId 学生id
      * @param remain 剩余课时
-     * @param dueTime 截止日期
+     * @param dueTime 截止日期 yyyy-MM-dd
      * @param teacherId 教师id
      * @return
      */
     @PostMapping("/add")
-    public ResultVo add(@RequestParam("tagId") String tagId, @RequestParam("studentId") String studentId,
-                        @RequestParam("remain") Integer remain, @RequestParam("dueTime") long dueTime,
-                        @RequestParam("teacerId") String teacherId) {
+    public ResultVo add(@RequestParam("tagId") Long tagId, @RequestParam("studentId") Long studentId,
+                        @RequestParam("remain") Integer remain, @RequestParam("dueTime") String dueTime,
+                        @RequestParam("teacerId") Long teacherId) {
 
         QueryWrapper<Course> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("tag_id",tagId);
         queryWrapper.eq("teacher_id",teacherId);
         Course course = courseService.getOne(queryWrapper);
         StudentPurchasedCourse purchasedCourse = new StudentPurchasedCourse();
-        purchasedCourse.setId(ClassObjectUtils.getUUID());
         purchasedCourse.setCourseId(course.getId());
         purchasedCourse.setStudentId(studentId);
         purchasedCourse.setTeacherId(teacherId);
         purchasedCourse.setRemain(remain);
         purchasedCourse.setStatus(PurchasedCourseStatus.VALID.getCode());
-        purchasedCourse.setDueTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(dueTime), ZoneId.of("Asia/Shanghai")));
-        purchasedCourse.setCreateTime(LocalDateTime.now());
+        purchasedCourse.setDueTime(DateUtil.parse(dueTime,"yyyy-MM-dd"));
         purchasedCourseService.insert(purchasedCourse);
         return ResultVoUtil.success("新增成功");
     }
@@ -84,7 +83,7 @@ public class StudentPurchasedCourseController {
     @PostMapping("/list")
     public ResultVo list(@RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
                          @RequestParam(value = "pageSize", required = false, defaultValue = "8000") int pageSize,
-                         @RequestParam(value = "studentId", required = false) String studentId) {
+                         @RequestParam(value = "studentId", required = false) Long studentId) {
         StudentPurchasedCourse purchasedCourse = new StudentPurchasedCourse();
         purchasedCourse.setStudentId(studentId);
         IPage<PurchasedCourseDTO> dtoiPage = purchasedCourseService.selectByPage(pageNum,pageSize,purchasedCourse);
@@ -98,7 +97,10 @@ public class StudentPurchasedCourseController {
      */
     @PostMapping("/delete")
     public ResultVo delete(@RequestParam("id") String id) {
-        purchasedCourseService.removeById(id);
+        StudentPurchasedCourse purchasedCourse = purchasedCourseService.getById(id);
+        RobotAssert.notNull(purchasedCourse,"找不到相应的已购买课程，请确认数据是否存在");
+        purchasedCourse.setEnable(0);
+        purchasedCourseService.updateById(purchasedCourse);
         return ResultVoUtil.success("删除成功");
     }
 }

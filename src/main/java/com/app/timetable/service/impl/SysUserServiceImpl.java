@@ -1,10 +1,10 @@
 package com.app.timetable.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.app.timetable.dto.PurchasedCourseDTO;
-import com.app.timetable.dto.SysUserDTO;
-import com.app.timetable.entity.StudentPurchasedCourse;
-import com.app.timetable.entity.SysUser;
+import com.app.timetable.model.dto.PurchasedCourseDTO;
+import com.app.timetable.model.dto.SysUserDTO;
+import com.app.timetable.model.entity.StudentPurchasedCourse;
+import com.app.timetable.model.entity.SysUser;
 import com.app.timetable.mapper.StudentPurchasedCourseMapper;
 import com.app.timetable.mapper.SysUserMapper;
 import com.app.timetable.service.ISysUserService;

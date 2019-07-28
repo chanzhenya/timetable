@@ -3,16 +3,18 @@
 <mapper namespace="com.app.timetable.mapper.TeacherEvaluationMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.app.timetable.entity.TeacherEvaluation">
+    <resultMap id="BaseResultMap" type="com.app.timetable.model.entity.TeacherEvaluation">
         <id column="id" property="id" />
         <result column="student_id" property="studentId"/>
         <result column="teacher_id" property="teacherId" />
         <result column="score" property="score" />
         <result column="content" property="content" />
-        <result column="create_time" property="createTime" />
+        <result column="enable" property="enable" />
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="update_time"/>
     </resultMap>
 
-    <resultMap id="DetailResultMap" type="com.app.timetable.dto.TeacherEvaluationDTO">
+    <resultMap id="DetailResultMap" type="com.app.timetable.model.dto.TeacherEvaluationDTO">
         <id column="id" property="id" />
         <result column="student_id" property="studentId"/>
         <result column="student_account" property="studentAccount" />
@@ -22,7 +24,7 @@
         <result column="create_time" property="createTime" />
     </resultMap>
 
-    <select id="selectByPage" parameterType="com.app.timetable.entity.TeacherEvaluation" resultMap="DetailResultMap">
+    <select id="selectByPage" parameterType="com.app.timetable.model.entity.TeacherEvaluation" resultMap="DetailResultMap">
         SELECT e.*, u.account student_account FROM `teacher_evaluation` e
         LEFT JOIN `sys_user` u ON u.id = e.student_id
         <where>

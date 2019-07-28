@@ -1,10 +1,9 @@
 package com.app.timetable.service.impl;
 
-import com.app.timetable.dto.TeacherTimetableDTO;
-import com.app.timetable.entity.TeacherTimetable;
+import com.app.timetable.model.dto.TeacherTimetableDTO;
+import com.app.timetable.model.entity.TeacherTimetable;
 import com.app.timetable.mapper.TeacherTimetableMapper;
 import com.app.timetable.service.ITeacherTimetableService;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -28,7 +27,7 @@ public class TeacherTimetableServiceImpl extends ServiceImpl<TeacherTimetableMap
     private TeacherTimetableMapper timetableMapper;
 
     @Override
-    public IPage<TeacherTimetableDTO> selectByPage(int pageNum, int pageSize, TeacherTimetable timetable, String tagId) {
+    public IPage<TeacherTimetableDTO> selectByPage(int pageNum, int pageSize, TeacherTimetable timetable, Long tagId) {
         Page<TeacherTimetableDTO> page = new Page<>(pageNum, pageSize);
         return timetableMapper.selectByPage(page,timetable, tagId);
     }

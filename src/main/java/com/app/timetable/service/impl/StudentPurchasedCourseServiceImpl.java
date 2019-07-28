@@ -1,11 +1,10 @@
 package com.app.timetable.service.impl;
 
-import com.app.timetable.dto.PurchasedCourseDTO;
-import com.app.timetable.entity.StudentPurchasedCourse;
-import com.app.timetable.entity.SysConfig;
-import com.app.timetable.enums.PurchasedCourseStatus;
-import com.app.timetable.enums.SysConfigType;
-import com.app.timetable.enums.TimetableStatus;
+import com.app.timetable.model.dto.PurchasedCourseDTO;
+import com.app.timetable.model.entity.StudentPurchasedCourse;
+import com.app.timetable.model.enums.PurchasedCourseStatus;
+import com.app.timetable.model.enums.SysConfigType;
+import com.app.timetable.model.enums.TimetableStatus;
 import com.app.timetable.mapper.StudentPurchasedCourseMapper;
 import com.app.timetable.service.IStudentPurchasedCourseService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;

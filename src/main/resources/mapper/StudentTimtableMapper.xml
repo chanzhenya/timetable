@@ -3,7 +3,7 @@
 <mapper namespace="com.app.timetable.mapper.StudentTimtableMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.app.timetable.entity.StudentTimtable">
+    <resultMap id="BaseResultMap" type="com.app.timetable.model.entity.StudentTimtable">
         <id column="id" property="id" />
         <result column="student_id" property="studentId" />
         <result column="teacher_id" property="teacherId" />
@@ -12,10 +12,12 @@
         <result column="course_type" property="courseType" />
         <result column="status" property="status" />
         <result column="homework" property="homework" />
-        <result column="create_time" property="createTime" />
+        <result column="enable" property="enable" />
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="update_time"/>
     </resultMap>
 
-    <resultMap id="DetailResultMap" type="com.app.timetable.dto.StudentTimetableDTO">
+    <resultMap id="DetailResultMap" type="com.app.timetable.model.dto.StudentTimetableDTO">
         <id column="id" property="id" />
         <result column="student_id" property="studentId" />
         <result column="student_name" property="studentName"/>
@@ -33,7 +35,7 @@
         <result column="remain_num" property="remainNum"/>
     </resultMap>
 
-    <select id="selectDetailList" resultMap="DetailResultMap" parameterType="com.app.timetable.entity.StudentTimtable">
+    <select id="selectDetailList" resultMap="DetailResultMap" parameterType="com.app.timetable.model.entity.StudentTimtable">
         SELECT DISTINCT t.*, u.name student_name, u.img_url, tag.name course_name, tt.homework course_homework,
         spc.leave_num, spc.remain_num, spc.truancy_num
         FROM `student_timtable` t

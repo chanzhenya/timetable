@@ -1,7 +1,7 @@
 package com.app.timetable.utils;
 
-import com.app.timetable.enums.ResultCode;
-import com.app.timetable.vo.ResultVo;
+import com.app.timetable.model.enums.ResultCode;
+import com.app.timetable.model.vo.ResultVo;
 
 /**
  * judithchen

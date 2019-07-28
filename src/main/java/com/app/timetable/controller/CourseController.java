@@ -1,19 +1,23 @@
 package com.app.timetable.controller;
 
 
-import com.app.timetable.dto.CourseDTO;
-import com.app.timetable.entity.Course;
-import com.app.timetable.entity.Picture;
-import com.app.timetable.entity.SysUser;
-import com.app.timetable.entity.Tag;
-import com.app.timetable.enums.CourseStatus;
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.map.MapUtil;
+import com.app.timetable.common.utils.BaseUtils;
+import com.app.timetable.common.utils.RobotAssert;
+import com.app.timetable.model.dto.CourseDTO;
+import com.app.timetable.model.entity.Course;
+import com.app.timetable.model.entity.Picture;
+import com.app.timetable.model.entity.SysUser;
+import com.app.timetable.model.entity.Tag;
+import com.app.timetable.model.enums.CourseStatus;
 import com.app.timetable.service.ICourseService;
 import com.app.timetable.service.ISysUserService;
 import com.app.timetable.service.ITagService;
 import com.app.timetable.service.UploadFileService;
 import com.app.timetable.utils.ClassObjectUtils;
 import com.app.timetable.utils.ResultVoUtil;
-import com.app.timetable.vo.ResultVo;
+import com.app.timetable.model.vo.ResultVo;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.commons.lang3.StringUtils;
@@ -28,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -55,80 +60,57 @@ public class CourseController {
 
     /**
      * 新增课程
-     * @param tagId
-     * @param descreption
-     * @param teacherId
-     * @param multipartFile
+     * @param params
      * @return
      */
     @PostMapping("/add")
-    public ResultVo add(@RequestParam("tagId") String tagId,
-                        @RequestParam("descreption") String descreption, @RequestParam("teacherId") String teacherId,
+    public ResultVo add(@RequestParam Map<String,Object> params,
                         @RequestParam(value = "image",required = false) MultipartFile multipartFile) {
+        BaseUtils.getInstance().checkParams(params,new String[]{"tagId","teacherId","descreption"});
+        Course course = BeanUtil.mapToBean(params,Course.class,true);
         QueryWrapper<Course> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("tag_id",tagId);
-        queryWrapper.eq("teacher_id",teacherId);
+        queryWrapper.eq("tag_id",course.getTagId());
+        queryWrapper.eq("teacher_id",course.getTeacherId());
+        queryWrapper.eq("enable",1);
         List<Course> courseList = courseService.list(queryWrapper);
-        if(courseList.isEmpty()) {
+        RobotAssert.isEmpty(courseList,"该课程已存在，无需在添加");
 
-            Course course = new Course();
-            if(multipartFile != null) {
-                Picture picture = uploadFileService.uploadFile(multipartFile);
-                course.setImgUrl(picture.getImgUrl());
-            }
-            course.setId(ClassObjectUtils.getUUID());
-            course.setTagId(tagId);
-            course.setDescreption(descreption);
-            course.setTeacherId(teacherId);
-            course.setStatus(CourseStatus.PUBLISHED.getCode());
-            course.setCreateTime(LocalDateTime.now());
-            courseService.save(course);
-            return ResultVoUtil.success("新增成功");
-        } else {
-            SysUser sysUser = sysUserService.getById(teacherId);
-            Tag tag = tagService.getById(tagId);
-            return ResultVoUtil.error(sysUser.getName()+"老师已经在任教"+tag.getName()+"，无需再添加课程");
+        if(multipartFile != null) {
+            Picture picture = uploadFileService.uploadFile(multipartFile);
+            course.setImgUrl(picture.getImgUrl());
         }
+        courseService.save(course);
+        return ResultVoUtil.success("新增成功");
     }
 
     /**
      * 修改课程
-     * @param price
-     * @param period
-     * @param descreption
-     * @param teacherId
-     * @param courseId
+     * @param params
      * @param multipartFile
      * @return
      */
     @PostMapping("/edit")
-    public ResultVo edit(@RequestParam(value = "price", required = false)BigDecimal price,
-                         @RequestParam(value = "period", required = false) Integer period,
-                         @RequestParam(value = "descreption", required = false) String descreption,
-                         @RequestParam("teacherId") String teacherId,  @RequestParam("courseId") String courseId,
+    public ResultVo edit(@RequestParam Map<String,Object> params,
                          @RequestParam(value = "image", required = false) MultipartFile multipartFile) {
-        Course course = courseService.getById(courseId);
-        if(course != null) {
-            if(multipartFile != null) {
-                uploadFileService.delete(course.getImgUrl());
-                Picture picture = uploadFileService.uploadFile(multipartFile);
-                course.setImgUrl(picture.getImgUrl());
-            }
-            if(period != null) {
-                course.setPeriod(period);
-            }
-            if(price != null) {
-                course.setPrice(price);
-            }
-            if(StringUtils.isNotBlank(descreption)) {
-                course.setDescreption(descreption);
-            }
-            course.setTeacherId(teacherId);
-            courseService.updateById(course);
-            return ResultVoUtil.success("更新成功");
-        } else {
-            return ResultVoUtil.error("课程不存在");
+        BaseUtils.getInstance().checkParams(params,new String[]{"courseId"});
+        Course course = courseService.getById(MapUtil.getLong(params,"courseId"));
+        RobotAssert.notNull(course,"找不相应的课程，请确认课程是否存在");
+        if(multipartFile != null) {
+            uploadFileService.delete(course.getImgUrl());
+            Picture picture = uploadFileService.uploadFile(multipartFile);
+            course.setImgUrl(picture.getImgUrl());
         }
+        if(params.containsKey("period")) {
+            course.setPeriod(MapUtil.getInt(params,"period"));
+        }
+        if(params.containsKey("price")) {
+            course.setPrice(BigDecimal.valueOf(MapUtil.getDouble(params,"price")));
+        }
+        if(params.containsKey("descreption")) {
+            course.setDescreption(MapUtil.getStr(params,"descreption"));
+        }
+        courseService.updateById(course);
+        return ResultVoUtil.success("更新成功");
     }
 
     /**
@@ -139,7 +121,7 @@ public class CourseController {
      * @return
      */
     @PostMapping("/list")
-    public ResultVo list(@RequestParam(value = "teacherId",required = false) String teacherId,
+    public ResultVo list(@RequestParam(value = "teacherId",required = false) Long teacherId,
                          @RequestParam(value = "status", required = false) Integer status,
                          @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
                          @RequestParam(value = "pageSize", required = false, defaultValue = "8000") int pageSize) {
@@ -168,7 +150,10 @@ public class CourseController {
      */
     @PostMapping("/delete")
     public ResultVo delete(@RequestParam("courseId") String courseId) {
-        courseService.removeById(courseId);
+        Course course = courseService.getById(courseId);
+        RobotAssert.notNull(course,"找不相应的课程，请确认课程是否存在");
+        course.setEnable(0);
+        courseService.updateById(course);
         return ResultVoUtil.success("删除成功");
     }
 }

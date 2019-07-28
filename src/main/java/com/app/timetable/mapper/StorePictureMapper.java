@@ -1,6 +1,6 @@
 package com.app.timetable.mapper;
 
-import com.app.timetable.entity.StorePicture;
+import com.app.timetable.model.entity.StorePicture;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

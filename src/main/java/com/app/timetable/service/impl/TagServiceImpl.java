@@ -1,6 +1,6 @@
 package com.app.timetable.service.impl;
 
-import com.app.timetable.entity.Tag;
+import com.app.timetable.model.entity.Tag;
 import com.app.timetable.mapper.TagMapper;
 import com.app.timetable.service.ITagService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;

@@ -1,7 +1,7 @@
 package com.app.timetable.service;
 
-import com.app.timetable.dto.TeacherEvaluationDTO;
-import com.app.timetable.entity.TeacherEvaluation;
+import com.app.timetable.model.dto.TeacherEvaluationDTO;
+import com.app.timetable.model.entity.TeacherEvaluation;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 

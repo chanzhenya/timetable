@@ -1,9 +1,10 @@
 package com.app.timetable.service.impl;
 
-import com.app.timetable.dto.StudentTimetableDTO;
+import com.app.timetable.model.dto.StudentTimetableDTO;
 import com.app.timetable.entity.*;
-import com.app.timetable.enums.CourseType;
-import com.app.timetable.enums.TimetableStatus;
+import com.app.timetable.model.entity.*;
+import com.app.timetable.model.enums.CourseType;
+import com.app.timetable.model.enums.TimetableStatus;
 import com.app.timetable.mapper.StudentTimtableMapper;
 import com.app.timetable.mapper.TeacherTimetableMapper;
 import com.app.timetable.service.IAuditionLogService;
@@ -52,10 +53,10 @@ public class StudentTimtableServiceImpl extends ServiceImpl<StudentTimtableMappe
     private ISysUserService sysUserService;
 
     @Override
-    public  List<StudentTimetableDTO> add(List<String> teacherTimetableIds, String studentId) {
+    public  List<StudentTimetableDTO> add(List<String> teacherTimetableIds, Long studentId) {
         //获取预约课的详情
         List<TeacherTimetable> teacherTimetables = teacherTimetableMapper.selectBatchIds(teacherTimetableIds);
-        List<String> courseIds = new ArrayList<>();
+        List<Long> courseIds = new ArrayList<>();
         for(TeacherTimetable teacherTimetable:teacherTimetables) {
             courseIds.add(teacherTimetable.getCourseId());
         }
@@ -106,7 +107,6 @@ public class StudentTimtableServiceImpl extends ServiceImpl<StudentTimtableMappe
             //可预约课程，并添加课表信息
             if(flag2) {
                 StudentTimtable studentTimtable = new StudentTimtable();
-                studentTimtable.setId(ClassObjectUtils.getUUID());
                 studentTimtable.setStudentId(studentId);
                 studentTimtable.setStatus(TimetableStatus.VALID.getCode());
                 studentTimtable.setCourseId(teacherTimetable.getCourseId());
@@ -117,7 +117,6 @@ public class StudentTimtableServiceImpl extends ServiceImpl<StudentTimtableMappe
                 } else {
                     studentTimtable.setCourseType(CourseType.FORMAL.getCode());
                 }
-                studentTimtable.setCreateTime(LocalDateTime.now());
                 newStudentTimtables.add(studentTimtable);
                 ids.add(studentTimtable.getId());
             }

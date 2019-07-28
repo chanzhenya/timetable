@@ -1,13 +1,11 @@
 package com.app.timetable.mapper;
 
-import com.app.timetable.dto.TeacherTimetableDTO;
-import com.app.timetable.entity.TeacherTimetable;
+import com.app.timetable.model.dto.TeacherTimetableDTO;
+import com.app.timetable.model.entity.TeacherTimetable;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
 
 /**
  * <p>
@@ -19,7 +17,7 @@ import java.util.List;
  */
 public interface TeacherTimetableMapper extends BaseMapper<TeacherTimetable> {
 
-    IPage<TeacherTimetableDTO> selectByPage(Page<TeacherTimetableDTO> page, @Param("timetable") TeacherTimetable timetable, @Param("tagId") String tagId);
+    IPage<TeacherTimetableDTO> selectByPage(Page<TeacherTimetableDTO> page, @Param("timetable") TeacherTimetable timetable, @Param("tagId") Long tagId);
 
     TeacherTimetableDTO selectDetailById(@Param("id") String id);
 }

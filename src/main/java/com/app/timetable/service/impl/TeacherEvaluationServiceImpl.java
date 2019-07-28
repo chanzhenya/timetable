@@ -1,8 +1,8 @@
 package com.app.timetable.service.impl;
 
-import com.app.timetable.dto.TeacherEvaluationDTO;
-import com.app.timetable.entity.SysUser;
-import com.app.timetable.entity.TeacherEvaluation;
+import com.app.timetable.model.dto.TeacherEvaluationDTO;
+import com.app.timetable.model.entity.SysUser;
+import com.app.timetable.model.entity.TeacherEvaluation;
 import com.app.timetable.mapper.TeacherEvaluationMapper;
 import com.app.timetable.service.ISysUserService;
 import com.app.timetable.service.ITeacherEvaluationService;

@@ -3,7 +3,7 @@
 <mapper namespace="com.app.timetable.mapper.StudentPurchasedCourseMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.app.timetable.entity.StudentPurchasedCourse">
+    <resultMap id="BaseResultMap" type="com.app.timetable.model.entity.StudentPurchasedCourse">
         <id column="id" property="id" />
         <result column="student_id" property="studentId" />
         <result column="course_id" property="courseId" />
@@ -14,9 +14,12 @@
         <result column="truancy_num" property="truancyNum" />
         <result column="leave_num" property="leaveNum" />
         <result column="remain_num" property="remainNum"/>
+        <result column="enable" property="enable" />
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="update_time"/>
     </resultMap>
 
-    <resultMap id="DetailResultMap" type="com.app.timetable.dto.PurchasedCourseDTO">
+    <resultMap id="DetailResultMap" type="com.app.timetable.model.dto.PurchasedCourseDTO">
         <id column="id" property="id" />
         <result column="student_id" property="studentId" />
         <result column="course_id" property="courseId" />
@@ -32,7 +35,7 @@
         <result column="remain_num" property="remainNum"/>
     </resultMap>
 
-    <select id="selectByPage" resultMap="DetailResultMap" parameterType="com.app.timetable.entity.StudentPurchasedCourse">
+    <select id="selectByPage" resultMap="DetailResultMap" parameterType="com.app.timetable.model.entity.StudentPurchasedCourse">
         SELECT spc.*, t.name course_name, u.name teacher_name
         FROM `student_purchased_course` spc
         LEFT JOIN `course` c ON c.id = spc.course_id
@@ -55,7 +58,7 @@
         WHERE student_id = #{studentId} AND stutus = 1
     </select>
 
-    <select id="query" parameterType="com.app.timetable.entity.StudentPurchasedCourse" resultMap="BaseResultMap">
+    <select id="query" parameterType="com.app.timetable.model.entity.StudentPurchasedCourse" resultMap="BaseResultMap">
         SELECT * FROM student_purchased_course
         <where>
             1=1

@@ -1,12 +1,12 @@
 package com.app.timetable.controller;
 
 
-import com.app.timetable.dto.TeacherEvaluationDTO;
-import com.app.timetable.entity.TeacherEvaluation;
+import com.app.timetable.model.dto.TeacherEvaluationDTO;
+import com.app.timetable.model.entity.TeacherEvaluation;
 import com.app.timetable.service.ITeacherEvaluationService;
 import com.app.timetable.utils.ClassObjectUtils;
 import com.app.timetable.utils.ResultVoUtil;
-import com.app.timetable.vo.ResultVo;
+import com.app.timetable.model.vo.ResultVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

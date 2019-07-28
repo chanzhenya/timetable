@@ -1,8 +1,7 @@
 package com.app.timetable.mapper;
 
-import com.app.timetable.entity.Picture;
+import com.app.timetable.model.entity.Picture;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>

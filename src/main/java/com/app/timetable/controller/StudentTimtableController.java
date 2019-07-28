@@ -3,13 +3,12 @@ package com.app.timetable.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.app.timetable.dto.StudentTimetableDTO;
-import com.app.timetable.entity.StudentTimtable;
-import com.app.timetable.enums.TimetableStatus;
+import com.app.timetable.model.dto.StudentTimetableDTO;
+import com.app.timetable.model.entity.StudentTimtable;
+import com.app.timetable.model.enums.TimetableStatus;
 import com.app.timetable.service.IStudentTimtableService;
-import com.app.timetable.utils.ClassObjectUtils;
 import com.app.timetable.utils.ResultVoUtil;
-import com.app.timetable.vo.ResultVo;
+import com.app.timetable.model.vo.ResultVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,9 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -44,7 +41,7 @@ public class StudentTimtableController {
      * @return
      */
     @PostMapping("/add")
-    public ResultVo add(@RequestParam("teacherTimetableIds") String teacherTimetableIds, @RequestParam("studentId") String studentId) {
+    public ResultVo add(@RequestParam("teacherTimetableIds") String teacherTimetableIds, @RequestParam("studentId") Long studentId) {
         JSONArray jsonArray = JSONArray.parseArray(teacherTimetableIds);
         List<String> idArray = new ArrayList<>();
         for(int i=0;i<jsonArray.size();i++) {

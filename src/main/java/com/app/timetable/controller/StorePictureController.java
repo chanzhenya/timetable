@@ -1,16 +1,14 @@
 package com.app.timetable.controller;
 
 
-import com.app.timetable.entity.Picture;
-import com.app.timetable.entity.StorePicture;
+import com.app.timetable.model.entity.Picture;
+import com.app.timetable.model.entity.StorePicture;
 import com.app.timetable.service.IStorePictureService;
 import com.app.timetable.service.UploadFileService;
 import com.app.timetable.utils.ClassObjectUtils;
 import com.app.timetable.utils.ResultVoUtil;
-import com.app.timetable.vo.ResultVo;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.app.timetable.model.vo.ResultVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,9 +49,7 @@ public class StorePictureController {
         for(MultipartFile img:images) {
             Picture p = uploadFileService.uploadFile(img);
             StorePicture picture = new StorePicture();
-            picture.setId(ClassObjectUtils.getUUID());
             picture.setImgUrl(p.getImgUrl());
-            picture.setCreateTime(LocalDateTime.now());
             pictureList.add(picture);
         }
         pictureService.saveBatch(pictureList);

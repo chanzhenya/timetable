@@ -3,19 +3,22 @@
 <mapper namespace="com.app.timetable.mapper.TeacherTimetableMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.app.timetable.entity.TeacherTimetable">
+    <resultMap id="BaseResultMap" type="com.app.timetable.model.entity.TeacherTimetable">
         <id column="id" property="id" />
         <result column="teacher_id" property="teacherId" />
         <result column="course_id" property="courseId" />
         <result column="number" property="number" />
         <result column="homework" property="homework" />
         <result column="course_time" property="courseTime"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
         <result column="status" property="status"/>
-        <result column="update_time" property="updateTime" />
-        <result column="create_time" property="createTime" />
+        <result column="enable" property="enable" />
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="update_time"/>
     </resultMap>
 
-    <resultMap id="DetailResultMap" type="com.app.timetable.dto.TeacherTimetableDTO">
+    <resultMap id="DetailResultMap" type="com.app.timetable.model.dto.TeacherTimetableDTO">
         <id column="id" property="id" />
         <result column="teacher_id" property="teacherId" />
         <result column="teacher_name" property="teacherName"/>
@@ -24,14 +27,16 @@
         <result column="number" property="number" />
         <result column="homework" property="homework" />
         <result column="course_time" property="courseTime"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
         <result column="status" property="status"/>
     </resultMap>
 
-    <resultMap id="ExtendDetailResultMap" type="com.app.timetable.dto.TeacherTimetableDTO">
+    <resultMap id="ExtendDetailResultMap" type="com.app.timetable.model.dto.TeacherTimetableDTO">
         <collection property="students" column="course_id" select="com.app.timetable.mapper.StudentTimtableMapper.selectByCourse"/>
     </resultMap>
 
-    <select id="selectByPage" resultMap="DetailResultMap" parameterType="com.app.timetable.entity.TeacherTimetable">
+    <select id="selectByPage" resultMap="DetailResultMap" parameterType="com.app.timetable.model.entity.TeacherTimetable">
         SELECT t.*, u.name teacher_name, tag.name course_name FROM `teacher_timetable` t
         LEFT JOIN `sys_user` u ON u.id = t.teacher_id
         LEFT JOIN `course` c ON c.id = t.course_id

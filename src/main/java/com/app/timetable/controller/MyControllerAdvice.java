@@ -1,8 +1,8 @@
 package com.app.timetable.controller;
 
-import com.app.timetable.exception.MyException;
+import com.app.timetable.common.exception.MyException;
 import com.app.timetable.utils.ResultVoUtil;
-import com.app.timetable.vo.ResultVo;
+import com.app.timetable.model.vo.ResultVo;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;

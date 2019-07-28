@@ -3,10 +3,13 @@
 <mapper namespace="com.app.timetable.mapper.StorePictureMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.app.timetable.entity.StorePicture">
+    <resultMap id="BaseResultMap" type="com.app.timetable.model.entity.StorePicture">
         <id column="id" property="id" />
         <result column="img_url" property="imgUrl" />
         <result column="create_time" property="createTime"/>
+        <result column="enable" property="enable" />
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="update_time"/>
     </resultMap>
 
 </mapper>

@@ -1,6 +1,6 @@
 package com.app.timetable.service;
 
-import com.app.timetable.entity.Tag;
+import com.app.timetable.model.entity.Tag;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 

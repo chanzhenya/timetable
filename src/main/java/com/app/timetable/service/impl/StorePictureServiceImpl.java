@@ -1,6 +1,6 @@
 package com.app.timetable.service.impl;
 
-import com.app.timetable.entity.StorePicture;
+import com.app.timetable.model.entity.StorePicture;
 import com.app.timetable.mapper.StorePictureMapper;
 import com.app.timetable.service.IStorePictureService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;

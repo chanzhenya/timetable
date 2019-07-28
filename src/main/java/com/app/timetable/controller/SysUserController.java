@@ -2,14 +2,13 @@ package com.app.timetable.controller;
 
 
 import com.alibaba.fastjson.JSONObject;
-import com.app.timetable.dto.SysUserDTO;
-import com.app.timetable.entity.Picture;
-import com.app.timetable.entity.SysUser;
-import com.app.timetable.enums.UserType;
+import com.app.timetable.model.dto.SysUserDTO;
+import com.app.timetable.model.entity.Picture;
+import com.app.timetable.model.entity.SysUser;
+import com.app.timetable.model.enums.UserType;
 import com.app.timetable.service.*;
-import com.app.timetable.utils.ClassObjectUtils;
 import com.app.timetable.utils.ResultVoUtil;
-import com.app.timetable.vo.ResultVo;
+import com.app.timetable.model.vo.ResultVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

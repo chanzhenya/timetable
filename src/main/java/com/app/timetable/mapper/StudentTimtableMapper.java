@@ -1,7 +1,7 @@
 package com.app.timetable.mapper;
 
-import com.app.timetable.dto.StudentTimetableDTO;
-import com.app.timetable.entity.StudentTimtable;
+import com.app.timetable.model.dto.StudentTimetableDTO;
+import com.app.timetable.model.entity.StudentTimtable;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;

@@ -1,13 +1,15 @@
 package com.app.timetable.controller;
 
 
-import com.app.timetable.dto.TeacherTimetableDTO;
-import com.app.timetable.entity.TeacherTimetable;
-import com.app.timetable.enums.TimetableStatus;
+import cn.hutool.core.bean.BeanUtil;
+import com.app.timetable.common.utils.BaseUtils;
+import com.app.timetable.model.dto.TeacherTimetableDTO;
+import com.app.timetable.model.entity.TeacherTimetable;
+import com.app.timetable.model.enums.TimetableStatus;
 import com.app.timetable.service.ITeacherTimetableService;
 import com.app.timetable.utils.ClassObjectUtils;
 import com.app.timetable.utils.ResultVoUtil;
-import com.app.timetable.vo.ResultVo;
+import com.app.timetable.model.vo.ResultVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Map;
 
 /**
  * <p>
@@ -37,22 +40,13 @@ public class TeacherTimetableController {
 
     /**
      * 教师排课
-     * @param courseId
-     * @param teacherId
-     * @param number
-     * @param courseTime
+     * @param params
      * @return
      */
     @PostMapping("/add")
-    public ResultVo add(@RequestParam("courseId") String courseId, @RequestParam("teacherId") String teacherId,
-                        @RequestParam("number") Integer number, @RequestParam("courseTime") long courseTime) {
-        TeacherTimetable timetable = new TeacherTimetable();
-        timetable.setId(ClassObjectUtils.getUUID());
-        timetable.setTeacherId(teacherId);
-        timetable.setCourseId(courseId);
-        timetable.setNumber(number);
-        timetable.setCourseTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(courseTime), ZoneId.of("Asia/Shanghai")));
-        timetable.setCreateTime(LocalDateTime.now());
+    public ResultVo add(@RequestParam Map<String,Object> params) {
+        BaseUtils.getInstance().checkParams(params,new String[]{"courseId","teacherId","number","courseTime","startTime","endTime"});
+        TeacherTimetable timetable = BeanUtil.mapToBean(params,TeacherTimetable.class,true);
         timetable.setStatus(TimetableStatus.VALID.getCode());
         teacherTimetableService.save(timetable);
         return ResultVoUtil.success("添加成功");
@@ -66,11 +60,12 @@ public class TeacherTimetableController {
      * @return
      */
     @PostMapping("/list")
-    public ResultVo list(@RequestParam(value = "teacherId", required = false) String teacherId,
-                         @RequestParam(value = "courseId", required = false) String courseId,
-                         @RequestParam(value = "tagId", required = false) String tagId,
+    public ResultVo list(@RequestParam(value = "teacherId", required = false) Long teacherId,
+                         @RequestParam(value = "courseId", required = false) Long courseId,
+                         @RequestParam(value = "tagId", required = false) Long tagId,
                          @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
-                         @RequestParam(value = "pageSize", required = false, defaultValue = "8000") int pageSize) {
+                         @RequestParam(value = "pageSize", required = false, defaultValue = "8000") int pageSize,@RequestParam Map<String,Object> params) {
+
         TeacherTimetable timetable = new TeacherTimetable();
         timetable.setTeacherId(teacherId);
         timetable.setCourseId(courseId);
@@ -96,7 +91,7 @@ public class TeacherTimetableController {
      * @return
      */
     @PostMapping("/edit")
-    public ResultVo edit(@RequestParam("timetableId") String timetableId,
+    public ResultVo edit(@RequestParam("timetableId") Long timetableId,
                          @RequestParam(value = "homework", required = false) String homework) {
         TeacherTimetable timetable = new TeacherTimetable();
         timetable.setId(timetableId);

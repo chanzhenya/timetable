@@ -1,6 +1,6 @@
 package com.app.timetable.mapper;
 
-import com.app.timetable.entity.Tag;
+import com.app.timetable.model.entity.Tag;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

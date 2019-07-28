@@ -1,6 +1,6 @@
 package com.app.timetable.service.impl;
 
-import com.app.timetable.entity.Picture;
+import com.app.timetable.model.entity.Picture;
 import com.app.timetable.mapper.PictureMapper;
 import com.app.timetable.service.UploadFileService;
 import com.app.timetable.utils.ClassObjectUtils;
@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * @author Judith

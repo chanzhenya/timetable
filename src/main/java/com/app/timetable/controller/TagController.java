@@ -1,12 +1,11 @@
 package com.app.timetable.controller;
 
 
-import com.app.timetable.annotation.UserLoginToken;
-import com.app.timetable.entity.Tag;
+import com.app.timetable.common.utils.RobotAssert;
+import com.app.timetable.model.entity.Tag;
 import com.app.timetable.service.ITagService;
-import com.app.timetable.utils.ClassObjectUtils;
 import com.app.timetable.utils.ResultVoUtil;
-import com.app.timetable.vo.ResultVo;
+import com.app.timetable.model.vo.ResultVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,21 +31,27 @@ public class TagController {
 
     @PostMapping("/add")
     public ResultVo add(@RequestParam("tagName") String tagName) {
-        Tag tag = new Tag(ClassObjectUtils.getUUID(),tagName);
+        Tag tag = new Tag();
+        tag.setName(tagName);
         tagService.save(tag);
         return ResultVoUtil.success("新增成功");
     }
 
     @PostMapping("/edit")
     public ResultVo edit(@RequestParam("tagId") String tagId, @RequestParam("tagName") String tagName) {
-        Tag tag = new Tag(tagId,tagName);
+        Tag tag = tagService.getById(tagId);
+        RobotAssert.notNull(tag,"找不到想要的课程分类");
+        tag.setName(tagName);
         tagService.updateById(tag);
         return ResultVoUtil.success("修改成功");
     }
 
     @PostMapping("/delete")
     public ResultVo delete(@RequestParam("tagId") String tagId) {
-        tagService.removeById(tagId);
+        Tag tag = tagService.getById(tagId);
+        RobotAssert.notNull(tag,"找不到想要的课程分类");
+        tag.setEnable(0);
+        tagService.updateById(tag);
         return ResultVoUtil.success("删除成功");
     }
 

@@ -1,6 +1,6 @@
 package com.app.timetable.service;
 
-import com.app.timetable.entity.Picture;
+import com.app.timetable.model.entity.Picture;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
