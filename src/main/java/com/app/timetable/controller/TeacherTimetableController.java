@@ -54,23 +54,12 @@ public class TeacherTimetableController {
 
     /**
      * 获取教师课表列表
-     * @param teacherId
-     * @param pageNum
-     * @param pageSize
+     * @param params
      * @return
      */
     @PostMapping("/list")
-    public ResultVo list(@RequestParam(value = "teacherId", required = false) Long teacherId,
-                         @RequestParam(value = "courseId", required = false) Long courseId,
-                         @RequestParam(value = "tagId", required = false) Long tagId,
-                         @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
-                         @RequestParam(value = "pageSize", required = false, defaultValue = "8000") int pageSize,@RequestParam Map<String,Object> params) {
-
-        TeacherTimetable timetable = new TeacherTimetable();
-        timetable.setTeacherId(teacherId);
-        timetable.setCourseId(courseId);
-        IPage<TeacherTimetableDTO> teacherTimetableIPage = teacherTimetableService.selectByPage(pageNum,pageSize,timetable,tagId);
-        return ResultVoUtil.success(teacherTimetableIPage);
+    public ResultVo list(@RequestParam Map<String,Object> params) {
+        return ResultVoUtil.success(teacherTimetableService.selectByPage(params));
     }
 
     /**

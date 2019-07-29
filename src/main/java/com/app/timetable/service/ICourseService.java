@@ -5,6 +5,8 @@ import com.app.timetable.model.entity.Course;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.Map;
+
 /**
  * <p>
  *  服务类
@@ -15,7 +17,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ICourseService extends IService<Course> {
 
-    IPage<CourseDTO> selectPage(int pageNum, int pageSize, Course course);
+    IPage<CourseDTO> selectPage(Map<String,Object> params);
 
     CourseDTO selectDetailById(String courseId);
 

@@ -3,9 +3,11 @@ package com.app.timetable.service;
 import com.app.timetable.model.dto.StudentTimetableDTO;
 import com.app.timetable.model.entity.StudentTimtable;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -22,9 +24,9 @@ public interface IStudentTimtableService extends IService<StudentTimtable> {
      * @param teacherTimetableIds
      * @throws Exception
      */
-    List<StudentTimetableDTO> add(List<String> teacherTimetableIds, String studentId);
+    List<StudentTimetableDTO> add(List<Long> teacherTimetableIds, Long studentId);
 
-    IPage<StudentTimetableDTO> selectByPage(int pageNum, int pageSize, StudentTimtable timtable);
+    IPage<StudentTimetableDTO> selectByPage(Map<String,Object> params);
 
     /**
      * 签到及旷课登记

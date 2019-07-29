@@ -35,27 +35,24 @@
         <result column="remain_num" property="remainNum"/>
     </resultMap>
 
-    <select id="selectByPage" resultMap="DetailResultMap" parameterType="com.app.timetable.model.entity.StudentPurchasedCourse">
+    <select id="selectByPage" resultMap="DetailResultMap" parameterType="java.util.Map">
         SELECT spc.*, t.name course_name, u.name teacher_name
         FROM `student_purchased_course` spc
         LEFT JOIN `course` c ON c.id = spc.course_id
         LEFT JOIN `tag` t ON t.id = c.tag_id
         LEFT JOIN `sys_user` u ON u.id = c.teacher_id
         <where>
-            1=1
-            <if test="purchasedCourse.studentId != null and purchasedCourse.studentId != ''">
-                AND spc.student_id = #{purchasedCourse.studentId}
+            spc.enable=1
+            <if test="studentId != null">
+                AND spc.student_id = #{studentId}
+            </if>
+            <if test="teacherId != null">
+                AND spc.teacher_id = #{teacherId}
+            </if>
+            <if test="stutus != null">
+                AND spc.stutus = #{stutus}
             </if>
         </where>
-    </select>
-
-    <select id="selectList" resultMap="DetailResultMap" parameterType="java.lang.String">
-        SELECT spc.*, t.name course_name, u.name teacher_name
-        FROM `student_purchased_course` spc
-        LEFT JOIN `course` c ON c.id = spc.course_id
-        LEFT JOIN `tag` t ON t.id = c.tag_id
-        LEFT JOIN `sys_user` u ON u.id = c.teacher_id
-        WHERE student_id = #{studentId} AND stutus = 1
     </select>
 
     <select id="query" parameterType="com.app.timetable.model.entity.StudentPurchasedCourse" resultMap="BaseResultMap">

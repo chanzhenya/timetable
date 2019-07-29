@@ -35,7 +35,7 @@
         <result column="remain_num" property="remainNum"/>
     </resultMap>
 
-    <select id="selectDetailList" resultMap="DetailResultMap" parameterType="com.app.timetable.model.entity.StudentTimtable">
+    <select id="selectDetailList" resultMap="DetailResultMap" parameterType="java.util.Map">
         SELECT DISTINCT t.*, u.name student_name, u.img_url, tag.name course_name, tt.homework course_homework,
         spc.leave_num, spc.remain_num, spc.truancy_num
         FROM `student_timtable` t
@@ -47,10 +47,10 @@
         <where>
             1=1
             <if test="timetable.courseId != null and timetable.courseId != ''">
-                AND t.course_id = #{timetable.courseId}
+                AND t.course_id = #{courseId}
             </if>
             <if test="timetable.studentId != null and timetable.studentId != ''">
-                AND t.student_id = #{timetable.studentId}
+                AND t.student_id = #{studentId}
             </if>
             ORDER BY t.course_time
         </where>

@@ -5,6 +5,8 @@ import com.app.timetable.model.entity.TeacherTimetable;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.Map;
+
 /**
  * <p>
  *  服务类
@@ -15,7 +17,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ITeacherTimetableService extends IService<TeacherTimetable> {
 
-    IPage<TeacherTimetableDTO> selectByPage(int pageNum, int pageSize, TeacherTimetable timetable, Long tagId);
+    IPage<TeacherTimetableDTO> selectByPage(Map<String,Object> params);
 
     TeacherTimetableDTO selectDetailById(String id);
 

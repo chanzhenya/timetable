@@ -1,5 +1,6 @@
 package com.app.timetable.service.impl;
 
+import com.app.timetable.common.utils.BaseUtils;
 import com.app.timetable.model.dto.TeacherTimetableDTO;
 import com.app.timetable.model.entity.TeacherTimetable;
 import com.app.timetable.mapper.TeacherTimetableMapper;
@@ -12,6 +13,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 /**
  * <p>
  *  服务实现类
@@ -23,18 +26,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class TeacherTimetableServiceImpl extends ServiceImpl<TeacherTimetableMapper, TeacherTimetable> implements ITeacherTimetableService {
 
-    @Autowired
-    private TeacherTimetableMapper timetableMapper;
-
     @Override
-    public IPage<TeacherTimetableDTO> selectByPage(int pageNum, int pageSize, TeacherTimetable timetable, Long tagId) {
-        Page<TeacherTimetableDTO> page = new Page<>(pageNum, pageSize);
-        return timetableMapper.selectByPage(page,timetable, tagId);
+    public IPage<TeacherTimetableDTO> selectByPage(Map<String,Object> params) {
+        Page<TeacherTimetableDTO> page = BaseUtils.getInstance().initPage(params);
+        return baseMapper.selectByPage(page,params);
     }
 
     @Override
     public TeacherTimetableDTO selectDetailById(String id) {
-        return timetableMapper.selectDetailById(id);
+        return baseMapper.selectDetailById(id);
     }
 
     @Override
@@ -47,6 +47,6 @@ public class TeacherTimetableServiceImpl extends ServiceImpl<TeacherTimetableMap
             updateWrapper.set("status",timetable.getStatus());
         }
         updateWrapper.eq("id", timetable.getId());
-        timetableMapper.update(timetable,updateWrapper);
+        update(timetable,updateWrapper);
     }
 }

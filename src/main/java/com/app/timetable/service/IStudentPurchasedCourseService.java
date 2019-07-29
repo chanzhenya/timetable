@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -18,7 +19,7 @@ import java.util.List;
  */
 public interface IStudentPurchasedCourseService extends IService<StudentPurchasedCourse> {
 
-    IPage<PurchasedCourseDTO> selectByPage(int pageNum, int pageSize, StudentPurchasedCourse purchasedCourse);
+    IPage<PurchasedCourseDTO> selectByPage(Map<String,Object> params);
 
     int leaveAndTruancy(String studentId, TimetableStatus timetableStatus);
 

@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Map;
 
 /**
  * <p>
@@ -75,19 +76,12 @@ public class StudentPurchasedCourseController {
 
     /**
      * 根据学生ID获取已购买的课程列表
-     * @param pageNum 页码
-     * @param pageSize 行数
-     * @param studentId 学生id
+     * @param params
      * @return
      */
     @PostMapping("/list")
-    public ResultVo list(@RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
-                         @RequestParam(value = "pageSize", required = false, defaultValue = "8000") int pageSize,
-                         @RequestParam(value = "studentId", required = false) Long studentId) {
-        StudentPurchasedCourse purchasedCourse = new StudentPurchasedCourse();
-        purchasedCourse.setStudentId(studentId);
-        IPage<PurchasedCourseDTO> dtoiPage = purchasedCourseService.selectByPage(pageNum,pageSize,purchasedCourse);
-        return ResultVoUtil.success(dtoiPage);
+    public ResultVo list(@RequestParam Map<String,Object> params) {
+        return ResultVoUtil.success(purchasedCourseService.selectByPage(params));
     }
 
     /**

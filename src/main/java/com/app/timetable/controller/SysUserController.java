@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.time.LocalDateTime;
+import java.util.Map;
 
 /**
  * <p>
@@ -37,16 +37,7 @@ public class SysUserController {
     private ISysUserService userService;
 
     @Autowired
-    private UploadFileService uploadFileService;
-
-    @Autowired
-    private ICourseService courseService;
-
-    @Autowired
-    private ITeacherEvaluationService evaluationService;
-
-    @Autowired
-    private IStudentPurchasedCourseService purchasedCourseService;
+    private IPictureService pictureService;
 
     /**
      * 上传图片
@@ -57,9 +48,9 @@ public class SysUserController {
     public ResultVo uploadFile(@RequestParam(value = "img")MultipartFile multipartFile,
                                @RequestParam(value = "photoUrl", required = false) String photoUrl) {
         if(StringUtils.isNotBlank(photoUrl)) {
-            uploadFileService.delete(photoUrl);
+            pictureService.delete(photoUrl);
         }
-        Picture picture = uploadFileService.uploadFile(multipartFile);
+        Picture picture = pictureService.uploadFile(multipartFile);
         return ResultVoUtil.success(picture.getImgUrl());
     }
 
@@ -97,26 +88,18 @@ public class SysUserController {
         sysUser.setDescription(description);
         sysUser.setUserType(userType);
         sysUser.setPhotoUrl(photoUrl);
-        sysUser.setCreateTime(LocalDateTime.now());
         userService.register(sysUser, response);
         return ResultVoUtil.success("注册成功");
     }
 
     /**
      * 用户列表
-     * @param pageNum
-     * @param pageSize
-     * @param userType
+     * @param params
      * @return
      */
     @PostMapping("/list")
-    public ResultVo list(@RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
-                         @RequestParam(value = "pageSize", required = false, defaultValue = "8000") int pageSize,
-                         @RequestParam(value = "userType", required = false) Integer userType) {
-        SysUser sysUser = new SysUser();
-        sysUser.setUserType(userType);
-        IPage<SysUserDTO> page = userService.selectPage(pageNum,pageSize,sysUser);
-        return ResultVoUtil.success(page);
+    public ResultVo list(@RequestParam Map<String,Object> params) {
+        return ResultVoUtil.success(userService.selecBytPage(params));
     }
 
     /**
@@ -151,7 +134,7 @@ public class SysUserController {
      * @return
      */
     @PostMapping("/update")
-    public ResultVo update(@RequestParam("userId") String userId,
+    public ResultVo update(@RequestParam("userId") Long userId,
                            @RequestParam(value = "userType", required = false) int userType,
                            @RequestParam(value = "name", required = false) String name,
                            @RequestParam(value = "phone", required = false) String phone,

@@ -13,6 +13,4 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2019-04-01
  */
 public interface ITagService extends IService<Tag> {
-
-    IPage<Tag> selectPage(int pageNum, int pageSize);
 }

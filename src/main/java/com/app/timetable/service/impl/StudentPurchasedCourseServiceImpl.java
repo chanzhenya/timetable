@@ -1,5 +1,6 @@
 package com.app.timetable.service.impl;
 
+import com.app.timetable.common.utils.BaseUtils;
 import com.app.timetable.model.dto.PurchasedCourseDTO;
 import com.app.timetable.model.entity.StudentPurchasedCourse;
 import com.app.timetable.model.enums.PurchasedCourseStatus;
@@ -20,6 +21,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -33,15 +35,12 @@ import java.util.List;
 public class StudentPurchasedCourseServiceImpl extends ServiceImpl<StudentPurchasedCourseMapper, StudentPurchasedCourse> implements IStudentPurchasedCourseService {
 
     @Autowired
-    private StudentPurchasedCourseMapper purchasedCourseMapper;
-
-    @Autowired
     private RedissonClient redissonClient;
 
     @Override
-    public IPage<PurchasedCourseDTO> selectByPage(int pageNum, int pageSize, StudentPurchasedCourse purchasedCourse) {
-        Page<PurchasedCourseDTO> purchasedCourseDTOPage = new Page<>(pageNum,pageSize);
-        IPage<PurchasedCourseDTO> dtoiPage = purchasedCourseMapper.selectByPage(purchasedCourseDTOPage,purchasedCourse);
+    public IPage<PurchasedCourseDTO> selectByPage(Map<String,Object> params) {
+        Page<PurchasedCourseDTO> purchasedCourseDTOPage = BaseUtils.getInstance().initPage(params);
+        IPage<PurchasedCourseDTO> dtoiPage = baseMapper.selectByPage(purchasedCourseDTOPage,params);
         //计算已购买的课程距离截止日期还有多少天
         for(PurchasedCourseDTO dto : dtoiPage.getRecords()) {
             if(PurchasedCourseStatus.VALID.getCode().equals(dto.getStatus())) {
@@ -61,7 +60,7 @@ public class StudentPurchasedCourseServiceImpl extends ServiceImpl<StudentPurcha
 
     @Override
     public int leaveAndTruancy(String studentId, TimetableStatus timetableStatus) {
-        StudentPurchasedCourse purchasedCourse = purchasedCourseMapper.selectById(studentId);
+        StudentPurchasedCourse purchasedCourse = getById(studentId);
         RMap<String,Object> map = redissonClient.getMap("sys:config");
         int number = 0;
         if(map.containsKey(SysConfigType.LEAVE_NUMBER.getKey())) {
@@ -78,18 +77,18 @@ public class StudentPurchasedCourseServiceImpl extends ServiceImpl<StudentPurcha
             truancyNum+=1;
             purchasedCourse.setTruancyNum(truancyNum);
         }
-        purchasedCourseMapper.updateById(purchasedCourse);
+        updateById(purchasedCourse);
         return res;
     }
 
     @Override
     public List<StudentPurchasedCourse> query(StudentPurchasedCourse purchasedCourse) {
-        return purchasedCourseMapper.query(purchasedCourse);
+        return baseMapper.query(purchasedCourse);
     }
 
     @Override
     public void updateWithSchedule() {
-        purchasedCourseMapper.updateBySchedule();
+        baseMapper.updateBySchedule();
     }
 
     @Override
@@ -99,14 +98,14 @@ public class StudentPurchasedCourseServiceImpl extends ServiceImpl<StudentPurcha
         queryWrapper.eq("course_id", purchasedCourse.getCourseId());
         queryWrapper.eq("teacher_id", purchasedCourse.getTeacherId());
         queryWrapper.eq("status",1);
-        StudentPurchasedCourse spc = purchasedCourseMapper.selectOne(queryWrapper);
+        StudentPurchasedCourse spc = getOne(queryWrapper);
         if(spc != null) {
             int remain = spc.getRemain()+purchasedCourse.getRemain();
             spc.setRemain(remain);
-            if(purchasedCourse.getDueTime()!=null && purchasedCourse.getDueTime().isAfter(spc.getDueTime())) {
+            if(purchasedCourse.getDueTime()!=null && purchasedCourse.getDueTime().after(spc.getDueTime())) {
                 spc.setDueTime(purchasedCourse.getDueTime());
             }
-            purchasedCourseMapper.updateById(spc);
+            updateById(spc);
         } else {
             RMap<String,Object> map = redissonClient.getMap("sys:config");
             int number = 0;
@@ -117,7 +116,7 @@ public class StudentPurchasedCourseServiceImpl extends ServiceImpl<StudentPurcha
             purchasedCourse.setLeaveNum(0);
             purchasedCourse.setTruancyNum(0);
             purchasedCourse.setRemainNum(number);
-            purchasedCourseMapper.insert(purchasedCourse);
+            save(purchasedCourse);
         }
     }
 }

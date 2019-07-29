@@ -4,6 +4,8 @@ import com.app.timetable.model.entity.StorePicture;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.Map;
+
 /**
  * <p>
  *  服务类
@@ -14,5 +16,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IStorePictureService extends IService<StorePicture> {
 
-    IPage<StorePicture> selectByPage(int pageNum, int pageSize);
+    IPage<StorePicture> selectByPage(Map<String,Object> params);
 }

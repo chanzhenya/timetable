@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -22,7 +23,7 @@ public interface ISysUserService extends IService<SysUser> {
 
     void register(SysUser sysUser, HttpServletResponse response);
 
-    IPage<SysUserDTO> selectPage(int pageNum, int pageSize, SysUser user);
+    IPage<SysUserDTO> selecBytPage(Map<String,Object> params);
 
     JSONObject studetnDetail(String userId);
 

@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Map;
+
 /**
  * <p>
  *  Mapper 接口
@@ -17,7 +19,7 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface TeacherTimetableMapper extends BaseMapper<TeacherTimetable> {
 
-    IPage<TeacherTimetableDTO> selectByPage(Page<TeacherTimetableDTO> page, @Param("timetable") TeacherTimetable timetable, @Param("tagId") Long tagId);
+    IPage<TeacherTimetableDTO> selectByPage(Page<TeacherTimetableDTO> page, Map<String,Object> params);
 
     TeacherTimetableDTO selectDetailById(@Param("id") String id);
 }

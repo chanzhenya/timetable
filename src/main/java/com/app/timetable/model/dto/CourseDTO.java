@@ -1,5 +1,7 @@
 package com.app.timetable.model.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -16,7 +18,8 @@ public class CourseDTO {
     /**
      * 课程id
      */
-    private String id;
+    @JsonSerialize(using = ToStringSerializer.class)
+    private Long id;
 
     /**
      * 课程描述
@@ -36,7 +39,8 @@ public class CourseDTO {
     /**
      * 教师id
      */
-    private String teacherId;
+    @JsonSerialize(using = ToStringSerializer.class)
+    private Long teacherId;
 
     /**
      * 教师名称
@@ -51,7 +55,8 @@ public class CourseDTO {
     /**
      * 课程分类ID
      */
-    private String tagId;
+    @JsonSerialize(using = ToStringSerializer.class)
+    private Long tagId;
 
     /**
      * 课程分类名称

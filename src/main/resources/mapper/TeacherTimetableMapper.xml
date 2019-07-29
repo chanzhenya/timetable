@@ -36,7 +36,7 @@
         <collection property="students" column="course_id" select="com.app.timetable.mapper.StudentTimtableMapper.selectByCourse"/>
     </resultMap>
 
-    <select id="selectByPage" resultMap="DetailResultMap" parameterType="com.app.timetable.model.entity.TeacherTimetable">
+    <select id="selectByPage" resultMap="DetailResultMap" parameterType="java.util.Map">
         SELECT t.*, u.name teacher_name, tag.name course_name FROM `teacher_timetable` t
         LEFT JOIN `sys_user` u ON u.id = t.teacher_id
         LEFT JOIN `course` c ON c.id = t.course_id
@@ -44,10 +44,10 @@
         <where>
             1=1
             <if test="timetable.teacherId != null and timetable.teacherId != ''">
-                AND t.teacher_id = #{timetable.teacherId, jdbcType=VARCHAR}
+                AND t.teacher_id = #{teacherId}
             </if>
             <if test="timetable.courseId != null and timetable.courseId != ''">
-                AND t.course_id = #{timetable.courseId, jdbcType=VARCHAR}
+                AND t.course_id = #{courseId}
             </if>
             <if test="tagId != null and tagId != ''">
                 AND tag.id = #{tagId}

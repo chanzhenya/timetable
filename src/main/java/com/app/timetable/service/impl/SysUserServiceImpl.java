@@ -1,12 +1,13 @@
 package com.app.timetable.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.app.timetable.common.utils.BaseUtils;
 import com.app.timetable.model.dto.PurchasedCourseDTO;
 import com.app.timetable.model.dto.SysUserDTO;
 import com.app.timetable.model.entity.StudentPurchasedCourse;
 import com.app.timetable.model.entity.SysUser;
-import com.app.timetable.mapper.StudentPurchasedCourseMapper;
 import com.app.timetable.mapper.SysUserMapper;
+import com.app.timetable.service.IStudentPurchasedCourseService;
 import com.app.timetable.service.ISysUserService;
 import com.app.timetable.utils.ClassObjectUtils;
 import com.app.timetable.utils.CommonContent;
@@ -19,7 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -33,32 +36,31 @@ import java.util.List;
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements ISysUserService {
 
     @Autowired
-    private SysUserMapper  userMapper;
-
-    @Autowired
-    private StudentPurchasedCourseMapper purchasedCourseMapper;
+    private IStudentPurchasedCourseService purchasedCourseService;
 
     @Override
     public void register(SysUser sysUser, HttpServletResponse response) {
-        if(StringUtils.isNotBlank(sysUser.getId())) {
-            userMapper.updateById(sysUser);
+        if(sysUser.getId() != null) {
+            updateById(sysUser);
         } else {
-            sysUser.setId(ClassObjectUtils.getUUID());
-            userMapper.insert(sysUser);
+            save(sysUser);
         }
         String token = CookieUtil.getUUToken();
         CookieUtil.setTokenCookie(CommonContent.TOKEN_KEY,token, (int) CommonContent.LOGIN_EXPIRE_TIME, response);
     }
 
     @Override
-    public IPage<SysUserDTO> selectPage(int pageNum, int pageSize, SysUser user) {
-        Page<SysUserDTO> page = new Page<>(pageNum,pageSize);
-        return userMapper.selectPage(page,user);
+    public IPage<SysUserDTO> selecBytPage(Map<String,Object> params) {
+        Page<SysUserDTO> page = BaseUtils.getInstance().initPage(params);
+        return baseMapper.selectByPage(page,params);
     }
 
     @Override
     public JSONObject studetnDetail(String userId) {
-        List<PurchasedCourseDTO> list = purchasedCourseMapper.selectList(userId);
+        Map<String,Object> _map = new HashMap<>();
+        _map.put("studentId",userId);
+        _map.put("status",1);
+        List<PurchasedCourseDTO> list = purchasedCourseService.selectByPage(_map).getRecords();
         String teachers = "";
         Integer truancyNum = 0; // 旷课次数
         Integer leaveNum = 0; // 请假次数
@@ -79,17 +81,17 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public SysUser selectByOpenId(String openId) {
-        return userMapper.selectByOpenId(openId);
+        return baseMapper.selectByOpenId(openId);
     }
 
     @Override
     public IPage<SysUserDTO> selectMyStudents(int pageNum, int pageSize, StudentPurchasedCourse purchasedCourse) {
         Page<SysUserDTO> page = new Page<>(pageNum,pageSize);
-        return userMapper.selectMyStudents(page, purchasedCourse);
+        return baseMapper.selectMyStudents(page, purchasedCourse);
     }
 
     @Override
     public List<SysUserDTO> teacherOptions(String tagId) {
-        return userMapper.teacherOptions(tagId);
+        return baseMapper.teacherOptions(tagId);
     }
 }

@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -19,11 +20,11 @@ import java.util.List;
  */
 public interface StudentTimtableMapper extends BaseMapper<StudentTimtable> {
 
-    IPage<StudentTimetableDTO> selectDetailList(Page<StudentTimetableDTO> page, @Param("timetable") StudentTimtable timtable);
+    IPage<StudentTimetableDTO> selectDetailList(Page<StudentTimetableDTO> page, Map<String,Object> params);
 
     List<StudentTimetableDTO> selectByCourse(@Param("courseId") String courseId);
 
     void insertByBatch(List<StudentTimtable> timtableList);
 
-    List<StudentTimetableDTO> selectByIds(List<String> ids);
+    List<StudentTimetableDTO> selectByIds(List<Long> ids);
 }

@@ -6,7 +6,7 @@ import com.app.timetable.model.entity.Tag;
 import com.app.timetable.service.ITagService;
 import com.app.timetable.utils.ResultVoUtil;
 import com.app.timetable.model.vo.ResultVo;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -58,8 +58,8 @@ public class TagController {
     @PostMapping("/list")
     public ResultVo list(@RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
                          @RequestParam(value = "pageSize", required = false, defaultValue = "8000") int pageSize) {
-        IPage<Tag> tagIPage = tagService.selectPage(pageNum,pageSize);
-        return ResultVoUtil.success(tagIPage);
+        Page<Tag> tagPage = new Page<>(pageNum,pageSize);
+        return ResultVoUtil.success(tagService.page(tagPage));
     }
 }
 

@@ -21,12 +21,4 @@ import org.springframework.stereotype.Service;
 @Service
 public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements ITagService {
 
-    @Autowired
-    private TagMapper tagMapper;
-
-    @Override
-    public IPage<Tag> selectPage(int pageNum, int pageSize) {
-        Page<Tag> page = new Page<>(pageNum,pageSize);
-        return tagMapper.selectPage(page,new QueryWrapper<>());
-    }
 }

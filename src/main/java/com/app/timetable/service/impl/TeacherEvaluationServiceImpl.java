@@ -1,5 +1,6 @@
 package com.app.timetable.service.impl;
 
+import com.app.timetable.common.utils.BaseUtils;
 import com.app.timetable.model.dto.TeacherEvaluationDTO;
 import com.app.timetable.model.entity.SysUser;
 import com.app.timetable.model.entity.TeacherEvaluation;
@@ -11,6 +12,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 /**
  * <p>
@@ -24,19 +27,16 @@ import org.springframework.stereotype.Service;
 public class TeacherEvaluationServiceImpl extends ServiceImpl<TeacherEvaluationMapper, TeacherEvaluation> implements ITeacherEvaluationService {
 
     @Autowired
-    private TeacherEvaluationMapper evaluationMapper;
-
-    @Autowired
     private ISysUserService sysUserService;
 
     @Override
-    public IPage<TeacherEvaluationDTO> selectByPage(int pageNum, int pageSize, TeacherEvaluation evaluation) {
-        Page<TeacherEvaluationDTO> page = new Page<>(pageNum,pageSize);
-        return evaluationMapper.selectByPage(page,evaluation);
+    public IPage<TeacherEvaluationDTO> selectByPage(Map<String,Object> params) {
+        Page<TeacherEvaluationDTO> page = BaseUtils.getInstance().initPage(params);
+        return baseMapper.selectByPage(page,params);
     }
 
     @Override
-    public void insert(TeacherEvaluation evaluation) {
+    public TeacherEvaluation saveTeacherEvaluation(TeacherEvaluation evaluation) {
         SysUser sysUser = sysUserService.getById(evaluation.getTeacherId());
         if(sysUser.getScore() > 0) {
             double score = (sysUser.getScore() * 2 + evaluation.getScore()) / 2.0; // 计算教师综合评分
@@ -45,6 +45,7 @@ public class TeacherEvaluationServiceImpl extends ServiceImpl<TeacherEvaluationM
             sysUser.setScore(evaluation.getScore());
         }
         sysUserService.updateById(sysUser);
-        evaluationMapper.insert(evaluation);
+        save(evaluation);
+        return evaluation;
     }
 }

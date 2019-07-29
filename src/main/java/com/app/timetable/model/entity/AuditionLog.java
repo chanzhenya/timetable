@@ -16,9 +16,9 @@ public class AuditionLog extends BaseModel {
 
     private static final long serialVersionUID = 1L;
 
-    private String courseId;
+    private Long courseId;
 
-    private String teacherId;
+    private Long teacherId;
 
-    private String studentId;
+    private Long studentId;
 }

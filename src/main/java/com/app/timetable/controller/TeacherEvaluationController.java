@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 /**
  * <p>
@@ -41,37 +42,25 @@ public class TeacherEvaluationController {
      * @return
      */
     @PostMapping("/add")
-    public ResultVo add(@RequestParam("studentId") String studentId, @RequestParam("teacherId") String teacherId,
+    public ResultVo add(@RequestParam("studentId") Long studentId, @RequestParam("teacherId") Long teacherId,
                         @RequestParam(value = "score", required = false) double score, @RequestParam(value = "content", required = false) String content) {
         TeacherEvaluation evaluation = new TeacherEvaluation();
-        evaluation.setId(ClassObjectUtils.getUUID());
         evaluation.setStudentId(studentId);
         evaluation.setTeacherId(teacherId);
         evaluation.setScore(score);
         evaluation.setContent(content);
-        evaluation.setCreateTime(LocalDateTime.now());
-        teacherEvaluationService.insert(evaluation);
+        teacherEvaluationService.saveTeacherEvaluation(evaluation);
         return ResultVoUtil.success("提交成功");
     }
 
     /**
      * 教师评论列表
-     * @param teacherId
-     * @param studentId
-     * @param pageNum
-     * @param pageSize
+     * @param params
      * @return
      */
     @PostMapping("/list")
-    public ResultVo list(@RequestParam(value = "teacherId", required = false) String teacherId,
-                         @RequestParam(value = "studentId", required = false) String studentId,
-                         @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
-                         @RequestParam(value = "pageSize", required = false, defaultValue = "8000") int pageSize) {
-        TeacherEvaluation evaluation = new TeacherEvaluation();
-        evaluation.setTeacherId(teacherId);
-        evaluation.setStudentId(studentId);
-        IPage<TeacherEvaluationDTO> evaluationDTOIPage = teacherEvaluationService.selectByPage(pageNum,pageSize,evaluation);
-        return ResultVoUtil.success(evaluationDTOIPage);
+    public ResultVo list(@RequestParam Map<String,Object> params) {
+        return ResultVoUtil.success(teacherEvaluationService.selectByPage(params));
     }
 
     /**

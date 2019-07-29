@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -20,7 +21,7 @@ import java.util.List;
  */
 public interface SysUserMapper extends BaseMapper<SysUser> {
 
-    IPage<SysUserDTO> selectPage(Page<SysUserDTO> page, @Param("user") SysUser user);
+    IPage<SysUserDTO> selectByPage(Page<SysUserDTO> page, Map<String,Object> params);
 
     SysUser selectByOpenId(@Param("openId") String openId);
 

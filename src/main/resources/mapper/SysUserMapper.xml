@@ -36,7 +36,7 @@
         <result column="user_type" property="userType" />
     </resultMap>
 
-    <select id="selectPage" resultMap="ListResultMap" parameterType="com.app.timetable.model.entity.SysUser">
+    <select id="selectByPage" resultMap="ListResultMap" parameterType="java.util.Map">
         SELECT * FROM sys_user
         <where>
             1=1

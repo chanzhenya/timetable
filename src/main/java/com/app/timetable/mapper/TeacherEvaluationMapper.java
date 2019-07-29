@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Map;
+
 /**
  * <p>
  *  Mapper 接口
@@ -17,5 +19,5 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface TeacherEvaluationMapper extends BaseMapper<TeacherEvaluation> {
 
-    IPage<TeacherEvaluationDTO> selectByPage(Page<TeacherEvaluationDTO> page, @Param("evaluation") TeacherEvaluation evaluation);
+    IPage<TeacherEvaluationDTO> selectByPage(Page<TeacherEvaluationDTO> page, Map<String,Object> params);
 }

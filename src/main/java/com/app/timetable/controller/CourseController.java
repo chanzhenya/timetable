@@ -8,19 +8,11 @@ import com.app.timetable.common.utils.RobotAssert;
 import com.app.timetable.model.dto.CourseDTO;
 import com.app.timetable.model.entity.Course;
 import com.app.timetable.model.entity.Picture;
-import com.app.timetable.model.entity.SysUser;
-import com.app.timetable.model.entity.Tag;
-import com.app.timetable.model.enums.CourseStatus;
-import com.app.timetable.service.ICourseService;
-import com.app.timetable.service.ISysUserService;
-import com.app.timetable.service.ITagService;
-import com.app.timetable.service.UploadFileService;
-import com.app.timetable.utils.ClassObjectUtils;
+import com.app.timetable.service.*;
 import com.app.timetable.utils.ResultVoUtil;
 import com.app.timetable.model.vo.ResultVo;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -50,7 +41,7 @@ public class CourseController {
     private ICourseService courseService;
 
     @Autowired
-    private UploadFileService uploadFileService;
+    private IPictureService pictureService;
 
     @Autowired
     private ITagService tagService;
@@ -76,7 +67,7 @@ public class CourseController {
         RobotAssert.isEmpty(courseList,"该课程已存在，无需在添加");
 
         if(multipartFile != null) {
-            Picture picture = uploadFileService.uploadFile(multipartFile);
+            Picture picture = pictureService.uploadFile(multipartFile);
             course.setImgUrl(picture.getImgUrl());
         }
         courseService.save(course);
@@ -96,8 +87,8 @@ public class CourseController {
         Course course = courseService.getById(MapUtil.getLong(params,"courseId"));
         RobotAssert.notNull(course,"找不相应的课程，请确认课程是否存在");
         if(multipartFile != null) {
-            uploadFileService.delete(course.getImgUrl());
-            Picture picture = uploadFileService.uploadFile(multipartFile);
+            pictureService.delete(course.getImgUrl());
+            Picture picture = pictureService.uploadFile(multipartFile);
             course.setImgUrl(picture.getImgUrl());
         }
         if(params.containsKey("period")) {
@@ -115,21 +106,12 @@ public class CourseController {
 
     /**
      * 根据教师ID获取课程列表
-     * @param teacherId
-     * @param pageNum
-     * @param pageSize
+     * @param params
      * @return
      */
     @PostMapping("/list")
-    public ResultVo list(@RequestParam(value = "teacherId",required = false) Long teacherId,
-                         @RequestParam(value = "status", required = false) Integer status,
-                         @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
-                         @RequestParam(value = "pageSize", required = false, defaultValue = "8000") int pageSize) {
-        Course course = new Course();
-        course.setStatus(status);
-        course.setTeacherId(teacherId);
-        IPage<CourseDTO> courseIPage = courseService.selectPage(pageNum,pageSize,course);
-        return ResultVoUtil.success(courseIPage);
+    public ResultVo list(@RequestParam Map<String,Object> params) {
+        return ResultVoUtil.success(courseService.selectPage(params));
     }
 
     /**

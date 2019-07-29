@@ -5,6 +5,8 @@ import com.app.timetable.model.entity.TeacherEvaluation;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.Map;
+
 /**
  * <p>
  *  服务类
@@ -15,7 +17,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ITeacherEvaluationService extends IService<TeacherEvaluation> {
 
-    IPage<TeacherEvaluationDTO> selectByPage(int pageNum, int pageSize, TeacherEvaluation evaluation);
+    IPage<TeacherEvaluationDTO> selectByPage(Map<String,Object> params);
 
-    void insert(TeacherEvaluation evaluation);
+    TeacherEvaluation saveTeacherEvaluation(TeacherEvaluation evaluation);
 }

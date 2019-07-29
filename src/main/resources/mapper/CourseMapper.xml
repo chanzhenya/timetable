@@ -38,17 +38,17 @@
         WHERE c.id = #{courseId}
     </select>
 
-    <select id="selectByPage" resultMap="DetailResultMap" parameterType="com.app.timetable.model.entity.Course">
+    <select id="selectByPage" resultMap="DetailResultMap" parameterType="java.util.Map">
         SELECT c.*, u.name teacher_name, t.name tag_name FROM course c
         LEFT JOIN sys_user u ON u.id = c.teacher_id
         LEFT JOIN tag t ON t.id = c.tag_id
         <where>
             c.enable=1
             <if test="course.status != null">
-                AND c.status = #{course.status}
+                AND c.status = #{status}
             </if>
             <if test="course.teacherId != null and course.teacherId != ''">
-                AND c.teacher_id = #{course.teacherId}
+                AND c.teacher_id = #{teacherId}
             </if>
         </where>
     </select>

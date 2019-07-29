@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -19,9 +20,7 @@ import java.util.List;
  */
 public interface StudentPurchasedCourseMapper extends BaseMapper<StudentPurchasedCourse> {
 
-    IPage<PurchasedCourseDTO> selectByPage(Page<PurchasedCourseDTO> page, @Param("purchasedCourse") StudentPurchasedCourse purchasedCourse);
-
-    List<PurchasedCourseDTO> selectList(String StudentId);
+    IPage<PurchasedCourseDTO> selectByPage(Page<PurchasedCourseDTO> page, Map<String,Object> params);
 
     List<StudentPurchasedCourse> query(@Param("purchasedCourse") StudentPurchasedCourse purchasedCourse);
 

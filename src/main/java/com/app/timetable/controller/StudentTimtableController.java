@@ -9,7 +9,6 @@ import com.app.timetable.model.enums.TimetableStatus;
 import com.app.timetable.service.IStudentTimtableService;
 import com.app.timetable.utils.ResultVoUtil;
 import com.app.timetable.model.vo.ResultVo;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -43,10 +43,10 @@ public class StudentTimtableController {
     @PostMapping("/add")
     public ResultVo add(@RequestParam("teacherTimetableIds") String teacherTimetableIds, @RequestParam("studentId") Long studentId) {
         JSONArray jsonArray = JSONArray.parseArray(teacherTimetableIds);
-        List<String> idArray = new ArrayList<>();
+        List<Long> idArray = new ArrayList<>();
         for(int i=0;i<jsonArray.size();i++) {
             JSONObject obj = jsonArray.getJSONObject(i);
-            idArray.add(obj.getString("id"));
+            idArray.add(obj.getLong("id"));
         }
         List<StudentTimetableDTO> studentTimtables = studentTimtableService.add(idArray, studentId);
         return ResultVoUtil.success(studentTimtables);
@@ -55,19 +55,12 @@ public class StudentTimtableController {
 
     /**
      * 根据学生ID获取课表
-     * @param studentId
-     * @param pageNum
-     * @param pageSize
+     * @param params
      * @return
      */
     @PostMapping("/list")
-    public ResultVo list(@RequestParam(value = "studentId", required = false) String studentId,
-                         @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
-                         @RequestParam(value = "pageSize", required = false, defaultValue = "8000") int pageSize) {
-        StudentTimtable timtable = new StudentTimtable();
-        timtable.setStudentId(studentId);
-        IPage<StudentTimetableDTO> dtoiPage = studentTimtableService.selectByPage(pageNum,pageSize,timtable);
-        return ResultVoUtil.success(dtoiPage);
+    public ResultVo list(@RequestParam Map<String,Object> params) {
+        return ResultVoUtil.success(studentTimtableService.selectByPage(params));
     }
 
     /**
@@ -77,7 +70,7 @@ public class StudentTimtableController {
      * @return
      */
     @PostMapping("/signIn")
-    public ResultVo signIn(@RequestParam("status") Integer status, @RequestParam("id") String id,
+    public ResultVo signIn(@RequestParam("status") Integer status, @RequestParam("id") Long id,
                            @RequestParam("teacherTimetableId") String teacherTimetableId) {
         StudentTimtable timtable = new StudentTimtable();
         timtable.setId(id);
@@ -104,7 +97,7 @@ public class StudentTimtableController {
      * @return
      */
     @PostMapping("/cancel")
-    public ResultVo leave(@RequestParam("id") String id) {
+    public ResultVo leave(@RequestParam("id") Long id) {
         StudentTimtable timtable = new StudentTimtable();
         timtable.setId(id);
         timtable.setStatus(TimetableStatus.LEAVE.getCode());

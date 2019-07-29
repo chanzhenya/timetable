@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Judith
@@ -49,14 +51,14 @@ public class TeacherController {
     public ResultVo detail(@RequestParam("teacherId") String teacherId) {
         JSONObject result = new JSONObject();
         SysUser sysUser = userService.getById(teacherId);
-        Course queryCourse = new Course();
-        queryCourse.setTeacherId(sysUser.getId());
-        IPage<CourseDTO> courseIPage = courseService.selectPage(1,20,queryCourse);
+        Map<String,Object> _params = new HashMap<>();
+        _params.put("teacherId",teacherId);
+        IPage<CourseDTO> courseIPage = courseService.selectPage(_params);
         List<CourseDTO> courseList = courseIPage.getRecords();
 
         TeacherEvaluation evaluation = new TeacherEvaluation();
         evaluation.setTeacherId(sysUser.getId());
-        IPage<TeacherEvaluationDTO> evaluationDTOIPage = evaluationService.selectByPage(1,10,evaluation);
+        IPage<TeacherEvaluationDTO> evaluationDTOIPage = evaluationService.selectByPage(_params);
         List<TeacherEvaluationDTO> evaluationDTOS = evaluationDTOIPage.getRecords();
         result.put("courses",courseList);
         result.put("evaluations",evaluationDTOS);
@@ -72,8 +74,8 @@ public class TeacherController {
      * @return
      */
     @PostMapping("/myStudents")
-    public ResultVo myStudents(@RequestParam("teacherId") String teacherId,
-                               @RequestParam(value = "courseId", required = false) String courseId,
+    public ResultVo myStudents(@RequestParam("teacherId") Long teacherId,
+                               @RequestParam(value = "courseId", required = false) Long courseId,
                                @RequestParam(value = "pageNum", required = false,defaultValue = "1") int pageNum,
                                @RequestParam(value = "pageSize", required = false, defaultValue = "8000") int pageSize) {
         StudentPurchasedCourse purchasedCourse = new StudentPurchasedCourse();

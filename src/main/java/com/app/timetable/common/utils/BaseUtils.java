@@ -1,6 +1,8 @@
 package com.app.timetable.common.utils;
 
+import cn.hutool.core.map.MapUtil;
 import com.app.timetable.common.exception.BusinessException;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +30,23 @@ public class BaseUtils {
             else
                 tparams.put(keys[i],params.get(keys[i]));
         }
-        params.remove("sysAppName");
         return tparams;
+    }
+
+    public Page initPage(Map<String,Object> params){
+        int pageNum = 1 ;
+        int pageSize = 10;
+        boolean queryAll = false;
+        if(params.containsKey("pageNum")) {
+            pageNum = MapUtil.getInt(params,"pageNum");
+        }
+
+        if(params.containsKey("pageSize")){
+            pageSize = MapUtil.getInt(params,"pageSize");
+        }else {
+            pageSize = Integer.MAX_VALUE;
+        }
+
+        return new Page<>(pageNum,pageSize);
     }
 }

@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Judith
@@ -38,13 +40,12 @@ public class StudentController {
      * @return
      */
     @PostMapping("/detail")
-    public ResultVo detail(@RequestParam("studentId") String studentId) {
+    public ResultVo detail(@RequestParam("studentId") Long studentId) {
         JSONObject result = new JSONObject();
         SysUser sysUser = userService.getById(studentId);
-        StudentPurchasedCourse purchasedCourse = new StudentPurchasedCourse();
-        purchasedCourse.setStudentId(sysUser.getId());
-        IPage<PurchasedCourseDTO> courseDTOIPage = purchasedCourseService.selectByPage(1,10,purchasedCourse);
-        List<PurchasedCourseDTO> purchasedCourses = courseDTOIPage.getRecords();
+        Map<String,Object> _params = new HashMap<>();
+        _params.put("studentId",studentId);
+        List<PurchasedCourseDTO> purchasedCourses = purchasedCourseService.selectByPage(_params).getRecords();
         result.put("purchasedCourses",purchasedCourses);
         result.put("student", sysUser);
         return ResultVoUtil.success(result);

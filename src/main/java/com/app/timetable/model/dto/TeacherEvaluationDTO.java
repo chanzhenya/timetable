@@ -1,5 +1,6 @@
 package com.app.timetable.model.dto;
 
+import com.app.timetable.model.entity.TeacherEvaluation;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -10,20 +11,7 @@ import java.time.LocalDateTime;
  * @description
  */
 @Data
-public class TeacherEvaluationDTO {
-
-
-    private String id;
-
-    private String studentId;
+public class TeacherEvaluationDTO extends TeacherEvaluation {
 
     private String studentAccount;
-
-    private String teacherId;
-
-    private double score;
-
-    private String content;
-
-    private LocalDateTime createTime;
 }

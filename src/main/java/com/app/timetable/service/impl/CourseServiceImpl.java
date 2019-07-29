@@ -1,5 +1,6 @@
 package com.app.timetable.service.impl;
 
+import com.app.timetable.common.utils.BaseUtils;
 import com.app.timetable.model.dto.CourseDTO;
 import com.app.timetable.model.entity.Course;
 import com.app.timetable.mapper.CourseMapper;
@@ -9,6 +10,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 /**
  * <p>
@@ -22,9 +25,9 @@ import org.springframework.stereotype.Service;
 public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> implements ICourseService {
 
     @Override
-    public IPage<CourseDTO> selectPage(int pageNum, int pageSize, Course course) {
-        Page<CourseDTO> page = new Page<>(pageNum,pageSize);
-        return baseMapper.selectByPage(page,course);
+    public IPage<CourseDTO> selectPage(Map<String,Object> params) {
+        Page<CourseDTO> page = BaseUtils.getInstance().initPage(params);
+        return baseMapper.selectByPage(page,params);
     }
 
     @Override

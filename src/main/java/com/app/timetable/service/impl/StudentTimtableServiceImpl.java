@@ -1,16 +1,13 @@
 package com.app.timetable.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
+import com.app.timetable.common.utils.BaseUtils;
 import com.app.timetable.model.dto.StudentTimetableDTO;
-import com.app.timetable.entity.*;
 import com.app.timetable.model.entity.*;
 import com.app.timetable.model.enums.CourseType;
 import com.app.timetable.model.enums.TimetableStatus;
 import com.app.timetable.mapper.StudentTimtableMapper;
-import com.app.timetable.mapper.TeacherTimetableMapper;
-import com.app.timetable.service.IAuditionLogService;
-import com.app.timetable.service.IStudentPurchasedCourseService;
-import com.app.timetable.service.IStudentTimtableService;
-import com.app.timetable.service.ISysUserService;
+import com.app.timetable.service.*;
 import com.app.timetable.utils.ClassObjectUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -20,10 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -38,13 +35,10 @@ import java.util.List;
 public class StudentTimtableServiceImpl extends ServiceImpl<StudentTimtableMapper, StudentTimtable> implements IStudentTimtableService {
 
     @Autowired
-    private StudentTimtableMapper studentTimtableMapper;
-
-    @Autowired
     private IAuditionLogService auditionLogService;
 
     @Autowired
-    private TeacherTimetableMapper teacherTimetableMapper;
+    private ITeacherTimetableService teacherTimetableService;
 
     @Autowired
     private IStudentPurchasedCourseService studentPurchasedCourseService;
@@ -53,9 +47,9 @@ public class StudentTimtableServiceImpl extends ServiceImpl<StudentTimtableMappe
     private ISysUserService sysUserService;
 
     @Override
-    public  List<StudentTimetableDTO> add(List<String> teacherTimetableIds, Long studentId) {
+    public  List<StudentTimetableDTO> add(List<Long> teacherTimetableIds, Long studentId) {
         //获取预约课的详情
-        List<TeacherTimetable> teacherTimetables = teacherTimetableMapper.selectBatchIds(teacherTimetableIds);
+        List<TeacherTimetable> teacherTimetables = CollUtil.newArrayList(teacherTimetableService.listByIds(teacherTimetableIds));
         List<Long> courseIds = new ArrayList<>();
         for(TeacherTimetable teacherTimetable:teacherTimetables) {
             courseIds.add(teacherTimetable.getCourseId());
@@ -74,7 +68,6 @@ public class StudentTimtableServiceImpl extends ServiceImpl<StudentTimtableMappe
         List<StudentTimtable> newStudentTimtables = new ArrayList<>();
         List<AuditionLog> auditionLogList = new ArrayList<>();
         List<StudentPurchasedCourse> purchasedCourseList = new ArrayList<>();
-        List<String> ids = new ArrayList<>();
         for(TeacherTimetable teacherTimetable:teacherTimetables) {
             boolean flag1 = true; // 是否可以试听
             boolean flag2 = false; // 是否可以预约课程
@@ -118,12 +111,10 @@ public class StudentTimtableServiceImpl extends ServiceImpl<StudentTimtableMappe
                     studentTimtable.setCourseType(CourseType.FORMAL.getCode());
                 }
                 newStudentTimtables.add(studentTimtable);
-                ids.add(studentTimtable.getId());
             }
 
             if(flag1) { //添加试听记录
                 AuditionLog auditionLog = new AuditionLog();
-                auditionLog.setId(ClassObjectUtils.getUUID());
                 auditionLog.setStudentId(studentId);
                 auditionLog.setCourseId(teacherTimetable.getCourseId());
                 auditionLog.setTeacherId(teacherTimetable.getTeacherId());
@@ -131,25 +122,29 @@ public class StudentTimtableServiceImpl extends ServiceImpl<StudentTimtableMappe
             }
         }
 
-        studentTimtableMapper.insertByBatch(newStudentTimtables);
+        saveBatch(newStudentTimtables);
         auditionLogService.saveBatch(auditionLogList);
         if(!purchasedCourseList.isEmpty()) {
             studentPurchasedCourseService.updateBatchById(purchasedCourseList);
         }
-        return studentTimtableMapper.selectByIds(ids);
+        List<Long> ids = new ArrayList<>();
+        for(StudentTimtable timtable:newStudentTimtables) {
+            ids.add(timtable.getId());
+        }
+        return baseMapper.selectByIds(ids);
     }
 
     @Override
-    public IPage<StudentTimetableDTO> selectByPage(int pageNum, int pageSize, StudentTimtable timtable) {
-        Page<StudentTimetableDTO> page = new Page<>(pageNum,pageSize);
-        return studentTimtableMapper.selectDetailList(page,timtable);
+    public IPage<StudentTimetableDTO> selectByPage(Map<String,Object> params) {
+        Page<StudentTimetableDTO> page = BaseUtils.getInstance().initPage(params);
+        return baseMapper.selectDetailList(page,params);
     }
 
     @Override
     public void signIn(StudentTimtable st, String teacherTimetableId) {
-        StudentTimtable studentTimtable = studentTimtableMapper.selectById(st.getId());
+        StudentTimtable studentTimtable = getById(st.getId());
         studentTimtable.setStatus(st.getStatus());
-        studentTimtableMapper.updateById(studentTimtable);
+        updateById(studentTimtable);
 
         SysUser student = sysUserService.getById(studentTimtable.getStudentId());
         SysUser teacher = sysUserService.getById(studentTimtable.getTeacherId());
@@ -173,25 +168,25 @@ public class StudentTimtableServiceImpl extends ServiceImpl<StudentTimtableMappe
         sysUserService.updateBatchById(Arrays.asList(student,teacher));
 
         //更新教师课表，教师已上课
-        TeacherTimetable teacherTimetable = teacherTimetableMapper.selectById(teacherTimetableId);
+        TeacherTimetable teacherTimetable = teacherTimetableService.getById(teacherTimetableId);
         if(TimetableStatus.VALID.getCode().equals(teacherTimetable.getStatus())) {
             teacherTimetable.setStatus(TimetableStatus.INVALID.getCode());
-            teacherTimetableMapper.updateById(teacherTimetable);
+            teacherTimetableService.updateById(teacherTimetable);
         }
     }
 
     @Override
     public void publishHomework(String id, String homework) {
-        StudentTimtable studentTimtable = studentTimtableMapper.selectById(id);
+        StudentTimtable studentTimtable = getById(id);
         studentTimtable.setHomework(homework);
-        studentTimtableMapper.updateById(studentTimtable);
+        updateById(studentTimtable);
     }
 
     @Override
     public int leave(StudentTimtable studentTimtable) {
-        StudentTimtable timtable = studentTimtableMapper.selectById(studentTimtable.getId());
+        StudentTimtable timtable = getById(studentTimtable.getId());
         timtable.setStatus(studentTimtable.getStatus());
-        studentTimtableMapper.updateById(timtable);
+        updateById(timtable);
         //获取该已购买课程信息
         StudentPurchasedCourse res = new StudentPurchasedCourse();
         res.setStudentId(timtable.getStudentId());
