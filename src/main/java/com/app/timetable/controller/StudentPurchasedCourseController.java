@@ -61,7 +61,10 @@ public class StudentPurchasedCourseController {
         QueryWrapper<Course> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("tag_id",tagId);
         queryWrapper.eq("teacher_id",teacherId);
+        queryWrapper.eq("enable",1);
         Course course = courseService.getOne(queryWrapper);
+        RobotAssert.notNull(course,"找不到相应的课程，请确认课程是否被删除。");
+
         StudentPurchasedCourse purchasedCourse = new StudentPurchasedCourse();
         purchasedCourse.setCourseId(course.getId());
         purchasedCourse.setStudentId(studentId);
