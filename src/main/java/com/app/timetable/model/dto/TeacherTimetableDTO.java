@@ -1,5 +1,6 @@
 package com.app.timetable.model.dto;
 
+import com.app.timetable.model.entity.TeacherTimetable;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -11,29 +12,11 @@ import java.util.List;
  * @description
  */
 @Data
-public class TeacherTimetableDTO {
-
-    private String id;
-
-    private String courseId;
+public class TeacherTimetableDTO extends TeacherTimetable {
 
     private String courseName;
 
-    private String teacherId;
-
     private String teacherName;
-
-    private Integer number;
-
-    private String homework;
-
-    private Integer status;
-
-    private String courseTime;
-
-    private String startTime;
-
-    private String endTime;
 
     private List<StudentTimetableDTO> students = new ArrayList<>();
 }

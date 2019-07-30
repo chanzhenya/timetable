@@ -1,6 +1,6 @@
 package com.app.timetable.service.impl;
 
-import com.app.timetable.common.utils.BaseUtils;
+import com.app.timetable.common.model.BaseService;
 import com.app.timetable.model.dto.PurchasedCourseDTO;
 import com.app.timetable.model.entity.StudentPurchasedCourse;
 import com.app.timetable.model.enums.PurchasedCourseStatus;
@@ -11,7 +11,6 @@ import com.app.timetable.service.IStudentPurchasedCourseService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.redisson.api.RMap;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,14 +31,14 @@ import java.util.Map;
  * @since 2019-04-01
  */
 @Service
-public class StudentPurchasedCourseServiceImpl extends ServiceImpl<StudentPurchasedCourseMapper, StudentPurchasedCourse> implements IStudentPurchasedCourseService {
+public class StudentPurchasedCourseServiceImpl extends BaseService<StudentPurchasedCourseMapper, StudentPurchasedCourse> implements IStudentPurchasedCourseService {
 
     @Autowired
     private RedissonClient redissonClient;
 
     @Override
     public IPage<PurchasedCourseDTO> selectByPage(Map<String,Object> params) {
-        Page<PurchasedCourseDTO> purchasedCourseDTOPage = BaseUtils.getInstance().initPage(params);
+        Page<PurchasedCourseDTO> purchasedCourseDTOPage = initPage(params);
         IPage<PurchasedCourseDTO> dtoiPage = baseMapper.selectByPage(purchasedCourseDTOPage,params);
         //计算已购买的课程距离截止日期还有多少天
         for(PurchasedCourseDTO dto : dtoiPage.getRecords()) {

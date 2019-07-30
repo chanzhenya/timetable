@@ -17,7 +17,7 @@ import java.util.Map;
  * @author judithchen
  * @since 2019-04-01
  */
-public interface IStudentTimtableService extends IService<StudentTimtable> {
+public interface IStudentTimetableService extends IService<StudentTimtable> {
 
     /**
      * 预约课程

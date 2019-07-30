@@ -3,6 +3,7 @@ package com.app.timetable.controller;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.app.timetable.common.utils.BaseUtils;
+import com.app.timetable.common.utils.RobotAssert;
 import com.app.timetable.model.dto.TeacherTimetableDTO;
 import com.app.timetable.model.entity.TeacherTimetable;
 import com.app.timetable.model.enums.TimetableStatus;
@@ -68,7 +69,7 @@ public class TeacherTimetableController {
      * @return
      */
     @PostMapping("/detail")
-    public ResultVo detail(@RequestParam("timetableId") String timetableId) {
+    public ResultVo detail(@RequestParam("timetableId") Long timetableId) {
         TeacherTimetableDTO dto = teacherTimetableService.selectDetailById(timetableId);
         return ResultVoUtil.success(dto);
     }
@@ -82,6 +83,8 @@ public class TeacherTimetableController {
     @PostMapping("/edit")
     public ResultVo edit(@RequestParam("timetableId") Long timetableId,
                          @RequestParam(value = "homework", required = false) String homework) {
+        TeacherTimetable teacherTimetable = teacherTimetableService.getById(timetableId);
+        RobotAssert.notNull(teacherTimetable,"找不到相应的课表信息，请确保数据存在。");
         TeacherTimetable timetable = new TeacherTimetable();
         timetable.setId(timetableId);
         timetable.setHomework(homework);
@@ -96,7 +99,10 @@ public class TeacherTimetableController {
      */
     @PostMapping("/delete")
     public ResultVo delete(@RequestParam("timetableId") String timetableId) {
-        teacherTimetableService.removeById(timetableId);
+        TeacherTimetable teacherTimetable = teacherTimetableService.getById(timetableId);
+        RobotAssert.notNull(teacherTimetable,"找不到相应的课表信息，请确保数据存在。");
+        teacherTimetable.setEnable(0);
+        teacherTimetableService.updateById(teacherTimetable);
         return ResultVoUtil.success("删除成功");
     }
 }

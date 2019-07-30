@@ -1,18 +1,17 @@
 package com.app.timetable.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import com.app.timetable.common.model.BaseService;
 import com.app.timetable.common.utils.BaseUtils;
 import com.app.timetable.model.dto.StudentTimetableDTO;
 import com.app.timetable.model.entity.*;
 import com.app.timetable.model.enums.CourseType;
 import com.app.timetable.model.enums.TimetableStatus;
-import com.app.timetable.mapper.StudentTimtableMapper;
+import com.app.timetable.mapper.StudentTimetableMapper;
 import com.app.timetable.service.*;
-import com.app.timetable.utils.ClassObjectUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +31,7 @@ import java.util.Map;
  */
 @Transactional
 @Service
-public class StudentTimtableServiceImpl extends ServiceImpl<StudentTimtableMapper, StudentTimtable> implements IStudentTimtableService {
+public class StudentTimtableServiceImpl extends BaseService<StudentTimetableMapper, StudentTimtable> implements IStudentTimetableService {
 
     @Autowired
     private IAuditionLogService auditionLogService;
@@ -136,7 +135,7 @@ public class StudentTimtableServiceImpl extends ServiceImpl<StudentTimtableMappe
 
     @Override
     public IPage<StudentTimetableDTO> selectByPage(Map<String,Object> params) {
-        Page<StudentTimetableDTO> page = BaseUtils.getInstance().initPage(params);
+        Page<StudentTimetableDTO> page = initPage(params);
         return baseMapper.selectDetailList(page,params);
     }
 

@@ -6,7 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.app.timetable.model.dto.StudentTimetableDTO;
 import com.app.timetable.model.entity.StudentTimtable;
 import com.app.timetable.model.enums.TimetableStatus;
-import com.app.timetable.service.IStudentTimtableService;
+import com.app.timetable.service.IStudentTimetableService;
 import com.app.timetable.utils.ResultVoUtil;
 import com.app.timetable.model.vo.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +30,10 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/studentTimtable")
-public class StudentTimtableController {
+public class StudentTimetableController {
 
     @Autowired
-    private IStudentTimtableService studentTimtableService;
+    private IStudentTimetableService studentTimtableService;
 
     /**
      * 预约课程

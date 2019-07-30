@@ -1,9 +1,9 @@
 package com.app.timetable.service.impl;
 
+import com.app.timetable.common.model.BaseService;
 import com.app.timetable.model.entity.AuditionLog;
 import com.app.timetable.mapper.AuditionLogMapper;
 import com.app.timetable.service.IAuditionLogService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2019-04-16
  */
 @Service
-public class AuditionLogServiceImpl extends ServiceImpl<AuditionLogMapper, AuditionLog> implements IAuditionLogService {
+public class AuditionLogServiceImpl extends BaseService<AuditionLogMapper, AuditionLog> implements IAuditionLogService {
 
 }

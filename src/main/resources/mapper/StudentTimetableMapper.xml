@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.app.timetable.mapper.StudentTimtableMapper">
+<mapper namespace="com.app.timetable.mapper.StudentTimetableMapper">
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.app.timetable.model.entity.StudentTimtable">
@@ -38,7 +38,7 @@
     <select id="selectDetailList" resultMap="DetailResultMap" parameterType="java.util.Map">
         SELECT DISTINCT t.*, u.name student_name, u.img_url, tag.name course_name, tt.homework course_homework,
         spc.leave_num, spc.remain_num, spc.truancy_num
-        FROM `student_timtable` t
+        FROM `student_timetable` t
         LEFT JOIN `sys_user` u ON u.id = t.student_id
         LEFT JOIN `course` c ON c.id = t.course_id
         LEFT JOIN `tag` ON tag.id = c.tag_id
@@ -56,8 +56,8 @@
         </where>
     </select>
 
-    <select id="selectByCourse" resultMap="DetailResultMap" parameterType="java.lang.String">
-        SELECT t.*, u.name student_name, u.img_url, tag.name course_name, tt.homework course_homework FROM `student_timtable` t
+    <select id="selectByCourse" resultMap="DetailResultMap" parameterType="java.lang.Long">
+        SELECT t.*, u.name student_name, u.img_url, tag.name course_name, tt.homework course_homework FROM `student_timetable` t
         LEFT JOIN `sys_user` u ON u.id = t.student_id
         LEFT JOIN `course` c ON c.id = t.course_id
         LEFT JOIN `tag` ON tag.id = c.tag_id
@@ -67,7 +67,7 @@
 
 
     <insert id="insertByBatch" parameterType="java.util.List">
-      INSERT INTO `student_timtable`(id, student_id, teacher_id, course_id, course_time, course_type, status, homework, create_time)
+      INSERT INTO `student_timetable`(id, student_id, teacher_id, course_id, course_time, course_type, status, homework, create_time)
       VALUES
       <foreach collection="list" item="item" index="index" separator=",">
           (#{item.id}, #{item.studentId}, #{item.teacherId}, #{item.courseId}, #{item.courseTime}, #{item.courseType}, #{item.status},
@@ -76,7 +76,7 @@
     </insert>
 
     <select id="selectByIds" parameterType="java.util.List" resultMap="DetailResultMap">
-      SELECT st.id, st.course_time, tag.name course_name FROM student_timtable st
+      SELECT st.id, st.course_time, tag.name course_name FROM student_timetable st
       LEFT JOIN `course` c ON c.id = st.course_id
       LEFT JOIN `tag` ON tag.id = c.tag_id
       WHERE st.id IN

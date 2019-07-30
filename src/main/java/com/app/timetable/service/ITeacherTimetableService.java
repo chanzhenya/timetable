@@ -19,7 +19,7 @@ public interface ITeacherTimetableService extends IService<TeacherTimetable> {
 
     IPage<TeacherTimetableDTO> selectByPage(Map<String,Object> params);
 
-    TeacherTimetableDTO selectDetailById(String id);
+    TeacherTimetableDTO selectDetailById(Long id);
 
     void update(TeacherTimetable timetable);
 }

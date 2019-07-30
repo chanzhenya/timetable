@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public interface TeacherTimetableMapper extends BaseMapper<TeacherTimetable> {
 
-    IPage<TeacherTimetableDTO> selectByPage(Page<TeacherTimetableDTO> page, Map<String,Object> params);
+    IPage<TeacherTimetableDTO> selectByPage(Page<TeacherTimetableDTO> page, @Param("params") Map<String,Object> params);
 
-    TeacherTimetableDTO selectDetailById(@Param("id") String id);
+    TeacherTimetableDTO selectDetailById(@Param("id") Long id);
 }

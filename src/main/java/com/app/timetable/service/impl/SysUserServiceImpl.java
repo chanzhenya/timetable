@@ -3,7 +3,7 @@ package com.app.timetable.service.impl;
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
 import com.alibaba.fastjson.JSONObject;
-import com.app.timetable.common.utils.BaseUtils;
+import com.app.timetable.common.model.BaseService;
 import com.app.timetable.model.dto.PurchasedCourseDTO;
 import com.app.timetable.model.dto.SysUserDTO;
 import com.app.timetable.model.entity.StudentPurchasedCourse;
@@ -16,7 +16,6 @@ import com.app.timetable.service.WeChatService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +33,7 @@ import java.util.Map;
  * @since 2019-04-01
  */
 @Service
-public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements ISysUserService {
+public class SysUserServiceImpl extends BaseService<SysUserMapper, SysUser> implements ISysUserService {
 
     Log log = LogFactory.get();
 
@@ -46,7 +45,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public IPage<SysUserDTO> selecBytPage(Map<String,Object> params) {
-        Page<SysUserDTO> page = BaseUtils.getInstance().initPage(params);
+        Page<SysUserDTO> page = initPage(params);
         return baseMapper.selectByPage(page,params);
     }
 

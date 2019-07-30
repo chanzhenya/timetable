@@ -1,6 +1,6 @@
 package com.app.timetable.service.impl;
 
-import com.app.timetable.common.utils.BaseUtils;
+import com.app.timetable.common.model.BaseService;
 import com.app.timetable.model.dto.TeacherEvaluationDTO;
 import com.app.timetable.model.entity.SysUser;
 import com.app.timetable.model.entity.TeacherEvaluation;
@@ -9,7 +9,6 @@ import com.app.timetable.service.ISysUserService;
 import com.app.timetable.service.ITeacherEvaluationService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,14 +23,14 @@ import java.util.Map;
  * @since 2019-04-01
  */
 @Service
-public class TeacherEvaluationServiceImpl extends ServiceImpl<TeacherEvaluationMapper, TeacherEvaluation> implements ITeacherEvaluationService {
+public class TeacherEvaluationServiceImpl extends BaseService<TeacherEvaluationMapper, TeacherEvaluation> implements ITeacherEvaluationService {
 
     @Autowired
     private ISysUserService sysUserService;
 
     @Override
     public IPage<TeacherEvaluationDTO> selectByPage(Map<String,Object> params) {
-        Page<TeacherEvaluationDTO> page = BaseUtils.getInstance().initPage(params);
+        Page<TeacherEvaluationDTO> page = initPage(params);
         return baseMapper.selectByPage(page,params);
     }
 

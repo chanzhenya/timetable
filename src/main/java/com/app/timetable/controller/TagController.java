@@ -1,15 +1,10 @@
 package com.app.timetable.controller;
 
-
-import cn.hutool.core.map.MapUtil;
-import com.app.timetable.common.utils.BaseUtils;
 import com.app.timetable.common.utils.RobotAssert;
 import com.app.timetable.model.entity.Tag;
 import com.app.timetable.service.ITagService;
 import com.app.timetable.utils.ResultVoUtil;
 import com.app.timetable.model.vo.ResultVo;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,13 +57,7 @@ public class TagController {
 
     @PostMapping("/list")
     public ResultVo list(@RequestParam Map<String,Object> params) {
-        Page<Tag> tagPage = BaseUtils.getInstance().initPage(params);
-        QueryWrapper<Tag> tagQueryWrapper = new QueryWrapper<>();
-        if(params.containsKey("tagName")) {
-            tagQueryWrapper.like("name", MapUtil.getStr(params,"tagName"));
-        }
-        tagQueryWrapper.eq("enable",1);
-        return ResultVoUtil.success(tagService.page(tagPage,tagQueryWrapper));
+        return ResultVoUtil.success(tagService.list(params));
     }
 }
 

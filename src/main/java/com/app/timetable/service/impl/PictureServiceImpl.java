@@ -1,11 +1,11 @@
 package com.app.timetable.service.impl;
 
+import com.app.timetable.common.model.BaseService;
 import com.app.timetable.mapper.PictureMapper;
 import com.app.timetable.model.entity.Picture;
 import com.app.timetable.service.IPictureService;
 import com.app.timetable.utils.CommonContent;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,7 +19,7 @@ import java.util.List;
  * @description
  */
 @Service
-public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture> implements IPictureService {
+public class PictureServiceImpl extends BaseService<PictureMapper, Picture> implements IPictureService {
 
     @Override
     public Picture uploadFile(MultipartFile multipartFile) {

@@ -12,7 +12,6 @@ import com.app.timetable.service.*;
 import com.app.timetable.utils.ResultVoUtil;
 import com.app.timetable.model.vo.ResultVo;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,12 +41,6 @@ public class CourseController {
 
     @Autowired
     private IPictureService pictureService;
-
-    @Autowired
-    private ITagService tagService;
-
-    @Autowired
-    private ISysUserService sysUserService;
 
     /**
      * 新增课程

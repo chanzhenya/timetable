@@ -32,21 +32,4 @@ public class BaseUtils {
         }
         return tparams;
     }
-
-    public Page initPage(Map<String,Object> params){
-        int pageNum = 1 ;
-        int pageSize = 10;
-        boolean queryAll = false;
-        if(params.containsKey("pageNum")) {
-            pageNum = MapUtil.getInt(params,"pageNum");
-        }
-
-        if(params.containsKey("pageSize")){
-            pageSize = MapUtil.getInt(params,"pageSize");
-        }else {
-            pageSize = Integer.MAX_VALUE;
-        }
-
-        return new Page<>(pageNum,pageSize);
-    }
 }

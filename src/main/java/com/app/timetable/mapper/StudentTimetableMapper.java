@@ -18,11 +18,11 @@ import java.util.Map;
  * @author judithchen
  * @since 2019-04-01
  */
-public interface StudentTimtableMapper extends BaseMapper<StudentTimtable> {
+public interface StudentTimetableMapper extends BaseMapper<StudentTimtable> {
 
     IPage<StudentTimetableDTO> selectDetailList(Page<StudentTimetableDTO> page, Map<String,Object> params);
 
-    List<StudentTimetableDTO> selectByCourse(@Param("courseId") String courseId);
+    List<StudentTimetableDTO> selectByCourse(@Param("courseId") Long courseId);
 
     void insertByBatch(List<StudentTimtable> timtableList);
 
