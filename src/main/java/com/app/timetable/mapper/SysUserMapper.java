@@ -23,8 +23,6 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
 
     IPage<SysUserDTO> selectByPage(Page<SysUserDTO> page, Map<String,Object> params);
 
-    SysUser selectByOpenId(@Param("openId") String openId);
-
     IPage<SysUserDTO> selectMyStudents(Page<SysUserDTO> page, @Param("purchasedCourse") StudentPurchasedCourse purchasedCourse);
 
     List<SysUserDTO> teacherOptions(@Param("tagId") String tagId);

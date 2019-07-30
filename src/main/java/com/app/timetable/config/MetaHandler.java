@@ -1,10 +1,12 @@
-package com.app.timetable.common.utils;
+package com.app.timetable.config;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import org.apache.ibatis.reflection.MetaObject;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+@Component
 public class MetaHandler implements MetaObjectHandler {
 
     /**

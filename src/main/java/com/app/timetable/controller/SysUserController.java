@@ -1,7 +1,10 @@
 package com.app.timetable.controller;
 
 
+import cn.hutool.core.map.MapUtil;
 import com.alibaba.fastjson.JSONObject;
+import com.app.timetable.common.utils.BaseUtils;
+import com.app.timetable.common.utils.RobotAssert;
 import com.app.timetable.model.dto.SysUserDTO;
 import com.app.timetable.model.entity.Picture;
 import com.app.timetable.model.entity.SysUser;
@@ -9,6 +12,7 @@ import com.app.timetable.model.enums.UserType;
 import com.app.timetable.service.*;
 import com.app.timetable.utils.ResultVoUtil;
 import com.app.timetable.model.vo.ResultVo;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,40 +60,33 @@ public class SysUserController {
 
     /**
      * 用户注册
-     * @param imgUrl
-     * @param openId
-     * @param username
-     * @param name
-     * @param phone
-     * @param gender
-     * @param description
-     * @param userType
+     * @param params
      * @param response
      * @return
      */
     @PostMapping("/register")
-    public ResultVo register(@RequestParam(value = "photoUrl", required = false)String photoUrl,
-                             @RequestParam(value = "imgUrl", required = false) String imgUrl,
-                             @RequestParam("openId") String openId, @RequestParam(value = "username", required = false) String username,
-                             @RequestParam(value = "name", required = false) String name, @RequestParam("phone") String phone,
-                             @RequestParam(value = "gender",required = false) Integer gender, @RequestParam(value = "description", required = false)  String description,
-                             @RequestParam("userType") Integer userType, HttpServletResponse response) {
-        SysUser sysUser = userService.selectByOpenId(openId);
-        if(sysUser == null) {
-            sysUser = new SysUser();
+    public ResultVo register(@RequestParam Map<String,Object> params, HttpServletResponse response) {
+        BaseUtils.getInstance().checkParams(params,new String[]{"openId","phone","userType"});
+        QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
+        SysUser sysUser = userService.getByOpenId(MapUtil.getStr(params,"openId"));
+        RobotAssert.notNull(sysUser,"找不到相应的用户信息，请确认用户已微信授权登录。");
+        if(params.containsKey("name")) {
+            sysUser.setName(MapUtil.getStr(params,"name"));
         }
-        sysUser.setAccount(username);
-        sysUser.setImgUrl(imgUrl);
-        sysUser.setOpenId(openId);
-        sysUser.setGender(gender);
-        sysUser.setUsername(username);
-        sysUser.setName(name);
-        sysUser.setPhone(phone);
-        sysUser.setDescription(description);
-        sysUser.setUserType(userType);
-        sysUser.setPhotoUrl(photoUrl);
-        userService.register(sysUser, response);
-        return ResultVoUtil.success("注册成功");
+        if(params.containsKey("phone")) {
+            sysUser.setPhone(MapUtil.getStr(params,"phone"));
+        }
+        if(params.containsKey("description")) {
+            sysUser.setDescription(MapUtil.getStr(params,"description"));
+        }
+        if(params.containsKey("userType")) {
+            sysUser.setUserType(MapUtil.getInt(params,"userType"));
+        }
+        if (params.containsKey("photoUrl")) {
+            sysUser.setPhotoUrl(MapUtil.getStr(params,"photoUrl"));
+        }
+        userService.updateById(sysUser);
+        return ResultVoUtil.success(sysUser,"注册成功");
     }
 
     /**

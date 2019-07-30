@@ -35,8 +35,6 @@ mybatis-plus:
   mapper-locations: classpath:mapper/*Mapper.xml
   type-aliases-package: com.app.timetable.model.entity
   global-config:
-    meta-object-handler: com.app.timetable.common.utils.MetaHandler
-    id-type: 2
     configuration:
       log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
 

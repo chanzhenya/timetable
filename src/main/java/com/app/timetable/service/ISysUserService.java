@@ -21,15 +21,17 @@ import java.util.Map;
  */
 public interface ISysUserService extends IService<SysUser> {
 
-    void register(SysUser sysUser, HttpServletResponse response);
-
     IPage<SysUserDTO> selecBytPage(Map<String,Object> params);
 
     JSONObject studetnDetail(String userId);
 
-    SysUser selectByOpenId(String openId);
+
 
     IPage<SysUserDTO> selectMyStudents(int pageNum, int pageSize, StudentPurchasedCourse purchasedCourse);
 
     List<SysUserDTO> teacherOptions(String tagId);
+
+
+    SysUser saveSysUser(String openId);
+    SysUser getByOpenId(String openId);
 }

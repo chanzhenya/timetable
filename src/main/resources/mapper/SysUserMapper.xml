@@ -17,7 +17,7 @@
         <result column="user_type" property="userType" />
         <result column="enable" property="enable" />
         <result column="create_time" property="createTime"/>
-        <result column="update_time" property="update_time"/>
+        <result column="update_time" property="updateTime"/>
         <result column="description" property="description" />
         <result column="score" property="score"/>
         <result column="period" property="period"/>
@@ -45,10 +45,6 @@
             </if>
         </where>
         ORDER BY score DESC
-    </select>
-
-    <select id="selectByOpenId" resultMap="BaseResultMap" parameterType="java.lang.String">
-        SELECT * FROM sys_user WHERE open_id = #{openId}
     </select>
 
     <select id="selectMyStudents" resultMap="ListResultMap" parameterType="com.app.timetable.model.entity.StudentPurchasedCourse">

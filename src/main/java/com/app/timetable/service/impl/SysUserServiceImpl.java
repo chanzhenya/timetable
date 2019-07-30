@@ -1,5 +1,7 @@
 package com.app.timetable.service.impl;
 
+import cn.hutool.log.Log;
+import cn.hutool.log.LogFactory;
 import com.alibaba.fastjson.JSONObject;
 import com.app.timetable.common.utils.BaseUtils;
 import com.app.timetable.model.dto.PurchasedCourseDTO;
@@ -7,11 +9,11 @@ import com.app.timetable.model.dto.SysUserDTO;
 import com.app.timetable.model.entity.StudentPurchasedCourse;
 import com.app.timetable.model.entity.SysUser;
 import com.app.timetable.mapper.SysUserMapper;
+import com.app.timetable.model.enums.UserType;
 import com.app.timetable.service.IStudentPurchasedCourseService;
 import com.app.timetable.service.ISysUserService;
-import com.app.timetable.utils.ClassObjectUtils;
-import com.app.timetable.utils.CommonContent;
-import com.app.timetable.utils.CookieUtil;
+import com.app.timetable.service.WeChatService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -19,7 +21,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,19 +36,13 @@ import java.util.Map;
 @Service
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements ISysUserService {
 
+    Log log = LogFactory.get();
+
     @Autowired
     private IStudentPurchasedCourseService purchasedCourseService;
 
-    @Override
-    public void register(SysUser sysUser, HttpServletResponse response) {
-        if(sysUser.getId() != null) {
-            updateById(sysUser);
-        } else {
-            save(sysUser);
-        }
-        String token = CookieUtil.getUUToken();
-        CookieUtil.setTokenCookie(CommonContent.TOKEN_KEY,token, (int) CommonContent.LOGIN_EXPIRE_TIME, response);
-    }
+    @Autowired
+    private WeChatService weChatService;
 
     @Override
     public IPage<SysUserDTO> selecBytPage(Map<String,Object> params) {
@@ -80,11 +75,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public SysUser selectByOpenId(String openId) {
-        return baseMapper.selectByOpenId(openId);
-    }
-
-    @Override
     public IPage<SysUserDTO> selectMyStudents(int pageNum, int pageSize, StudentPurchasedCourse purchasedCourse) {
         Page<SysUserDTO> page = new Page<>(pageNum,pageSize);
         return baseMapper.selectMyStudents(page, purchasedCourse);
@@ -93,5 +83,33 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public List<SysUserDTO> teacherOptions(String tagId) {
         return baseMapper.teacherOptions(tagId);
+    }
+
+    @Override
+    public SysUser saveSysUser(String openId) {
+        log.info("新增用户信息, openId：{}",openId);
+
+        QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("open_id",openId);
+        SysUser sysUser = getOne(queryWrapper);
+        if(sysUser == null) {
+            JSONObject userInfo = JSONObject.parseObject(weChatService.getUserInfo(openId));
+
+            sysUser = new SysUser();
+            sysUser.setUsername(userInfo.getString("nickname"));
+            sysUser.setGender(userInfo.getInteger("sex"));
+            sysUser.setOpenId(userInfo.getString("openid"));
+            sysUser.setImgUrl(userInfo.getString("headimgurl"));
+            sysUser.setUserType(UserType.TOURIST.getCode());
+            save(sysUser);
+        }
+        return sysUser;
+    }
+
+    @Override
+    public SysUser getByOpenId(String openId) {
+        QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("open_id",openId);
+        return getOne(queryWrapper);
     }
 }

@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -57,14 +58,12 @@ public class StorePictureController {
 
     /**
      * 获取门店图片
-     * @param pageNum
-     * @param pageSize
+     * @param params
      * @return
      */
     @PostMapping("/list")
-    public ResultVo list(@RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
-                         @RequestParam(value = "pageSize", required = false, defaultValue = "8000") int pageSize) {
-        IPage<StorePicture> storePictureIPage = storePictureService.selectByPage(pageNum,pageSize);
+    public ResultVo list(@RequestParam Map<String,Object> params) {
+        IPage<StorePicture> storePictureIPage = storePictureService.selectByPage(params);
         return ResultVoUtil.success(storePictureIPage);
     }
 

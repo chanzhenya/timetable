@@ -8,7 +8,7 @@
         <result column="name" property="name" />
         <result column="enable" property="enable" />
         <result column="create_time" property="createTime"/>
-        <result column="update_time" property="update_time"/>
+        <result column="update_time" property="updateTime"/>
     </resultMap>
 
 </mapper>
