@@ -7,9 +7,9 @@ package com.app.timetable.utils;
  **/
 public class CommonContent {
 
-    public static final String FILE_PATH = "/usr/share/nginx/images/";
+//    public static final String FILE_PATH = "/usr/share/nginx/images/";
 
-//    public static final String FILE_PATH = "D:\\documents\\images\\";
+    public static final String FILE_PATH = "D:\\documents\\images\\";
 
     public static final String IMAGE_URL = "https://www.meitang.club/";
 

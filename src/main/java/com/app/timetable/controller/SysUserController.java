@@ -2,6 +2,8 @@ package com.app.timetable.controller;
 
 
 import cn.hutool.core.map.MapUtil;
+import cn.hutool.log.Log;
+import cn.hutool.log.LogFactory;
 import com.alibaba.fastjson.JSONObject;
 import com.app.timetable.common.utils.BaseUtils;
 import com.app.timetable.common.utils.RobotAssert;
@@ -37,6 +39,8 @@ import java.util.Map;
 @RequestMapping("/sysUser")
 public class SysUserController {
 
+    Log log = LogFactory.get();
+
     @Autowired
     private ISysUserService userService;
 
@@ -61,15 +65,15 @@ public class SysUserController {
     /**
      * 用户注册
      * @param params
-     * @param response
      * @return
      */
     @PostMapping("/register")
-    public ResultVo register(@RequestParam Map<String,Object> params, HttpServletResponse response) {
+    public ResultVo register(@RequestParam Map<String,Object> params) {
         BaseUtils.getInstance().checkParams(params,new String[]{"openId","phone","userType"});
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
         SysUser sysUser = userService.getByOpenId(MapUtil.getStr(params,"openId"));
         RobotAssert.notNull(sysUser,"找不到相应的用户信息，请确认用户已微信授权登录。");
+        log.info("用户注册：{}",params);
         if(params.containsKey("name")) {
             sysUser.setName(MapUtil.getStr(params,"name"));
         }
@@ -83,6 +87,7 @@ public class SysUserController {
             sysUser.setUserType(MapUtil.getInt(params,"userType"));
         }
         if (params.containsKey("photoUrl")) {
+            log.info("photoUrl:{}",MapUtil.getStr(params,"photoUrl"));
             sysUser.setPhotoUrl(MapUtil.getStr(params,"photoUrl"));
         }
         if (params.containsKey("username")) {
