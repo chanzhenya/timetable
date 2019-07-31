@@ -85,6 +85,18 @@ public class SysUserController {
         if (params.containsKey("photoUrl")) {
             sysUser.setPhotoUrl(MapUtil.getStr(params,"photoUrl"));
         }
+        if (params.containsKey("username")) {
+            sysUser.setUsername(MapUtil.getStr(params,"username"));
+        }
+        if (params.containsKey("imgUrl")) {
+            sysUser.setImgUrl(MapUtil.getStr(params,"imgUrl"));
+        }
+        if (params.containsKey("gender")) {
+            sysUser.setGender(MapUtil.getInt(params,"gender"));
+        }
+        if (params.containsKey("description")) {
+            sysUser.setDescription(MapUtil.getStr(params,"description"));
+        }
         userService.updateById(sysUser);
         return ResultVoUtil.success(sysUser,"注册成功");
     }

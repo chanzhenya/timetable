@@ -12,7 +12,6 @@ import com.app.timetable.mapper.SysUserMapper;
 import com.app.timetable.model.enums.UserType;
 import com.app.timetable.service.IStudentPurchasedCourseService;
 import com.app.timetable.service.ISysUserService;
-import com.app.timetable.service.WeChatService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -39,9 +38,6 @@ public class SysUserServiceImpl extends BaseService<SysUserMapper, SysUser> impl
 
     @Autowired
     private IStudentPurchasedCourseService purchasedCourseService;
-
-    @Autowired
-    private WeChatService weChatService;
 
     @Override
     public IPage<SysUserDTO> selecBytPage(Map<String,Object> params) {
@@ -92,13 +88,9 @@ public class SysUserServiceImpl extends BaseService<SysUserMapper, SysUser> impl
         queryWrapper.eq("open_id",openId);
         SysUser sysUser = getOne(queryWrapper);
         if(sysUser == null) {
-            JSONObject userInfo = JSONObject.parseObject(weChatService.getUserInfo(openId));
 
             sysUser = new SysUser();
-            sysUser.setUsername(userInfo.getString("nickname"));
-            sysUser.setGender(userInfo.getInteger("sex"));
-            sysUser.setOpenId(userInfo.getString("openid"));
-            sysUser.setImgUrl(userInfo.getString("headimgurl"));
+            sysUser.setOpenId(openId);
             sysUser.setUserType(UserType.TOURIST.getCode());
             save(sysUser);
         }
