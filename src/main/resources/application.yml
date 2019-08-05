@@ -37,6 +37,3 @@ mybatis-plus:
   global-config:
     configuration:
       log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
-
-
-

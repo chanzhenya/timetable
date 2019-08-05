@@ -43,14 +43,14 @@
         LEFT JOIN `sys_user` u ON u.id = c.teacher_id
         <where>
             spc.enable=1
-            <if test="studentId != null">
-                AND spc.student_id = #{studentId}
+            <if test="params.studentId != null">
+                AND spc.student_id = #{params.studentId}
             </if>
-            <if test="teacherId != null">
-                AND spc.teacher_id = #{teacherId}
+            <if test="params.teacherId != null">
+                AND spc.teacher_id = #{params.teacherId}
             </if>
-            <if test="stutus != null">
-                AND spc.stutus = #{stutus}
+            <if test="params.status != null">
+                AND spc.status = #{params.status}
             </if>
         </where>
     </select>

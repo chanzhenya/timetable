@@ -19,5 +19,5 @@ import java.util.Map;
  */
 public interface TeacherEvaluationMapper extends BaseMapper<TeacherEvaluation> {
 
-    IPage<TeacherEvaluationDTO> selectByPage(Page<TeacherEvaluationDTO> page, Map<String,Object> params);
+    IPage<TeacherEvaluationDTO> selectByPage(Page<TeacherEvaluationDTO> page, @Param("params") Map<String,Object> params);
 }

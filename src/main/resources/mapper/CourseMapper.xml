@@ -44,10 +44,10 @@
         LEFT JOIN tag t ON t.id = c.tag_id
         <where>
             c.enable=1
-            <if test="course.status != null">
+            <if test="params.status != null">
                 AND c.status = #{status}
             </if>
-            <if test="course.teacherId != null and course.teacherId != ''">
+            <if test="params.teacherId != null and params.teacherId != ''">
                 AND c.teacher_id = #{teacherId}
             </if>
         </where>

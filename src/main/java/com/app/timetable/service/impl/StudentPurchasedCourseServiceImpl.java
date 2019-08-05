@@ -39,9 +39,9 @@ public class StudentPurchasedCourseServiceImpl extends BaseService<StudentPurcha
     @Override
     public IPage<PurchasedCourseDTO> selectByPage(Map<String,Object> params) {
         Page<PurchasedCourseDTO> purchasedCourseDTOPage = initPage(params);
-        IPage<PurchasedCourseDTO> dtoiPage = baseMapper.selectByPage(purchasedCourseDTOPage,params);
+        IPage<PurchasedCourseDTO> dtoPage = baseMapper.selectByPage(purchasedCourseDTOPage,params);
         //计算已购买的课程距离截止日期还有多少天
-        for(PurchasedCourseDTO dto : dtoiPage.getRecords()) {
+        for(PurchasedCourseDTO dto : dtoPage.getRecords()) {
             if(PurchasedCourseStatus.VALID.getCode().equals(dto.getStatus())) {
                 DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 LocalDateTime dueTime = LocalDateTime.parse(dto.getDueTime(),df);
@@ -54,7 +54,7 @@ public class StudentPurchasedCourseServiceImpl extends BaseService<StudentPurcha
                 dto.setCountDownDays(days);
             }
         }
-        return dtoiPage;
+        return dtoPage;
     }
 
     @Override

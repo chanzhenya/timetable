@@ -46,11 +46,11 @@
         LEFT JOIN `student_purchased_course` spc ON spc.course_id = t.course_id AND spc.student_id = t.student_id
         <where>
             1=1
-            <if test="timetable.courseId != null and timetable.courseId != ''">
-                AND t.course_id = #{courseId}
+            <if test="params.courseId != null and params.courseId != ''">
+                AND t.course_id = #{params.courseId}
             </if>
-            <if test="timetable.studentId != null and timetable.studentId != ''">
-                AND t.student_id = #{studentId}
+            <if test="params.studentId != null and params.studentId != ''">
+                AND t.student_id = #{params.studentId}
             </if>
             ORDER BY t.course_time
         </where>

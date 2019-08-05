@@ -23,11 +23,11 @@
         LEFT JOIN `sys_user` u ON u.id = e.student_id
         <where>
             e.enable=1
-            <if test="evaluation.studentId != null and evaluation.studentId != ''">
-                AND e.student_id = #{studentId}
+            <if test="params.studentId != null and params.studentId != ''">
+                AND e.student_id = #{params.studentId}
             </if>
-            <if test="evaluation.teacherId != null and evaluation.teacherId != ''">
-                AND e.teacher_id = #{teacherId}
+            <if test="params.teacherId != null and params.teacherId != ''">
+                AND e.teacher_id = #{params.teacherId}
             </if>
         </where>
     </select>

@@ -11,6 +11,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -24,8 +25,11 @@ public class BaseService<M extends BaseMapper<T>, T> extends ServiceImpl<M,T> {
     final Class<T> tClass = (Class<T>) ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[1];
 
     public Page initPage(Map<String,Object> params){
+        if(null == params) {
+            params = new HashMap<>();
+        }
         int pageNum = 1 ;
-        int pageSize = 10;
+        int pageSize = 10;//
         if(params.containsKey(SysCommonConstant.PAGE_NUM)) {
             pageNum = MapUtil.getInt(params,SysCommonConstant.PAGE_NUM);
         }

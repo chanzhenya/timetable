@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public interface StudentPurchasedCourseMapper extends BaseMapper<StudentPurchasedCourse> {
 
-    IPage<PurchasedCourseDTO> selectByPage(Page<PurchasedCourseDTO> page, Map<String,Object> params);
+    IPage<PurchasedCourseDTO> selectByPage(Page<PurchasedCourseDTO> page, @Param("params") Map<String,Object> params);
 
     List<StudentPurchasedCourse> query(@Param("purchasedCourse") StudentPurchasedCourse purchasedCourse);
 

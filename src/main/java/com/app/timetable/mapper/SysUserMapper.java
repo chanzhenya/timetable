@@ -21,7 +21,7 @@ import java.util.Map;
  */
 public interface SysUserMapper extends BaseMapper<SysUser> {
 
-    IPage<SysUserDTO> selectByPage(Page<SysUserDTO> page, Map<String,Object> params);
+    IPage<SysUserDTO> selectByPage(Page<SysUserDTO> page, @Param("params") Map<String,Object> params);
 
     IPage<SysUserDTO> selectMyStudents(Page<SysUserDTO> page, @Param("purchasedCourse") StudentPurchasedCourse purchasedCourse);
 

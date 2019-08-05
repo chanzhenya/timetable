@@ -21,5 +21,5 @@ public interface CourseMapper extends BaseMapper<Course> {
 
     CourseDTO selectDetailById(@Param("courseId") String courseId);
 
-    IPage<CourseDTO> selectByPage(Page<CourseDTO> page, Map<String,Object> params);
+    IPage<CourseDTO> selectByPage(Page<CourseDTO> page, @Param("params") Map<String,Object> params);
 }
