@@ -1,5 +1,6 @@
 package com.app.timetable.config;
 
+import com.app.timetable.common.aspect.LogAspect;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
@@ -20,5 +21,10 @@ public class RedissonConfig {
     public RedissonClient redisson() throws IOException {
         Config config = Config.fromYAML(RedissonConfig.class.getClassLoader().getResource("redisson-config.yml"));
         return Redisson.create(config);
+    }
+
+    @Bean
+    public LogAspect logAspect(){
+        return new LogAspect();
     }
 }

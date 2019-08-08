@@ -14,6 +14,9 @@ public class SysCommonConstant {
 
     public static final String PAGE_NUM = "pageNum";
     public static final String PAGE_SIZE = "pageSize";
+    public static final Integer PAGE_NUM_VALUE = 1;
+    public static final Integer PAGE_SIZE_VALUE = 10;
+
 
     /** 有效 */
     public static final Integer VALID = 1;

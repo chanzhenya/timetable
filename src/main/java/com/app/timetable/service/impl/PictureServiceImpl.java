@@ -1,5 +1,6 @@
 package com.app.timetable.service.impl;
 
+import cn.hutool.core.util.IdUtil;
 import com.app.timetable.common.model.BaseService;
 import com.app.timetable.mapper.PictureMapper;
 import com.app.timetable.model.entity.Picture;
@@ -34,7 +35,7 @@ public class PictureServiceImpl extends BaseService<PictureMapper, Picture> impl
         String prefix = suffix.substring(suffix.lastIndexOf(".")+1);
 
         //重命名
-        String filename = picture.getId()+"."+prefix;
+        String filename = IdUtil.randomUUID() +"."+prefix;
 
         //创建文件路径
         File dest = new File(CommonContent.FILE_PATH+filename);
